@@ -1,0 +1,112 @@
+<template>
+  <el-row>
+    <el-col :span="24">
+      <el-menu default-active="1-1">
+        <el-submenu index="1">
+          <template slot="title">
+            <i class="el-icon-cpu"></i>
+            <span class="size">我的作业</span>
+          </template>
+
+          <el-menu-item @click="toJob()" index="1-1">
+            <span slot="title" class="subsize">作业列表</span>
+          </el-menu-item>
+          <el-menu-item @click="goStandardJob()" index="1-2">
+            <span slot="title" class="subsize">新建作业</span>
+          </el-menu-item>
+        </el-submenu>
+        <el-submenu index="2">
+          <template slot="title">
+            <i class="el-icon-takeaway-box"></i>
+            <span class="size">模型管理</span>
+          </template>
+          <el-menu-item @click="toData" index="2-1">
+            <span slot="title" class="subsize">训练模型</span>
+          </el-menu-item>
+          <el-menu-item @click="toResultData" index="2-2">
+            <span slot="title" class="subsize">测试模型</span>
+          </el-menu-item>
+        </el-submenu>
+        <div @click="toImages">
+          <el-menu-item index="3">
+            <template slot="title">
+              <i class="el-icon-copy-document"></i>
+              <span class="size">镜像仓库</span>
+            </template>
+            <!-- <el-menu-item>
+            <span slot="title" @click="toImages">镜像管理</span>
+          </el-menu-item> -->
+          </el-menu-item>
+        </div>
+        <div @click="toIDE">
+          <el-menu-item index="4">
+            <template slot="title">
+              <i class="el-icon-edit-outline"></i>
+              <span class="size">在线IDE</span>
+            </template>
+            <!-- <el-menu-item>
+            <span slot="title" @click="toImages">镜像管理</span>
+          </el-menu-item> -->
+          </el-menu-item>
+        </div>
+        <div @click="toUserInfo">
+          <el-menu-item index="5">
+            <template slot="title">
+              <i class="el-icon-user"></i>
+              <span class="size">个人中心</span>
+            </template>
+            <!-- <el-menu-item>
+            <span slot="title" @click="toImages">镜像管理</span>
+          </el-menu-item> -->
+          </el-menu-item>
+        </div>
+      </el-menu>
+    </el-col>
+  </el-row>
+</template>
+
+<script>
+import { Loading } from "element-ui";
+
+export default {
+  name: "SideBar",
+  data() {
+    return {};
+  },
+  methods: {
+    toJob() {
+      this.$router.push({ name: "job" });
+    },
+    goStandardJob() {
+      this.$router.push({ name: "standardjob" });
+    },
+    toData() {
+      this.$router.push({ name: "data" });
+    },
+    toResultData() {
+      this.$router.push({ name: "resultdata" });
+    },
+    toImages() {
+      this.$router.push({ name: "images" });
+    },
+    toIDE() {
+      this.$router.push({ name: "ide" });
+    },
+    toUserInfo() {
+      this.$router.push({ name: "userinfo" });
+    },
+  },
+};
+</script>
+
+<style scoped>
+.el-menu {
+  height: calc(100vh - 60px);
+}
+.size {
+  font-size: 18px;
+}
+.subsize {
+  font-size: 16px;
+}
+</style>
