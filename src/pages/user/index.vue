@@ -122,7 +122,7 @@
           :rules="passwdRules"
           :model="passwd"
         >
-          <el-col>
+          <el-row>
             <el-form-item label="当前密码" prop="oldPassword">
               <el-input
                 placeholder="请输入当前密码"
@@ -132,8 +132,8 @@
                 @blur="verifyPasswd()"
                 show-password
               ></el-input> </el-form-item
-          ></el-col>
-          <el-col>
+          ></el-row>
+          <el-row>
             <el-form-item label="新密码" prop="newPassword1">
               <el-input
                 show-password
@@ -142,8 +142,8 @@
                 v-model="passwd.newPassword1"
                 style="width: 270px"
               ></el-input></el-form-item
-          ></el-col>
-          <el-col>
+          ></el-row>
+          <el-row style="margin-bottom: 15px">
             <el-form-item label="二次确认" prop="newPassword2">
               <el-input
                 show-password
@@ -151,7 +151,7 @@
                 size="small"
                 v-model="passwd.newPassword2"
                 style="width: 270px"
-              ></el-input></el-form-item></el-col
+              ></el-input></el-form-item></el-row
         ></el-form>
         <span slot="footer" class="dialog-footer">
           <el-button @click="closePasswd()" size="small">取 消</el-button>
@@ -222,12 +222,6 @@ export default {
         ],
         newPassword2: [
           { required: true, validator: verifyPassword, trigger: "change" },
-          {
-            min: 8,
-            max: 16,
-            message: "请输入4-16位字符",
-            trigger: "blur",
-          },
         ],
       },
       userInfo: {},
@@ -376,5 +370,12 @@ export default {
 .el-form-item {
   margin-bottom: 0px;
   padding: 0px;
+}
+.el-form {
+  align-items: flex-start;
+}
+.dialogClass .el-dialog__body {
+  padding: 0px;
+  font-size: 16px;
 }
 </style>

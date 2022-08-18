@@ -30,7 +30,9 @@
             <el-option
               v-for="item in options"
               :key="item.value"
-              :label="item.value"
+              :label="
+                item.value == 'cluster-default-default' ? 'private' : item.value
+              "
               :value="item.value"
             >
             </el-option>

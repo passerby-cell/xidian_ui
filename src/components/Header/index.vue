@@ -56,7 +56,7 @@
         :rules="passwdRules"
         :model="passwd"
       >
-        <el-col>
+        <el-row>
           <el-form-item label="当前密码" prop="oldPassword">
             <el-input
               placeholder="请输入当前密码"
@@ -66,8 +66,8 @@
               @blur="verifyPasswd()"
               show-password
             ></el-input> </el-form-item
-        ></el-col>
-        <el-col>
+        ></el-row>
+        <el-row>
           <el-form-item label="新密码" prop="newPassword1">
             <el-input
               show-password
@@ -76,8 +76,8 @@
               v-model="passwd.newPassword1"
               style="width: 270px"
             ></el-input></el-form-item
-        ></el-col>
-        <el-col>
+        ></el-row>
+        <el-row>
           <el-form-item label="二次确认" prop="newPassword2">
             <el-input
               show-password
@@ -85,7 +85,7 @@
               size="small"
               v-model="passwd.newPassword2"
               style="width: 270px"
-            ></el-input></el-form-item></el-col
+            ></el-input></el-form-item></el-row
       ></el-form>
       <span slot="footer" class="dialog-footer">
         <el-button @click="closePasswd()" size="small">取 消</el-button>

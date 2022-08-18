@@ -79,7 +79,11 @@
               >
             </el-col>
           </el-row>
-          <el-dialog title="作业高级配置" :visible.sync="jobDialogVisible">
+          <el-dialog
+            title="作业高级配置"
+            :visible.sync="jobDialogVisible"
+            width="800px"
+          >
             <el-row>
               <el-col :span="11">
                 <el-form-item label="作业优先级" prop="priorityClassName">
