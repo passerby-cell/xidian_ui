@@ -51,7 +51,7 @@
         >
           <el-table-column
             property="name"
-            :label="type == 1 ? '数据集' : '结果集'"
+            :label="type == 1 ? '训练模型' : '测试模型'"
           ></el-table-column>
           <el-table-column property="catalog" label="路径"></el-table-column
           ><el-table-column label="操作">

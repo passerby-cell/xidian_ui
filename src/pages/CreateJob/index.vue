@@ -391,7 +391,7 @@
                 :min="0"
                 :step="25"
                 :max="100"
-                @change="taskInfo.gpuVideoMem = taskInfo.gpuCalPower * 2.56"
+                @change="taskInfo.gpuVideoMem = taskInfo.gpuCalPower * 0.88"
               ></el-input-number>
               <el-input-number
                 style="width: 100%"
@@ -400,7 +400,7 @@
                 :min="0"
                 :step="100"
                 :max="300"
-                @change="taskInfo.gpuVideoMem = taskInfo.gpuCalPower * 2.56"
+                @change="taskInfo.gpuVideoMem = taskInfo.gpuCalPower * 0.88"
               ></el-input-number>
             </el-col>
             <el-col :span="3">
@@ -1132,17 +1132,17 @@ export default {
       this.taskInfo = {
         taskName: "",
         taskCnName: "",
-        podReplicas: 0,
-        podMinReplicas: 0,
+        podReplicas: 1,
+        podMinReplicas: 1,
         requestCpu: 1,
-        requestMemory: 1,
-        gpuCalPower: 0,
-        gpuVideoMem: 0,
+        requestMemory: 4,
+        gpuCalPower: 100,
+        gpuVideoMem: 88,
         command: null,
         workingDir: null,
         description: "",
-        repository: "",
-        repositoryDir: "",
+        repository: "default",
+        repositoryDir: "cluster-default-default",
         image: "",
         imagePrefix: "",
         imageVersion: "",
