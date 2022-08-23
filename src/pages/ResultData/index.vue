@@ -7,7 +7,7 @@
     >
       <el-breadcrumb separator="/">
         <el-breadcrumb-item>模型管理</el-breadcrumb-item>
-        <el-breadcrumb-item>测试模型</el-breadcrumb-item>
+        <el-breadcrumb-item>模型结果下载</el-breadcrumb-item>
       </el-breadcrumb>
     </Transition>
     <el-row>
@@ -21,7 +21,7 @@
             <el-row>
               <el-col :span="16" style="margin-top: 12px">
                 <h3 style="margin-left: 5px" class="size">
-                  <span style="color: #409eff">|</span>&nbsp;测试模型列表
+                  <span style="color: #409eff">|</span>&nbsp;模型结果列表
                 </h3>
               </el-col>
               <el-col :span="8"
@@ -44,13 +44,13 @@
             >
           </Transition>
           <el-dialog
-            title="新建测试模型"
+            title="新建模型结果"
             :visible.sync="parentFileDialogVisible"
             width="30%"
             :before-close="handleClose"
           >
             <el-input
-              placeholder="请输入新建的测试模型名称"
+              placeholder="请输入新建的模型结果名称"
               size="small"
               v-model="newParentFileName"
             ></el-input>
@@ -161,12 +161,12 @@
             <el-col :span="4">
               <h3 class="size" style="margin-left: 5px; margin-top: 3px">
                 <span class="size" style="color: #409eff">|</span
-                >&nbsp;测试模型文件列表
+                >&nbsp;模型结果文件列表
               </h3>
             </el-col>
             <el-col :span="20"
               ><h3 class="size" v-if="parentFileName">
-                当前测试模型: <el-tag size="small">{{ parentFileName }}</el-tag>
+                当前模型结果: <el-tag size="small">{{ parentFileName }}</el-tag>
               </h3></el-col
             >
           </el-row>

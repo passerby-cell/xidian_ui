@@ -7,7 +7,7 @@
     >
       <el-breadcrumb separator="/" class="size">
         <el-breadcrumb-item>模型管理</el-breadcrumb-item>
-        <el-breadcrumb-item>训练模型</el-breadcrumb-item>
+        <el-breadcrumb-item>模型数据上传</el-breadcrumb-item>
       </el-breadcrumb>
     </Transition>
     <el-row>
@@ -21,7 +21,7 @@
             <el-row>
               <el-col :span="16" style="margin-top: 12px">
                 <h3 style="margin-left: 5px" class="size">
-                  <span style="color: #409eff">|</span>&nbsp;训练模型列表
+                  <span style="color: #409eff">|</span>&nbsp;模型数据列表
                 </h3>
               </el-col>
               <el-col :span="8"
@@ -44,13 +44,13 @@
             >
           </Transition>
           <el-dialog
-            title="新建训练模型"
+            title="新建模型数据"
             :visible.sync="parentFileDialogVisible"
             width="30%"
             :before-close="handleClose"
           >
             <el-input
-              placeholder="请输入新建的训练模型名称"
+              placeholder="请输入新建的模型数据名称"
               size="small"
               v-model="newParentFileName"
             ></el-input>
@@ -161,12 +161,12 @@
           <el-row style="margin-top: 10px">
             <el-col :span="4">
               <h3 style="margin-left: 5px; margin-top: 3px" class="size">
-                <span style="color: #409eff">|</span>&nbsp;训练模型文件列表
+                <span style="color: #409eff">|</span>&nbsp;模型数据文件列表
               </h3>
             </el-col>
             <el-col :span="20"
-              ><h3 class="size" v-if="parentFileName">
-                当前训练模型: <el-tag size="small">{{ parentFileName }}</el-tag>
+              ><h3 class="size" v-if="parentFileName" style="margin-top: 3px">
+                当前模型数据: <el-tag size="small">{{ parentFileName }}</el-tag>
               </h3></el-col
             >
           </el-row>
@@ -579,8 +579,9 @@ export default {
     },
     async createParentFile() {
       //TODO:storageId type
-      let result = await reqCreateParentFile(this.newParentFileName, "", 6, 1);
-      if (result.code == "200") {
+      let result1 = await reqCreateParentFile(this.newParentFileName, "", 6, 1);
+      let result2 = await reqCreateParentFile(this.newParentFileName, "", 6, 2);
+      if (result1.code == "200" && result2.code == "200") {
         this.parentFileDialogVisible = false;
         this.$message({
           type: "success",
@@ -588,8 +589,10 @@ export default {
         });
         this.updateParentFileList();
         this.newParentFileName = "";
-      } else {
-        this.$message.error("新建失败");
+      } else if (result1.code != "200") {
+        this.$message.error("新建模型数据失败");
+      } else if (result2.code != "200") {
+        this.$message.error("新建模型结果失败");
       }
     },
     changeIsShow(index) {
