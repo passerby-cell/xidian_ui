@@ -1,0 +1,21 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd" >
+<svg xmlns="http://www.w3.org/2000/svg">
+  <metadata>Created by iconfont</metadata>
+  <defs>
+  <font id="iconfont" horiz-adv-x="1024">
+    <font-face
+      font-family="iconfont"
+      font-weight="400"
+      font-stretch="normal"
+      units-per-em="1024"
+      ascent="896"
+      descent="-128"
+    />
+      <missing-glyph />
+      
+      <glyph glyph-name="xingbie" unicode="&#58925;" d="M320 341.33333300000004a234.666667 234.666667 0 1 0 0 469.333334 234.666667 234.666667 0 0 0 0-469.333334z m0 42.666667a192 192 0 1 1 0 384 192 192 0 0 1 0-384zM704-42.66666699999996a234.666667 234.666667 0 1 0 0 469.333334 234.666667 234.666667 0 0 0 0-469.333334z m0 42.666667a192 192 0 1 1 0 384 192 192 0 0 1 0-384zM682.666667 725.333333h42.666666v-341.333333h-42.666666zM597.333333 640h213.333334v-42.666667h-213.333334zM298.666667 384h42.666666v-341.333333H298.666667zM318.933333 72.10666700000002l75.434667 75.392 30.165333-30.165334-105.6-105.6L213.333333 117.33333300000004l30.165334 30.165334z"  horiz-adv-x="1024" />
+      
+    </font>
+  </defs>
+</svg>

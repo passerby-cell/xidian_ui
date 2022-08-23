@@ -73,7 +73,7 @@
             <el-descriptions-item>
               <template slot="label">
                 <i class="el-icon-user"></i>
-                用户名</template
+                昵称</template
               >{{ userInfo.name }}</el-descriptions-item
             >
             <el-descriptions-item>
@@ -86,6 +86,27 @@
               ></el-descriptions-item
             >
             <el-descriptions-item>
+              <!-- <template slot="label">
+                <i class="iconfont icon-xingbie"></i>
+                性别
+              </template> -->
+              <template slot="label">
+                <i class="el-icon-mobile-phone"></i>
+                手机
+              </template>
+              <el-tag size="small" v-show="!edit">{{ userInfo.phone }}</el-tag>
+
+              <el-form-item v-show="edit" prop="phone">
+                <el-input size="small" v-model="userInfo.phone"></el-input>
+                <!-- <el-select size="small" v-model="userInfo.phone">
+                  <el-option label="男" value="male"></el-option
+                  ><el-option
+                    label="女"
+                    value="female"
+                  ></el-option></el-select> -->
+              </el-form-item></el-descriptions-item
+            >
+            <el-descriptions-item>
               <template slot="label">
                 <i class="el-icon-message"></i>
                 邮箱
@@ -94,18 +115,7 @@
               <el-form-item v-show="edit" prop="email">
                 <el-input size="small" v-model="userInfo.email"></el-input
               ></el-form-item>
-            </el-descriptions-item>
-            <el-descriptions-item>
-              <template slot="label">
-                <i class="el-icon-mobile-phone"></i>
-                手机
-              </template>
-              <el-tag size="small" v-show="!edit">{{ userInfo.phone }}</el-tag>
-
-              <el-form-item v-show="edit" prop="phone"
-                ><el-input size="small" v-model="userInfo.phone">
-                </el-input></el-form-item
-            ></el-descriptions-item> </el-descriptions></el-form
+            </el-descriptions-item> </el-descriptions></el-form
       ></Transition>
       <el-dialog
         title="修改密码"
@@ -324,6 +334,7 @@ export default {
 </script>
 
 <style scoped>
+@import "@/assets/icon/iconfont.css";
 .positioncss {
   margin-top: 10px;
   margin-left: 10px;

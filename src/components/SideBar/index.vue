@@ -21,10 +21,10 @@
             <span class="size">模型管理</span>
           </template>
           <el-menu-item @click="toData" index="2-1">
-            <span slot="title" class="subsize">训练模型</span>
+            <span slot="title" class="subsize">模型数据上传</span>
           </el-menu-item>
           <el-menu-item @click="toResultData" index="2-2">
-            <span slot="title" class="subsize">测试模型</span>
+            <span slot="title" class="subsize">模型结果下载</span>
           </el-menu-item>
         </el-submenu>
         <div @click="toImages">

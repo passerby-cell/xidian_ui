@@ -447,14 +447,14 @@
             </el-col>
             <el-col :span="3">
               <span style="font-size: 16px; margin-left: 10px"
-                >{{ Number(taskInfo.gpuVideoMem) * 0.25 }}Gi</span
+                >{{ Number(taskInfo.gpuVideoMem) * 0.25 }}GB</span
               >
             </el-col>
             <el-col :span="1">
               <el-tooltip class="item" effect="dark" placement="top">
                 <div slot="content">
                   <p>
-                    注：Gi为单位时，拖动一格显示1，为0.25Gi，拖动2格显示2，为0.5Gi，以此类推；最大能拖动256格显示256，为64Gi
+                    注：拖动一格显示1，为0.25GB，拖动2格显示2，为0.5GB，以此类推；最大能拖动88格显示88，为22GB。
                   </p>
                 </div>
                 <i
@@ -530,8 +530,27 @@
           ></el-col>
         </el-row>
 
-        <el-form-item label="高级配置" :label-width="formLabelWidth">
-          <el-tabs style="width: 820px">
+        <el-form-item :label-width="formLabelWidth">
+          <el-button
+            slot="label"
+            size="small"
+            type="primary"
+            @click="show = !show"
+            style="cursor: pointer"
+            >高级配置</el-button
+          >
+          <el-tooltip class="item" effect="dark" placement="top" v-if="!show">
+            <div slot="content">
+              <p>
+                注：通过点击高级配置,可在此选择添加存储变量,管理存储变量等高级配置。
+              </p>
+            </div>
+            <i
+              class="el-icon-question"
+              style="color: #409eff; margin-left: 10px; cursor: pointer"
+            ></i>
+          </el-tooltip>
+          <el-tabs style="width: 820px" v-if="show">
             <!-- <el-tab-pane label="端口" name="first">
               <el-card :body-style="{ padding: '0px' }">
                 <el-row>
@@ -600,7 +619,7 @@
                 </el-row>
               </el-card>
             </el-tab-pane> -->
-            <el-tab-pane label="添加存储变量" name="second">
+            <el-tab-pane label="添加存储变量">
               <el-card :body-style="{ padding: '0px' }">
                 <el-row>
                   <h3 style="margin-left: 10px">
@@ -786,7 +805,7 @@
                 </el-row>
               </el-card>
             </el-tab-pane> -->
-            <el-tab-pane label="管理存储变量" name="third">
+            <el-tab-pane label="管理存储变量">
               <el-card :body-style="{ padding: '0px' }">
                 <el-row>
                   <h3 style="margin-left: 10px">
@@ -863,10 +882,11 @@ export default {
   name: "CreateJob",
   data() {
     return {
+      show: false,
       jobDialogVisible: false,
       mount: {
         hostPath: "",
-        mountPath: "/",
+        mountPath: "",
       },
       mountRules: {
         hostPath: [{ required: true, message: "不能为空", trigger: "blur" }],
@@ -883,7 +903,7 @@ export default {
         vcJobType: "batch",
         queueName: "default",
         queueId: 1,
-        maxRetry: 0,
+        maxRetry: "1",
         priorityClassName: "middle-priority",
         parallelExecution: true,
       },
@@ -915,7 +935,7 @@ export default {
       },
       target: {
         templateId: null,
-        clusterId: 0,
+        clusterId: 9,
         startNow: false,
         envId: 1,
       },
@@ -925,8 +945,8 @@ export default {
         taskCnName: "",
         podReplicas: 1,
         podMinReplicas: 1,
-        requestCpu: 1,
-        requestMemory: 4,
+        requestCpu: 8,
+        requestMemory: 16,
         gpuCalPower: 100,
         gpuVideoMem: 88,
         command: null,
@@ -937,8 +957,8 @@ export default {
         image: "",
         imagePrefix: "",
         imageVersion: "",
-        policiesAction: "",
-        policiesEvent: "",
+        policiesAction: null,
+        policiesEvent: null,
         containerOptions: "",
         oldContainerOptions:
           '{"bocoPlatform-ports":[],"bocoPlatform-envs":[],"bocoPlatform-configs":[],"bocoPlatform-lifecycle":[],"bocoPlatform-probe":[],"bocoPlatform-volumes":[],"bocoPlatform-schedulingManagement":[]}',
@@ -1098,27 +1118,60 @@ export default {
       taskInfo.command = this.taskInfo.command;
       taskInfo.workingDir = this.taskInfo.workingDir;
       taskInfo.description = this.taskInfo.description;
-      taskInfo.repository = this.taskInfo.repository;
-      taskInfo.repositoryDir = this.taskInfo.repositoryDir;
+      taskInfo.repository = this.taskInfo.repository.toString();
+      taskInfo.repositoryDir = this.taskInfo.repositoryDir.toString();
       taskInfo.image = this.fullImage;
       taskInfo.policiesAction = this.taskInfo.policiesAction;
       taskInfo.policiesEvent = this.taskInfo.policiesEvent;
 
       let volumes = "";
       let mountvolumes = "";
+      let oldmountvolumes = "";
       for (let i = 0; i < this.mountData.length; i++) {
-        volumes +=
-          '{"name":"name' +
-          i +
-          '","hostPath":"' +
-          this.mountData[i].hostPath +
-          '"},';
-        mountvolumes +=
-          '{"name":"name' +
-          i +
-          '","mountPath":"' +
-          this.mountData[i].mountPath +
-          '"}';
+        if (i + 1 == this.mountData.length) {
+          volumes +=
+            '{"name":"name' +
+            i +
+            '","hostPath":"' +
+            this.mountData[i].hostPath +
+            '"}';
+          mountvolumes +=
+            '{"name":"name' +
+            i +
+            '","mountPath":"' +
+            this.mountData[i].mountPath +
+            '"}';
+        } else {
+          volumes +=
+            '{"name":"name' +
+            i +
+            '","hostPath":"' +
+            this.mountData[i].hostPath +
+            '"},';
+          mountvolumes +=
+            '{"name":"name' +
+            i +
+            '","mountPath":"' +
+            this.mountData[i].mountPath +
+            '"},';
+        }
+
+        // {\"type\":\"hostPath\",\"hostPath\":\"/opt/bcc/storage1/NFS44/test\",\"mountPath\":\"/test\"},{\"type\":\"hostPath\",\"hostPath\":\"/opt/bcc/storage1/NFS44\",\"mountPath\":\"/\"}
+        if (i + 1 == this.mountData.length) {
+          oldmountvolumes +=
+            '{"type":"hostPath","hostPath":"' +
+            this.mountData[i].hostPath +
+            '","mountPath":"' +
+            this.mountData[i].mountPath +
+            '"}';
+        } else {
+          oldmountvolumes +=
+            '{"type":"hostPath","hostPath":"' +
+            this.mountData[i].hostPath +
+            '","mountPath":"' +
+            this.mountData[i].mountPath +
+            '"},';
+        }
       }
 
       taskInfo.containerOptions =
@@ -1128,7 +1181,9 @@ export default {
         mountvolumes +
         "]}";
       taskInfo.oldContainerOptions =
-        '{"bocoPlatform-ports":[],"bocoPlatform-envs":[],"bocoPlatform-configs":[],"bocoPlatform-lifecycle":[],"bocoPlatform-probe":[],"bocoPlatform-volumes":[],"bocoPlatform-schedulingManagement":[]}';
+        '{"bocoPlatform-ports":[],"bocoPlatform-envs":[],"bocoPlatform-configs":[],"bocoPlatform-lifecycle":[],"bocoPlatform-probe":[],"bocoPlatform-volumes":[' +
+        oldmountvolumes +
+        '],"bocoPlatform-schedulingManagement":[]}';
       return taskInfo;
     },
     cancleTask() {
@@ -1183,7 +1238,7 @@ export default {
           mount.mountPath = this.mount.mountPath;
           this.mountData.push(mount);
           this.mount.hostPath = "";
-          this.mount.mountPath = "/";
+          this.mount.mountPath = "";
           this.$message({
             type: "success",
             message: "添加成功!",
@@ -1206,7 +1261,7 @@ export default {
       }
     },
     async changeImage(imageName) {
-      let result5 = await reqImageVersion(result4.data[0].imageName);
+      let result5 = await reqImageVersion(imageName);
       if (result5.success == true) {
         this.$store.dispatch("CreateJob/getImageVersion", result5.rows);
       }

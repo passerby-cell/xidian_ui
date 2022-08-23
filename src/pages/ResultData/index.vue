@@ -450,7 +450,11 @@ export default {
       this.path.forEach((item) => {
         dirpath = dirpath + "/" + item;
       });
-      return dirpath;
+      if (this.path.length >= 1) {
+        return dirpath;
+      } else {
+        return "/";
+      }
     },
   },
   methods: {

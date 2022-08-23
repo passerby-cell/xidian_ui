@@ -74,12 +74,20 @@
       >
     </el-card>
     <el-dialog
-      title="在线IDE"
       :visible.sync="dialogVisible"
       fullscreen
-      :before-close="handleClose"
       class="dialogClass"
+      :show-close="false"
     >
+      <span style="width: 100%; height: 60px; font-size: 16px" slot="title"
+        >在线IDE<el-button
+          type="danger"
+          size="mini"
+          @click="handleClose"
+          style="float: right; margin-right: 10px; margin-bottom: 10px"
+          >退出</el-button
+        ></span
+      >
       <iframe
         name="iframe"
         src="http://202.195.239.146:92/ide/my/?folder=%2Fhome%2Fcoder%2Fworkspace%2F"
@@ -198,11 +206,10 @@ export default {
         }, (i + 1) * 100);
       }
     },
-    handleClose(done) {
+    handleClose() {
       let _this = this;
       this.$confirm("确认关闭？")
         .then((_) => {
-          done();
           delCookie();
           _this.stopIDE(this.name);
           location.reload();
@@ -249,7 +256,6 @@ export default {
 .dialogClass .el-dialog__body {
   padding: 0px;
   margin: 0px;
-
   overflow-y: auto;
 }
 </style>
