@@ -90,6 +90,7 @@
                     <span
                       @click="
                         updateChileFileList(
+                          scope.$index,
                           scope.row.id,
                           pageNum,
                           null,
@@ -317,7 +318,54 @@
                 >删除选中</el-button
               ></Transition
             >
+            <Transition
+              appear
+              enter-active-class="animate__animated animate__fadeInLeft"
+              leave-active-class="animate__animated animate__fadeOutRight"
+            >
+              <el-button
+                style="margin-top: 10px; margin-left: 10px"
+                type="warning"
+                class="iconfont icon-zhongduanguanlibeifen"
+                size="small"
+                @click="openTerminal"
+                ><span style="margin-left: 8px; font-weight: bolder"
+                  >终端</span
+                ></el-button
+              ></Transition
+            >
           </el-row>
+          <el-dialog
+            :visible.sync="terminalDialogVisible"
+            fullscreen
+            class="dialogClass"
+            :show-close="false"
+          >
+            <span
+              style="
+                width: 100%;
+                height: 60px;
+                font-size: 20px;
+                font-weight: bolder;
+              "
+              slot="title"
+              >终端:请前往{{
+                parentFileList[parenttag].catalog
+              }}文件夹下进行操作<el-button
+                type="danger"
+                size="mini"
+                icon="el-icon-close"
+                @click="handleTerminalClose"
+                style="float: right; margin-right: 10px; margin-bottom: 10px"
+                >退出</el-button
+              ></span
+            >
+            <iframe
+              name="iframe"
+              :src="iframeSrc"
+              style="width: 100%; height: calc(100vh - 58px)"
+            ></iframe>
+          </el-dialog>
           <el-row>
             <Transition
               appear
@@ -473,16 +521,21 @@ import {
   reqCreateChildFolder,
   reqDeleteChildFile,
   reqUploadChildFile,
+  reqUserInfoLogin,
+  reqUserInfoRegist,
 } from "@/api";
+import AES from "@/utils/crypto";
 export default {
   name: "Data",
   data() {
     return {
+      terminalDialogVisible: false,
       progressPercent: 0,
       dataSetName: "",
       page: 10,
       isShow: [],
       parentId: "",
+      parenttag: 0,
       //路径
       path: [],
       //选中的文件名
@@ -531,12 +584,49 @@ export default {
         return "/";
       }
     },
+    iframeSrc() {
+      return (
+        "http://127.0.0.1:18080/websshpage?userInfo=" +
+        localStorage.getItem("userInfoToken")
+      );
+    },
   },
   methods: {
-    updateChileFileList(id, pageNum, path, fileName) {
+    async openTerminal() {
+      let registResult = await reqUserInfoRegist({
+        username: AES.encrypt(
+          "cloudplatform@1998" + localStorage.getItem("userInfo").username
+        ),
+        password: AES.encrypt(
+          "userInfo@0916" + localStorage.getItem("userInfo").password
+        ),
+      });
+      let loginResult = await reqUserInfoLogin({
+        username: AES.encrypt(
+          "cloudplatform@1998" + localStorage.getItem("userInfo").username
+        ),
+        password: AES.encrypt(
+          "userInfo@0916" + localStorage.getItem("userInfo").password
+        ),
+      });
+      if (loginResult.code == "200") {
+        this.terminalDialogVisible = true;
+      }
+    },
+    handleTerminalClose() {
+      let _this = this;
+      this.$confirm("确认关闭？")
+        .then((_) => {
+          _this.terminalDialogVisible = false;
+          location.reload();
+        })
+        .catch((_) => {});
+    },
+    updateChileFileList(index, id, pageNum, path, fileName) {
       this.path = [];
       this.parentId = id;
       this.parentFileName = fileName;
+      this.parenttag = index;
       this.updateFileList(id, pageNum, path);
     },
     updateParentFileNameDialogVisible(row) {
@@ -855,6 +945,7 @@ export default {
 </script>
 
 <style scoped>
+@import "@/assets/icon/iconfont.css";
 .el-breadcrumb {
   margin-top: 10px;
   margin-left: 10px;

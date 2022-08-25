@@ -1,22 +1,25 @@
 @font-face {
   font-family: "iconfont"; /* Project id 3546155 */
-  src: url('iconfont.eot?t=1661148420741'); /* IE9 */
-  src: url('iconfont.eot?t=1661148420741#iefix') format('embedded-opentype'), /* IE6-IE8 */
-       url('iconfont.woff2?t=1661148420741') format('woff2'),
-       url('iconfont.woff?t=1661148420741') format('woff'),
-       url('iconfont.ttf?t=1661148420741') format('truetype'),
-       url('iconfont.svg?t=1661148420741#iconfont') format('svg');
+  src: url("iconfont.eot?t=1661326494432"); /* IE9 */
+  src: url("iconfont.eot?t=1661326494432#iefix") format("embedded-opentype"),
+    /* IE6-IE8 */ url("iconfont.woff2?t=1661326494432") format("woff2"),
+    url("iconfont.woff?t=1661326494432") format("woff"),
+    url("iconfont.ttf?t=1661326494432") format("truetype"),
+    url("iconfont.svg?t=1661326494432#iconfont") format("svg");
 }
 
 .iconfont {
   font-family: "iconfont" !important;
-  font-size: 16px;
+  font-size: 9px;
   font-style: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
+.icon-zhongduanguanlibeifen:before {
+  content: "\e616";
+}
+
 .icon-xingbie:before {
   content: "\e62d";
 }
-

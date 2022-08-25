@@ -6,6 +6,13 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "11556701",
+      "name": "终端管理备份",
+      "font_class": "zhongduanguanlibeifen",
+      "unicode": "e616",
+      "unicode_decimal": 58902
+    },
+    {
       "icon_id": "4488849",
       "name": "性别",
       "font_class": "xingbie",

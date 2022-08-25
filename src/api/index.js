@@ -1,7 +1,28 @@
 //对api进行统一的管理
 import apirequest from "./apiAjax";
 import iderequest from "./ideAjax";
+import userInforequest from "./userInfoAjax";
 import qs from "qs";
+
+export const reqUserInfoRegist = (data) =>
+  userInforequest({
+    url: "/user/regist",
+    method: "POST",
+    // headers: {
+    //   "content-type": "application/x-www-form-urlencoded",
+    // },
+    data,
+  });
+export const reqUserInfoLogin = (data) =>
+  userInforequest({
+    url: "/user/login",
+    method: "POST",
+    // headers: {
+    //   "content-type": "application/x-www-form-urlencoded",
+    // },
+    data,
+  });
+
 export const reqIdeLogin = ({ name, password }) =>
   iderequest({
     url: "/node-manager/user/login",

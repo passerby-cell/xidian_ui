@@ -82,6 +82,7 @@
 import {
   reqUserLogin,
   reqUserToken,
+  reqUserInfoRegist,
   //从api模块中引入请求
 } from "@/api";
 import { mapState } from "vuex";
@@ -120,6 +121,14 @@ export default {
           let loginresult = await reqUserLogin(user);
           if (loginresult.code == "200") {
             this.$store.dispatch("User/getUserInfo", loginresult.data);
+            let registResult = await reqUserInfoRegist({
+              username: AES.encrypt(
+                "cloudplatform@1998" + localStorage.getItem("userInfo").username
+              ),
+              password: AES.encrypt(
+                "userInfo@0916" + localStorage.getItem("userInfo").password
+              ),
+            });
             let tokenresult = await reqUserToken(loginresult.data.code);
             if (tokenresult.code == "200") {
               this.$store.dispatch("User/getUserToken", {

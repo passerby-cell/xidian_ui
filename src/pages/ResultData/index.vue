@@ -165,7 +165,7 @@
               </h3>
             </el-col>
             <el-col :span="20"
-              ><h3 class="size" v-if="parentFileName">
+              ><h3 class="size" v-if="parentFileName" style="margin-top: 3px">
                 当前模型结果: <el-tag size="small">{{ parentFileName }}</el-tag>
               </h3></el-col
             >

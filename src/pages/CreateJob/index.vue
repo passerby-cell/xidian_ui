@@ -945,7 +945,7 @@ export default {
         taskCnName: "",
         podReplicas: 1,
         podMinReplicas: 1,
-        requestCpu: 8,
+        requestCpu: 4,
         requestMemory: 16,
         gpuCalPower: 100,
         gpuVideoMem: 88,

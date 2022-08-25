@@ -27,13 +27,13 @@
               :type="type == 1 ? 'success' : 'primary'"
               size="small"
               @click="getDataSet(1)"
-              >训练模型</el-button
+              >模型数据</el-button
             >
             <el-button
               @click="getDataSet(2)"
               :type="type != 1 ? 'success' : 'primary'"
               size="small"
-              >测试模型</el-button
+              >模型结果</el-button
             >
           </el-button-group></el-row
         ></Transition
@@ -51,7 +51,7 @@
         >
           <el-table-column
             property="name"
-            :label="type == 1 ? '训练模型' : '测试模型'"
+            :label="type == 1 ? '模型数据' : '模型结果'"
           ></el-table-column>
           <el-table-column property="catalog" label="路径"></el-table-column
           ><el-table-column label="操作">
