@@ -413,3 +413,10 @@ export const reqUpdateUserInfo = (data) =>
     method: "put",
     data,
   });
+
+export const reqJobLogs = (data) =>
+  apirequest({
+    url: "/paas-web/bocapi/volcano/v3.3/pod/startLogs",
+    method: "post",
+    data,
+  });

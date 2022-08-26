@@ -177,13 +177,53 @@
                     size="mini"
                     type="warning"
                     icon="el-icon-chat-dot-round"
-                    @click=""
+                    @click="getJobLogs(scope.$index, scope.row)"
                     >日志</el-button
                   >
                 </template>
               </el-table-column>
             </el-table></Transition
           >
+          <el-dialog
+            :visible.sync="rizhiDialogVisible"
+            fullscreen
+            class="dialogClass"
+            :show-close="false"
+          >
+            <span
+              style="width: 100%; height: 60px; font-size: 16px"
+              slot="title"
+              >日志<el-button
+                type="danger"
+                size="mini"
+                icon="el-icon-close"
+                @click="handleClose"
+                style="float: right; margin-right: 10px; margin-bottom: 10px"
+                >退出</el-button
+              ></span
+            >
+
+            <div
+              style="
+                height: calc(100vh - 60px);
+                background-color: #20211d;
+                width: 100%;
+                overflow: auto;
+                float: left;
+              "
+            >
+              <div style="padding-left: 10px">
+                <pre v-highlight>
+                  <code
+                  class="python"
+                  style="font-size: 16px; background-color: #20211d;"
+                  id="statusLog"
+                  :code="logs"
+                ></code>
+                </pre>
+              </div>
+            </div>
+          </el-dialog>
           <el-col style="text-align: center">
             <Transition
               appear
@@ -208,8 +248,10 @@
 
 <script>
 import { mapState } from "vuex";
-import { reqJobInfoList } from "@/api";
+import { reqJobInfoList, reqJobLogs, reqJobNextLogs } from "@/api";
 import { formatTime } from "@/utils/time";
+import { default as AnsiUp } from "ansi_up";
+
 export default {
   name: "JobInfo",
   data() {
@@ -219,6 +261,8 @@ export default {
       podName: "",
       showHostName: false,
       showPodName: false,
+      rizhiDialogVisible: false,
+      logs: "",
     };
   },
 
@@ -247,6 +291,50 @@ export default {
     },
   },
   methods: {
+    async getJobLogs(index, row) {
+      this.rizhiDialogVisible = true;
+      let result = await reqJobLogs({
+        clusterId: this.joblist[this.index].clusterId,
+        containerName: this.jobInfoList[index].containerName,
+        follow: false,
+        namespace: this.jobInfoList[index].projectName,
+        podName: this.jobInfoList[index].podName,
+        tailLines: 300,
+      });
+      this.logs += result.data;
+      this.logs.replace(/\n/g, "<br/>");
+
+      var statusLog = document.getElementById("statusLog"); //statusLog 即是页面需要展示内容的div
+      statusLog.innerHTML = this.logs;
+
+      let _this = this;
+      this.timer = setInterval(async () => {
+        let result2 = await reqJobLogs({
+          clusterId: this.joblist[this.index].clusterId,
+          containerName: this.jobInfoList[index].containerName,
+          follow: false,
+          podName: this.jobInfoList[index].podName,
+          tailLines: 300,
+        });
+        if (result2.data) {
+          _this.logs += result2.data;
+        }
+        _this.logs.replace(/\n/g, "<br/>");
+        // var statusLog = document.getElementById("statusLog"); //statusLog 即是页面需要展示内容的div
+        // statusLog.innerHTML = _this.logs;
+      }, 10000);
+    },
+
+    handleClose() {
+      let _this = this;
+      this.$confirm("确认关闭？")
+        .then((_) => {
+          clearInterval(_this.timer);
+          _this.logs = "";
+          _this.rizhiDialogVisible = false;
+        })
+        .catch((_) => {});
+    },
     toJob() {
       this.$router.push("/job");
     },
