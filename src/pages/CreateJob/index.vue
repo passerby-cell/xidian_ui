@@ -1077,7 +1077,7 @@ export default {
     },
     async getImage() {
       this.dialogFormVisible = true;
-      let result4 = await reqImage(this.imageCatalogList[1].catalogId);
+      let result4 = await reqImage(this.imageCatalogList[0].catalogId);
       if (result4.code == "200") {
         this.$store.dispatch("CreateJob/getImage", result4.data);
         let result5 = await reqImageVersion(result4.data[0].imageName);
@@ -1284,8 +1284,7 @@ export default {
     },
     initImageSelected() {
       this.taskInfo.repository = this.warehouseList[0].warehouseId;
-      this.taskInfo.repositoryDir =
-        this.imageCatalogList[this.imageCatalogList.length - 1].catalogId;
+      this.taskInfo.repositoryDir = this.imageCatalogList[0].catalogId;
       this.taskInfo.imagePrefix = this.imageList[0].imageName;
       this.taskInfo.imageVersion = this.imageVersionList[0].imageTag;
       this.updateName();

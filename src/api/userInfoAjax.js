@@ -3,6 +3,7 @@ import axios from "axios";
 //引入nprogress进度条
 import nprogress from "nprogress";
 //start:表示进度条开始 done:表示进度条结束
+
 // 引入nprogress样式
 import "nprogress/nprogress.css";
 
@@ -30,6 +31,10 @@ request.interceptors.response.use(
     nprogress.done();
     if (res.data.token) {
       localStorage.setItem("userInfoToken", res.data.token);
+    }
+    if (res.data.code == "203") {
+      localStorage.clear();
+      vue.$router.push({ name: "login" });
     }
     return res.data;
   },

@@ -24,10 +24,15 @@
           >
             <i class="el-icon-edit" style="color: black">修改密码</i>
           </el-menu-item>
+          <el-menu-item
+            index="2"
+            style="padding: 0px"
+            @click="uploadDialogVisible = true"
+          >
+            <i class="el-icon-upload" style="color: black">上传头像</i>
+          </el-menu-item>
           <template slot="title">
-            <el-avatar
-              src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"
-            ></el-avatar>
+            <el-avatar :src="iconurl"></el-avatar>
           </template>
         </el-submenu>
       </el-col>
@@ -94,11 +99,47 @@
         >
       </span>
     </el-dialog>
+    <el-dialog
+      title="上传头像"
+      :visible.sync="uploadDialogVisible"
+      width="400px"
+      :before-close="handleClose"
+      class="dialogClass"
+    >
+      <el-upload
+        style="margin-left: 18px"
+        drag
+        action
+        :http-request="uploadFile"
+        :multiple="false"
+        :auto-upload="false"
+        ref="upload"
+        accept=".png, .jpg, .JPG, .JPEG, .jpeg, .PNG, .GIF, .gif"
+      >
+        <i class="el-icon-upload"></i>
+        <div class="el-upload__text">
+          将文件拖到此处，或
+          <em>点击上传</em>
+        </div>
+        <div class="el-upload__tip" slot="tip"></div> </el-upload
+      ><el-row
+        ><el-button
+          type="primary"
+          size="small"
+          style="margin-left: 320px"
+          @click="submitUpload"
+          >上 传</el-button
+        ></el-row
+      >
+    </el-dialog>
   </el-row>
 </template>
 <script>
-import { reqVerifyPasswd, reqUpdateUserPassword } from "@/api";
-
+import {
+  reqVerifyPasswd,
+  reqUpdateUserPassword,
+  reqUserInfoUploadFile,
+} from "@/api";
 import { mapState } from "vuex";
 export default {
   name: "Header",
@@ -114,6 +155,8 @@ export default {
       }
     };
     return {
+      iconurl: "",
+      uploadDialogVisible: false,
       passwordDialogVisible: false,
       passwd: { oldPassword: "", newPassword1: "", newPassword2: "" },
 
@@ -137,6 +180,24 @@ export default {
     },
   },
   methods: {
+    submitUpload() {
+      this.$refs.upload.submit();
+    },
+    async uploadFile(files) {
+      const formData = new FormData();
+      formData.append("file", files.file);
+      let result = await reqUserInfoUploadFile(files.file);
+      if (result.code == "200") {
+        localStorage.setItem("userotherInfo", JSON.stringify(result.data));
+        this.iconurl = result.data.icon;
+        this.$message({
+          type: "success",
+          message: result.message,
+        });
+      } else {
+        this.$message.error(result.message);
+      }
+    },
     logout() {
       localStorage.clear();
       this.$router.push({ name: "login" });
@@ -188,6 +249,9 @@ export default {
         }
       });
     },
+  },
+  mounted() {
+    this.iconurl = JSON.parse(localStorage.getItem("userotherInfo")).icon;
   },
 };
 </script>

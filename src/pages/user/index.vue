@@ -86,26 +86,23 @@
               ></el-descriptions-item
             >
             <el-descriptions-item>
-              <!-- <template slot="label">
-                <i class="iconfont icon-xingbie"></i>
-                性别
-              </template> -->
               <template slot="label">
+                <i class="iconfont icon-xingbie" style="font-size: 16px"></i>
+                性别
+              </template>
+              <!-- <template slot="label">
                 <i class="el-icon-mobile-phone"></i>
                 手机
-              </template>
-              <el-tag size="small" v-show="!edit">{{ userInfo.phone }}</el-tag>
+              </template> -->
+              <el-tag size="small" v-show="!edit">{{ userSex }}</el-tag>
 
               <el-form-item v-show="edit" prop="phone">
-                <el-input size="small" v-model="userInfo.phone"></el-input>
-                <!-- <el-select size="small" v-model="userInfo.phone">
-                  <el-option label="男" value="male"></el-option
-                  ><el-option
-                    label="女"
-                    value="female"
-                  ></el-option></el-select> -->
-              </el-form-item></el-descriptions-item
-            >
+                <!-- <el-input size="small" v-model="userSex"></el-input> -->
+                <el-select size="small" v-model="userSex">
+                  <el-option label="男" value="男"></el-option
+                  ><el-option label="女" value="女"></el-option
+                ></el-select> </el-form-item
+            ></el-descriptions-item>
             <el-descriptions-item>
               <template slot="label">
                 <i class="el-icon-message"></i>
@@ -179,6 +176,7 @@ import {
   reqVerifyPasswd,
   reqUpdateUserPassword,
   reqUpdateUserInfo,
+  reqUserInfoUpdateGender,
 } from "@/api";
 export default {
   name: "UserInfo",
@@ -213,6 +211,7 @@ export default {
     };
 
     return {
+      userSex: "",
       edit: false,
       passwordDialogVisible: false,
       passwd: { oldPassword: "", newPassword1: "", newPassword2: "" },
@@ -258,9 +257,14 @@ export default {
             email: _this.userInfo.email,
             phone: _this.userInfo.phone,
           });
-          if (result.code == "200") {
+          let resultUserInfo = await reqUserInfoUpdateGender(_this.userSex);
+          if (result.code == "200" && resultUserInfo.code == "200") {
             _this.edit = false;
             localStorage.setItem("userInfo", JSON.stringify(_this.userInfo));
+            localStorage.setItem(
+              "userotherInfo",
+              JSON.stringify(resultUserInfo.data)
+            );
             _this.$message({
               type: "success",
               message: "修改成功",
@@ -329,6 +333,7 @@ export default {
   },
   mounted() {
     this.userInfo = JSON.parse(localStorage.getItem("userInfo"));
+    this.userSex = JSON.parse(localStorage.getItem("userotherInfo")).sex;
   },
 };
 </script>

@@ -171,13 +171,17 @@
                 show-overflow-tooltip
               ></el-table-column>
               <!-- TODO:日志-->
-              <!-- <el-table-column label="操作" align="center">
+              <el-table-column label="操作" align="center">
                 <template slot-scope="scope">
-                  <el-button size="mini" type="danger" @click=""
+                  <el-button
+                    size="mini"
+                    type="warning"
+                    icon="el-icon-chat-dot-round"
+                    @click=""
                     >日志</el-button
                   >
                 </template>
-              </el-table-column> -->
+              </el-table-column>
             </el-table></Transition
           >
           <el-col style="text-align: center">

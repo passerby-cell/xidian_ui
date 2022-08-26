@@ -592,26 +592,8 @@ export default {
     },
   },
   methods: {
-    async openTerminal() {
-      let registResult = await reqUserInfoRegist({
-        username: AES.encrypt(
-          "cloudplatform@1998" + localStorage.getItem("userInfo").username
-        ),
-        password: AES.encrypt(
-          "userInfo@0916" + localStorage.getItem("userInfo").password
-        ),
-      });
-      let loginResult = await reqUserInfoLogin({
-        username: AES.encrypt(
-          "cloudplatform@1998" + localStorage.getItem("userInfo").username
-        ),
-        password: AES.encrypt(
-          "userInfo@0916" + localStorage.getItem("userInfo").password
-        ),
-      });
-      if (loginResult.code == "200") {
-        this.terminalDialogVisible = true;
-      }
+    openTerminal() {
+      this.terminalDialogVisible = true;
     },
     handleTerminalClose() {
       let _this = this;

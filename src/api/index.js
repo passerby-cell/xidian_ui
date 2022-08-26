@@ -4,22 +4,33 @@ import iderequest from "./ideAjax";
 import userInforequest from "./userInfoAjax";
 import qs from "qs";
 
+export const reqUserInfoUploadFile = (file) =>
+  userInforequest({
+    url: "/icon/upload",
+    method: "post",
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+    data: {
+      file,
+    },
+  });
+export const reqUserInfoUpdateGender = (sex) =>
+  userInforequest({
+    url: "/user/updategender",
+    method: "PUT",
+    params: { sex },
+  });
 export const reqUserInfoRegist = (data) =>
   userInforequest({
     url: "/user/regist",
     method: "POST",
-    // headers: {
-    //   "content-type": "application/x-www-form-urlencoded",
-    // },
     data,
   });
 export const reqUserInfoLogin = (data) =>
   userInforequest({
     url: "/user/login",
     method: "POST",
-    // headers: {
-    //   "content-type": "application/x-www-form-urlencoded",
-    // },
     data,
   });
 

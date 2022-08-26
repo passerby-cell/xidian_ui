@@ -83,8 +83,10 @@ import {
   reqUserLogin,
   reqUserToken,
   reqUserInfoRegist,
+  reqUserInfoLogin,
   //从api模块中引入请求
 } from "@/api";
+import AES from "@/utils/crypto";
 import { mapState } from "vuex";
 export default {
   name: "Login",
@@ -123,12 +125,28 @@ export default {
             this.$store.dispatch("User/getUserInfo", loginresult.data);
             let registResult = await reqUserInfoRegist({
               username: AES.encrypt(
-                "cloudplatform@1998" + localStorage.getItem("userInfo").username
+                "cloudplatform@1998" +
+                  JSON.parse(localStorage.getItem("userInfo")).login
               ),
               password: AES.encrypt(
-                "userInfo@0916" + localStorage.getItem("userInfo").password
+                "userInfo@0916" +
+                  JSON.parse(localStorage.getItem("userInfo")).name
               ),
             });
+            let loginResult = await reqUserInfoLogin({
+              username: AES.encrypt(
+                "cloudplatform@1998" +
+                  JSON.parse(localStorage.getItem("userInfo")).login
+              ),
+              password: AES.encrypt(
+                "userInfo@0916" +
+                  JSON.parse(localStorage.getItem("userInfo")).name
+              ),
+            });
+            localStorage.setItem(
+              "userotherInfo",
+              JSON.stringify(loginResult.data)
+            );
             let tokenresult = await reqUserToken(loginresult.data.code);
             if (tokenresult.code == "200") {
               this.$store.dispatch("User/getUserToken", {

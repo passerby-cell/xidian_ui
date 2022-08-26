@@ -5,7 +5,6 @@ import nprogress from "nprogress";
 //start:表示进度条开始 done:表示进度条结束
 // 引入nprogress样式
 import "nprogress/nprogress.css";
-import vue from "vue";
 
 // 利用axios的create方法,创建一个axios实例
 const request = axios.create({
