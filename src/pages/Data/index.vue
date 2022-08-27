@@ -600,7 +600,6 @@ export default {
       this.$confirm("确认关闭？")
         .then((_) => {
           _this.terminalDialogVisible = false;
-          location.reload();
         })
         .catch((_) => {});
     },

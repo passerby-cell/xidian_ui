@@ -118,7 +118,7 @@
       >
         <i class="el-icon-upload"></i>
         <div class="el-upload__text">
-          将文件拖到此处，或
+          将图片拖到此处，或
           <em>点击上传</em>
         </div>
         <div class="el-upload__tip" slot="tip"></div> </el-upload
@@ -221,6 +221,7 @@ export default {
           _this.passwd.oldPassword = "";
           _this.passwd.newPassword1 = "";
           _this.passwd.newPassword2 = "";
+          _this.$refs.upload.clearFiles();
           done();
         })
         .catch((_) => {});
