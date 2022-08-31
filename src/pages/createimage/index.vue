@@ -49,7 +49,10 @@
 
               <span slot="footer" class="dialog-footer">
                 <el-button @click="handleClose" size="small">取 消</el-button>
-                <el-button type="primary" @click="createNewJob()" size="small"
+                <el-button
+                  type="primary"
+                  @click="createNewImageProcess()"
+                  size="small"
                   >确 定</el-button
                 >
               </span>
@@ -70,55 +73,61 @@
                 :row-style="{ height: 30 + 'px' }"
                 :cell-style="{ padding: 0 + 'px' }"
                 style="margin-top: 10px"
-                :data="formatedJobList"
+                :data="imageProcessList"
                 :border="true"
                 max-height="600"
               >
-                <el-table-column prop="" label="流程名" show-overflow-tooltip>
-                  <template slot-scope="scope">
-                    <span
-                      style="cursor: pointer"
-                      @click="toJobInfo(scope.$index)"
-                      >{{ scope.row.vcJobCnName }}</span
-                    >
-                  </template>
+                <el-table-column
+                  prop="name"
+                  label="流程名"
+                  show-overflow-tooltip
+                >
                 </el-table-column>
                 <el-table-column
-                  prop=""
+                  prop="step1"
                   label="选择镜像文件"
                   show-overflow-tooltip
                 ></el-table-column>
                 <el-table-column
-                  prop=""
+                  prop="step2"
                   label="修改镜像标签"
                   show-overflow-tooltip
                 ></el-table-column>
                 <el-table-column
-                  prop=""
+                  prop="step3"
                   label="推送远程仓库"
                   show-overflow-tooltip
-                ></el-table-column>
+                >
+                  <template slot-scope="scope">
+                    <span
+                      v-if="!scope.row.step3 && scope.row.step1"
+                      style="color: #568bfa; cursor: pointer"
+                      >日志</span
+                    >
+                    <span v-if="scope.row.step3">{{ scope.row.step3 }}</span>
+                  </template></el-table-column
+                >
                 <el-table-column
-                  prop=""
+                  prop="step3"
                   label="流程状态"
                   width="80"
                   align="center"
                 >
                   <template slot-scope="scope">
-                    <el-tag
-                      size="small"
-                      v-if="scope.row.status == 'Completed'"
-                      type="success"
+                    <el-tag size="mini" v-if="scope.row.step3" type="success"
                       >成功</el-tag
                     >
                     <el-tag
-                      size="small"
-                      type="warning"
-                      v-if="scope.row.status == 'No_Running'"
+                      size="mini"
+                      type="danger"
+                      v-if="!scope.row.step3 && scope.row.path != null"
                       >失败</el-tag
                     >
-                    <el-tag size="small" v-if="scope.row.status == 'Running'"
-                      >进行到xxx</el-tag
+                    <el-tag
+                      size="mini"
+                      type="warning"
+                      v-if="!scope.row.step1 && !scope.row.path"
+                      >未开始</el-tag
                     >
                   </template>
                 </el-table-column>
@@ -127,20 +136,18 @@
                   <template slot-scope="scope">
                     <i
                       class="el-icon-edit"
-                      v-if="scope.row.status == 'No_Running'"
-                      @click="startJob(scope.row.clusterId, scope.row.vcJobId)"
-                      >编辑</i
-                    >
+                      style="cursor: pointer"
+                      @click="editImageProcess(scope.$index)"
+                    ></i>
                     <i
                       class="el-icon-delete"
-                      @click="deleteJob(scope.row.clusterId, scope.row.vcJobId)"
-                      >删除</i
-                    >
+                      style="margin-left: 10px; cursor: pointer"
+                      @click="deleteImageProcess(scope.row.id)"
+                    ></i>
                   </template>
                 </el-table-column>
-              </el-table>
-            </div></Transition
-          >
+              </el-table></div
+          ></Transition>
         </el-card>
       </el-col>
       <el-col :span="12">
@@ -152,27 +159,54 @@
             overflow: auto;
             margin-left: 10px;
             margin-right: 10px;
+            padding: 10px;
           "
         >
           <el-row>
-            <h3 style="margin-left: 10px" class="size">
-              <span style="color: #409eff">|</span>&nbsp;镜像制作流程
-            </h3>
+            <el-col :span="6"
+              ><h3 class="size">
+                <span style="color: #409eff">|</span>&nbsp;镜像制作流程
+              </h3></el-col
+            >
+            <el-col :span="6" v-if="showSteps"
+              ><h3 style="margin-left: 10px" class="size">
+                当前流程:
+                <el-tag size="mini" type="primary">{{
+                  imageProcessList[processIndex].name
+                }}</el-tag>
+              </h3>
+            </el-col>
           </el-row>
           <el-result
-            v-if="!newImageName"
+            v-if="!showSteps"
             style="height: 100%; margin-top: 150px"
             icon="info"
             title="信息提示"
             subTitle="请新建镜像制作流程或编辑已有流程"
           >
           </el-result>
-          <el-steps :active="1" style="margin: 10px" v-if="newImageName">
+          <el-steps
+            :active="activeIndex"
+            style="margin-top: 10px"
+            v-if="showSteps"
+          >
             <el-step title="选择镜像文件" icon="el-icon-folder-checked">
             </el-step>
             <el-step title="修改镜像标签" icon="el-icon-edit-outline"></el-step>
             <el-step title="推送远程仓库" icon="el-icon-upload2"></el-step>
           </el-steps>
+          <el-table
+            v-if="activeIndex == 1"
+            :row-style="{ height: 40 + 'px' }"
+            :cell-style="{ padding: 0 + 'px' }"
+            style="margin-top: 10px"
+            :data="data"
+            :border="true"
+            max-height="470"
+          >
+            <el-table-column property="name" label="模型数据"></el-table-column>
+            <el-table-column property="catalog" label="路径"></el-table-column>
+          </el-table>
         </el-card>
       </el-col>
     </el-row>
@@ -182,18 +216,95 @@
 <script>
 import { mapState } from "vuex";
 
-import {} from "@/api";
+import {
+  reqUserInfoCreateImageProcess,
+  reqUserInfoDeleteImageProcess,
+  reqUserInfoGetImageProcessList,
+  reqUserInfoUpdateImageProcessStepOne,
+  reqUserInfoUpdateImageProcessStepTwo,
+  reqUserInfoUpdateImageProcessStepThree,
+  reqDataSet,
+} from "@/api";
 
 export default {
   name: "CreateImage",
   data() {
-    return { createDialogVisible: false, newImageName: "" };
+    return {
+      createDialogVisible: false,
+      newImageName: "",
+      showSteps: "",
+      activeIndex: 0,
+      processIndex: 0,
+    };
   },
-  computed: {},
+  computed: {
+    ...mapState("ImageProcess", ["imageProcessList"]),
+    ...mapState("CreateJob", ["data"]),
+  },
   methods: {
-    createNewJob() {
-      this.createDialogVisible = false;
-      this.newImageName = "";
+    async getDataSet() {
+      let result = await reqDataSet(1);
+      if (result.code == 200) {
+        this.$store.dispatch("CreateJob/getDataSet", result.data);
+      }
+    },
+    editImageProcess(index) {
+      this.showSteps = this.imageProcessList[index].id;
+      this.processIndex = index;
+      this.handleActiveIndex(this.imageProcessList[index]);
+      this.getDataSet();
+    },
+    async deleteImageProcess(id) {
+      let result = await reqUserInfoDeleteImageProcess(id);
+      if (result.code == 200) {
+        this.$message({
+          type: "success",
+          message: "删除成功",
+        });
+        if (this.showSteps == id) {
+          this.showSteps = "";
+          this.processIndex = 0;
+        }
+        this.$store.dispatch("ImageProcess/getImageProcessList");
+      } else {
+        this.$message.error("删除失败");
+      }
+    },
+    async createNewImageProcess() {
+      if (this.newImageName == "") {
+        this.$message.error("流程名不能为空");
+      } else {
+        let result = await reqUserInfoCreateImageProcess(this.newImageName);
+        if (result.code == "200") {
+          this.createDialogVisible = false;
+          this.$message({
+            type: "success",
+            message: "新建成功",
+          });
+
+          this.$store.dispatch("ImageProcess/getImageProcessList");
+          let _this = this;
+          result.data.forEach((item, index) => {
+            if (item.name == _this.newImageName) {
+              _this.showSteps = item.id;
+              _this.processIndex = index;
+            }
+          });
+          this.handleActiveIndex(result.data[this.processIndex]);
+          this.newImageName = "";
+        } else {
+          this.$message.error(result.message);
+        }
+      }
+    },
+    handleActiveIndex(imageProcess) {
+      if (!imageProcess.step1) {
+        this.activeIndex = 1;
+      } else if (!imageProcess.step1 && !imageProcess.step2) {
+        this.activeIndex = 2;
+      } else {
+        this.activeIndex = 3;
+      }
     },
     handleClose(done) {
       let _this = this;
@@ -206,7 +317,9 @@ export default {
         .catch((_) => {});
     },
   },
-  mounted() {},
+  mounted() {
+    this.$store.dispatch("ImageProcess/getImageProcessList");
+  },
 };
 </script>
 

@@ -683,13 +683,13 @@
                             :type="type == 1 ? 'success' : 'primary'"
                             size="small"
                             @click="getDataSet(1)"
-                            >数据集</el-button
+                            >模型数据</el-button
                           >
                           <el-button
                             @click="getDataSet(2)"
                             :type="type != 1 ? 'success' : 'primary'"
                             size="small"
-                            >结果集</el-button
+                            >模型结果</el-button
                           >
                         </el-button-group></el-col
                       >
@@ -702,7 +702,7 @@
                     >
                       <el-table-column
                         property="name"
-                        :label="type == 1 ? '数据集' : '结果集'"
+                        :label="type == 1 ? '模型数据' : '模型结果'"
                         width="150"
                       ></el-table-column>
                       <el-table-column

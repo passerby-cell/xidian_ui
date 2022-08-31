@@ -7,7 +7,7 @@ import ResultFile from "./resultfile";
 import User from "./user";
 import Image from "./image";
 import CreateJob from "./createjob";
-
+import ImageProcess from "./imageprocess";
 Vue.use(Vuex);
 
 //创建并暴露store
@@ -19,5 +19,6 @@ export default new Vuex.Store({
     Image,
     ResultFile,
     CreateJob,
+    ImageProcess,
   },
 });

@@ -4,6 +4,62 @@ import iderequest from "./ideAjax";
 import userInforequest from "./userInfoAjax";
 import qs from "qs";
 
+export const reqUserInfoDeleteImageProcess = (id) =>
+  userInforequest({
+    url: "/image/deleteprocess",
+    method: "get",
+    params: {
+      id,
+    },
+  });
+
+export const reqUserInfoCreateImageProcess = (newImageProcessName) =>
+  userInforequest({
+    url: "/image/createimageprocess",
+    method: "post",
+    params: {
+      newImageProcessName,
+    },
+  });
+export const reqUserInfoGetImageProcessList = () =>
+  userInforequest({
+    url: "/image/imageprocesslist",
+    method: "post",
+  });
+
+export const reqUserInfoUpdateImageProcessStepOne = ({
+  id,
+  filepath,
+  imageNameAndVersion,
+}) =>
+  userInforequest({
+    url: "/image/imageprocesslist",
+    method: "get",
+    params: { id, filepath, imageNameAndVersion },
+  });
+
+export const reqUserInfoUpdateImageProcessStepTwo = ({
+  id,
+  filepath,
+  imageNameAndVersion,
+  imageTag,
+}) =>
+  userInforequest({
+    url: "/image/imageprocesslist",
+    method: "get",
+    params: { id, filepath, imageNameAndVersion, imageTag },
+  });
+
+export const reqUserInfoUpdateImageProcessStepThree = ({
+  id,
+  filepath,
+  imageTag,
+}) =>
+  userInforequest({
+    url: "/image/imageprocesslist",
+    method: "get",
+    params: { id, filepath, imageTag },
+  });
 export const reqUserInfoUploadFile = (file) =>
   userInforequest({
     url: "/icon/upload",
