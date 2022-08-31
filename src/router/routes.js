@@ -8,6 +8,10 @@ import ResultData from "@/pages/ResultData";
 import JobInfo from "@/pages/JobInfo";
 import Ide from "@/pages/Ide";
 import User from "@/pages/user";
+import DataView from "@/pages/dataview";
+import ResultView from "@/pages/resutlview";
+import ProcessView from "@/pages/processview";
+import CreateImage from "@/pages/createimage";
 export default [
   // ?:用于指定params参数可传可不传,没有问号时,不传params参数时路径会出现丢失的情况
   {
@@ -22,6 +26,42 @@ export default [
     name: "userinfo",
     path: "/userinfo",
     component: User,
+    meta: {
+      show: true,
+      requireAuth: true, // 配置此条，进入页面前判断是否需要登陆
+    },
+  },
+  {
+    name: "createimage",
+    path: "/createimage",
+    component: CreateImage,
+    meta: {
+      show: true,
+      requireAuth: true, // 配置此条，进入页面前判断是否需要登陆
+    },
+  },
+  {
+    name: "dataview",
+    path: "/dataview",
+    component: DataView,
+    meta: {
+      show: true,
+      requireAuth: true, // 配置此条，进入页面前判断是否需要登陆
+    },
+  },
+  {
+    name: "resultview",
+    path: "/resultview",
+    component: ResultView,
+    meta: {
+      show: true,
+      requireAuth: true, // 配置此条，进入页面前判断是否需要登陆
+    },
+  },
+  {
+    name: "processview",
+    path: "/processview",
+    component: ProcessView,
     meta: {
       show: true,
       requireAuth: true, // 配置此条，进入页面前判断是否需要登陆

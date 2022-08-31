@@ -27,19 +27,43 @@
             <span slot="title" class="subsize">模型结果下载</span>
           </el-menu-item>
         </el-submenu>
-        <div @click="toImages">
-          <el-menu-item index="3">
+        <el-submenu index="3">
+          <template slot="title">
+            <i class="el-icon-view"></i>
+            <span class="size">可视化</span>
+          </template>
+          <el-menu-item @click="toProcessView" index="3-1">
+            <span slot="title" class="subsize">过程可视化</span>
+          </el-menu-item>
+          <el-menu-item @click="toResultView" index="3-2">
+            <span slot="title" class="subsize">结果可视化</span>
+          </el-menu-item>
+        </el-submenu>
+        <div @click="toDataView">
+          <el-menu-item index="4">
             <template slot="title">
-              <i class="el-icon-copy-document"></i>
-              <span class="size">镜像仓库</span>
+              <i class="el-icon-folder"></i>
+              <span class="size">数据集</span>
             </template>
             <!-- <el-menu-item>
             <span slot="title" @click="toImages">镜像管理</span>
           </el-menu-item> -->
           </el-menu-item>
         </div>
+        <el-submenu index="5">
+          <template slot="title">
+            <i class="el-icon-copy-document"></i>
+            <span class="size">镜像仓库</span>
+          </template>
+          <el-menu-item index="5-1" @click="toImages">
+            <span slot="title" class="subsize">镜像概览</span>
+          </el-menu-item>
+          <el-menu-item index="5-2" @click="toCreateImages">
+            <span slot="title" class="subsize">镜像制作</span>
+          </el-menu-item>
+        </el-submenu>
         <div @click="toIDE">
-          <el-menu-item index="4">
+          <el-menu-item index="6">
             <template slot="title">
               <i class="el-icon-edit-outline"></i>
               <span class="size">在线IDE</span>
@@ -50,7 +74,7 @@
           </el-menu-item>
         </div>
         <div @click="toUserInfo">
-          <el-menu-item index="5">
+          <el-menu-item index="7">
             <template slot="title">
               <i class="el-icon-user"></i>
               <span class="size">个人中心</span>
@@ -74,6 +98,18 @@ export default {
     return {};
   },
   methods: {
+    toCreateImages() {
+      this.$router.push({ name: "createimage" });
+    },
+    toProcessView() {
+      this.$router.push({ name: "processview" });
+    },
+    toDataView() {
+      this.$router.push({ name: "dataview" });
+    },
+    toResultView() {
+      this.$router.push({ name: "resultview" });
+    },
     toJob() {
       this.$router.push({ name: "job" });
     },
@@ -102,6 +138,7 @@ export default {
 <style scoped>
 .el-menu {
   height: calc(100vh - 60px);
+  overflow: auto;
 }
 .size {
   font-size: 18px;
