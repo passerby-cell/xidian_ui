@@ -186,43 +186,45 @@
           >
           <el-dialog
             :visible.sync="rizhiDialogVisible"
-            fullscreen
-            class="dialogClass"
-            :show-close="false"
+            :before-close="handleClose"
+            width="1000px"
+            title="日志"
           >
-            <span
-              style="width: 100%; height: 60px; font-size: 16px"
-              slot="title"
-              >日志<el-button
-                type="danger"
-                size="mini"
-                icon="el-icon-close"
-                @click="handleClose"
-                style="float: right; margin-right: 10px; margin-bottom: 10px"
-                >退出</el-button
-              ></span
-            >
-
-            <div
+            <!-- <div
               style="
-                height: calc(100vh - 60px);
+                height: calc(100vh - 250px);
                 background-color: #20211d;
                 width: 100%;
                 overflow: auto;
                 float: left;
               "
+            > -->
+            <!-- <div
+              style="
+                padding-left: 20px;
+                padding-right: 20px;
+                overflow: auto;
+                height: calc(100vh - 400px);
+              "
+            > -->
+            <pre
+              v-highlight
+              style="
+                height: 400px;
+                overflow: auto;
+                padding-left: 20px;
+                padding-right: 20px;
+              "
             >
-              <div style="padding-left: 10px">
-                <pre v-highlight>
                   <code
                   class="python"
-                  style="font-size: 16px; background-color: #20211d;"
+                  style="font-size: 16px; background-color: #20211d;height:100%"
                   id="statusLog"
                   :code="logs"
                 ></code>
                 </pre>
-              </div>
-            </div>
+            <!-- </div> -->
+            <!-- </div> -->
           </el-dialog>
           <el-col style="text-align: center">
             <Transition
@@ -326,14 +328,9 @@ export default {
     },
 
     handleClose() {
-      let _this = this;
-      this.$confirm("确认关闭？")
-        .then((_) => {
-          clearInterval(_this.timer);
-          _this.logs = "";
-          _this.rizhiDialogVisible = false;
-        })
-        .catch((_) => {});
+      clearInterval(this.timer);
+      this.logs = "";
+      this.rizhiDialogVisible = false;
     },
     toJob() {
       this.$router.push("/job");
@@ -455,5 +452,10 @@ export default {
 }
 .size {
   font-size: 16px;
+}
+pre code.hljs {
+  display: block;
+  overflow-x: auto;
+  padding: 0px;
 }
 </style>

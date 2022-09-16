@@ -51,12 +51,12 @@
             >
               <el-card
                 shadow="hover"
-                style="height: 200px; width: 300px; margin-top: 5px"
+                style="height: 250px; width: 300px; margin-top: 5px"
                 :body-style="{ padding: '0px' }"
               >
                 <div
                   :id="'publicImageCharts' + index"
-                  style="height: 200px; width: 100%"
+                  style="height: 250px; width: 100%"
                 ></div>
               </el-card>
             </div>
@@ -191,9 +191,6 @@
                       <el-descriptions-item label="镜像名称">{{
                         item.imageName
                       }}</el-descriptions-item>
-                      <el-descriptions-item label="所属仓库"
-                        >default</el-descriptions-item
-                      >
                       <el-descriptions-item label="仓库服务IP"
                         >192.168.0.199</el-descriptions-item
                       >
@@ -269,7 +266,12 @@
 
 <script>
 import { mapState } from "vuex";
-import { reqImageOverview, reqImagelIST, reqImageVersionlIST } from "@/api";
+import {
+  reqImageOverview,
+  reqImagelIST,
+  reqImageVersionlIST,
+  reqUserInfoGetImageCatalogCount,
+} from "@/api";
 import { formatTime } from "@/utils/time";
 import { formatFileSize } from "@/utils/file";
 export default {
@@ -444,8 +446,8 @@ export default {
           formatter: "{a} <br/>{b} : {c} ({d}%)",
         },
         legend: {
-          right: "14%",
-          top: "37%",
+          right: "8%",
+          top: "30%",
           orient: "vertical",
           selected: {
             "总   数": false,
@@ -503,28 +505,44 @@ export default {
           value: "",
         };
         let image = [
-          { value: 0, name: "总   数" },
-          { value: 0, name: "已扫描" },
-          { value: 0, name: "扫描中" },
-          { value: 0, name: "未扫描" },
+          { value: 0, name: "城市路网提取" },
+          { value: 0, name: "水稻长势监测" },
+          { value: 0, name: "洪涝灾害监测" },
+          { value: 0, name: "基础设施识别" },
+          { value: 0, name: "旱情监测" },
+          { value: 0, name: "其他" },
         ];
+        // let image = [
+        //   { value: 0, name: "总  数" },
+        //   { value: 0, name: "已扫描" },
+        //   { value: 0, name: "未扫描" },
+        //   { value: 0, name: "扫描中" },
+        // ];
+        let count = await reqUserInfoGetImageCatalogCount(i);
+
         let title = {
           text: "",
           left: "center",
           top: "15px",
         };
-        image[0].value =
-          result.data.warehouseInfo[0].imageCatalogs[i].catalogOverview.total;
-        image[1].value =
-          result.data.warehouseInfo[0].imageCatalogs[i].catalogOverview.scanned;
-        image[2].value =
-          result.data.warehouseInfo[0].imageCatalogs[
-            i
-          ].catalogOverview.scanning;
-        image[3].value =
-          result.data.warehouseInfo[0].imageCatalogs[
-            i
-          ].catalogOverview.notScanned;
+        // image[0].value =
+        //   result.data.warehouseInfo[0].imageCatalogs[i].catalogOverview.total;
+        // image[1].value =
+        //   result.data.warehouseInfo[0].imageCatalogs[i].catalogOverview.scanned;
+        // image[2].value =
+        //   result.data.warehouseInfo[0].imageCatalogs[
+        //     i
+        //   ].catalogOverview.scanning;
+        // image[3].value =
+        //   result.data.warehouseInfo[0].imageCatalogs[
+        //     i
+        //   ].catalogOverview.notScanned;
+        image[0].value = count.data[0].count;
+        image[1].value = count.data[1].count;
+        image[2].value = count.data[2].count;
+        image[3].value = count.data[3].count;
+        image[4].value = count.data[4].count;
+        image[5].value = count.data[5].count;
         option.value = result.data.warehouseInfo[0].imageCatalogs[i].envName;
         title.text = result.data.warehouseInfo[0].imageCatalogs[i].envName;
         if (title.text == "cluster-default-default") {

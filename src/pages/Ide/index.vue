@@ -16,7 +16,7 @@
       :body-style="{ padding: '0px' }"
       style="height: calc(100vh - 170px); overflow: auto"
     >
-      <Transition
+      <!-- <Transition
         appear
         enter-active-class="animate__animated animate__fadeInLeft"
         leave-active-class="animate__animated animate__fadeOutRight"
@@ -37,7 +37,7 @@
             >
           </el-button-group></el-row
         ></Transition
-      >
+      > -->
       <Transition
         appear
         enter-active-class="animate__animated animate__fadeInLeft"

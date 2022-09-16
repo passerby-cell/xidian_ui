@@ -21,7 +21,7 @@
             <el-row>
               <el-col :span="16" style="margin-top: 12px">
                 <h3 style="margin-left: 5px" class="size">
-                  <span style="color: #409eff">|</span>&nbsp;模型数据列表
+                  <span style="color: #409eff">|</span>&nbsp;模型列表
                 </h3>
               </el-col>
               <el-col :span="8"
@@ -318,7 +318,7 @@
                 >删除选中</el-button
               ></Transition
             >
-            <Transition
+            <!-- <Transition
               appear
               enter-active-class="animate__animated animate__fadeInLeft"
               leave-active-class="animate__animated animate__fadeOutRight"
@@ -333,7 +333,7 @@
                   >终端</span
                 ></el-button
               ></Transition
-            >
+            > -->
           </el-row>
           <el-dialog
             :visible.sync="terminalDialogVisible"
@@ -651,8 +651,8 @@ export default {
     async createParentFile() {
       //TODO:storageId type
       let result1 = await reqCreateParentFile(this.newParentFileName, "", 6, 1);
-      let result2 = await reqCreateParentFile(this.newParentFileName, "", 6, 2);
-      if (result1.code == "200" && result2.code == "200") {
+      // let result2 = await reqCreateParentFile(this.newParentFileName, "", 6, 2);
+      if (result1.code == "200") {
         this.parentFileDialogVisible = false;
         this.$message({
           type: "success",
@@ -660,10 +660,8 @@ export default {
         });
         this.updateParentFileList();
         this.newParentFileName = "";
-      } else if (result1.code != "200") {
+      } else {
         this.$message.error("新建模型数据失败");
-      } else if (result2.code != "200") {
-        this.$message.error("新建模型结果失败");
       }
     },
     changeIsShow(index) {

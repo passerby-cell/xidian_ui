@@ -4,6 +4,15 @@ import iderequest from "./ideAjax";
 import userInforequest from "./userInfoAjax";
 import qs from "qs";
 
+export const reqUserInfoGetImageCatalogCount = (parent) =>
+  userInforequest({
+    url: "/imagecatalog/getcatalogcount/",
+    method: "get",
+    params: {
+      parent,
+    },
+  });
+
 export const reqUserInfoDeleteImageProcess = (id) =>
   userInforequest({
     url: "/image/deleteprocess",
@@ -33,7 +42,7 @@ export const reqUserInfoUpdateImageProcessStepOne = ({
   imageNameAndVersion,
 }) =>
   userInforequest({
-    url: "/image/imageprocesslist",
+    url: "/image/updatestepone",
     method: "get",
     params: { id, filepath, imageNameAndVersion },
   });
@@ -43,22 +52,25 @@ export const reqUserInfoUpdateImageProcessStepTwo = ({
   filepath,
   imageNameAndVersion,
   imageTag,
+  parentCatalog,
 }) =>
   userInforequest({
-    url: "/image/imageprocesslist",
+    url: "/image/updatesteptwo",
     method: "get",
-    params: { id, filepath, imageNameAndVersion, imageTag },
+    params: { id, filepath, imageNameAndVersion, imageTag, parentCatalog },
   });
 
 export const reqUserInfoUpdateImageProcessStepThree = ({
   id,
   filepath,
   imageTag,
+  imageCatalog,
+  parentCatalog,
 }) =>
   userInforequest({
-    url: "/image/imageprocesslist",
+    url: "/image/updatestepthree",
     method: "get",
-    params: { id, filepath, imageTag },
+    params: { id, filepath, imageTag, imageCatalog, parentCatalog },
   });
 export const reqUserInfoUploadFile = (file) =>
   userInforequest({

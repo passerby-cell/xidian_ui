@@ -283,7 +283,7 @@
                 ></el-option>
               </el-select> </el-form-item
           ></el-col>
-          <el-col :span="9">
+          <el-col :span="7">
             <el-form-item
               label="选择镜像"
               :label-width="formLabelWidth"
@@ -291,19 +291,19 @@
             >
               <el-select
                 placeholder="请选择镜像"
-                style="width: 250px"
+                style="width: 150px"
                 v-model="taskInfo.imagePrefix"
                 @change="changeImage"
               >
                 <el-option
-                  v-for="(item, index) in imageList"
+                  v-for="(item, index) in sortedImageList"
                   :key="index"
-                  :label="item.imageName"
+                  :label="imageName(item)"
                   :value="item.imageName"
                 ></el-option>
               </el-select> </el-form-item
           ></el-col>
-          <el-col :span="6">
+          <el-col :span="8">
             <el-form-item
               label="选择版本"
               :label-width="formLabelWidth"
@@ -311,7 +311,7 @@
             >
               <el-select
                 placeholder="请选择镜像版本"
-                style="width: 100px"
+                style="width: 180px"
                 v-model="taskInfo.imageVersion"
               >
                 <el-option
@@ -481,7 +481,6 @@
             ></el-option>
           </el-select>
         </el-form-item> -->
-
         <!-- <el-form-item label="程序运行命令" :label-width="formLabelWidth">
           <el-input
             autocomplete="off"
@@ -529,7 +528,6 @@
               </el-select> </el-form-item
           ></el-col>
         </el-row>
-
         <el-form-item :label-width="formLabelWidth">
           <el-button
             slot="label"
@@ -619,7 +617,7 @@
                 </el-row>
               </el-card>
             </el-tab-pane> -->
-            <el-tab-pane label="添加存储变量">
+            <el-tab-pane label="存储变量">
               <el-card :body-style="{ padding: '0px' }">
                 <el-row>
                   <h3 style="margin-left: 10px">
@@ -667,7 +665,7 @@
                     title="目录挂载"
                     :visible.sync="childDialogTableVisible"
                     append-to-body
-                    width="500px"
+                    width="600px"
                   >
                     <el-row>
                       <el-col :span="12">
@@ -703,12 +701,12 @@
                       <el-table-column
                         property="name"
                         :label="type == 1 ? '模型数据' : '模型结果'"
-                        width="150"
+                        width="275"
                       ></el-table-column>
                       <el-table-column
                         property="catalog"
                         label="路径"
-                        width="300"
+                        width="275"
                       ></el-table-column>
                     </el-table>
                     <div slot="footer" class="dialog-footer">
@@ -744,6 +742,84 @@
                     ></el-form-item
                   >
                 </el-form>
+                <el-row>
+                  <h3 style="margin-left: 10px">
+                    <span style="color: #409eff">|</span>&nbsp;管理变量
+                  </h3>
+                </el-row>
+                <el-row>
+                  <div style="padding: 10px">
+                    <el-table
+                      :data="mountData"
+                      :row-style="{ height: 30 + 'px' }"
+                      max-height="200"
+                    >
+                      <el-table-column
+                        label="路径地址"
+                        prop="hostPath"
+                        show-overflow-tooltip
+                      >
+                        <template slot-scope="scope">
+                          <el-input
+                            size="mini"
+                            v-model="scope.row.hostPath"
+                            v-if="isShow[scope.$index]"
+                            @blur="updateIsShow(scope.$index)"
+                          >
+                          </el-input>
+                          <span v-if="!isShow[scope.$index]">{{
+                            scope.row.hostPath
+                          }}</span>
+                        </template>
+                      </el-table-column>
+                      <el-table-column
+                        label="容器内路径"
+                        prop="mountPath"
+                        show-overflow-tooltip
+                      >
+                        <template slot-scope="scope">
+                          <el-input
+                            size="mini"
+                            v-model="scope.row.mountPath"
+                            v-if="isShow[scope.$index]"
+                            @blur="updateIsShow(scope.$index)"
+                          >
+                          </el-input>
+                          <span v-if="!isShow[scope.$index]">{{
+                            scope.row.mountPath
+                          }}</span>
+                        </template>
+                      </el-table-column>
+                      <el-table-column label="操作">
+                        <template slot-scope="scope">
+                          <el-button
+                            v-if="!isShow[scope.$index]"
+                            type="primary"
+                            size="mini"
+                            style="margin-buttom: 3px"
+                            @click="updateIsShow(scope.$index)"
+                            >修改</el-button
+                          >
+                          <!-- <el-button
+                            v-if="isShow[scope.$index]"
+                            type="primary"
+                            size="mini"
+                            style="margin-buttom: 3px"
+                            @click="updateIsShow(scope.$index)"
+                            >保存</el-button
+                          > -->
+                          <el-button
+                            type="danger"
+                            size="mini"
+                            style="margin-buttom: 3px"
+                            @click="deleteMountData(scope.$index)"
+                            >删除</el-button
+                          >
+                        </template>
+                      </el-table-column>
+                    </el-table>
+                  </div>
+                </el-row>
               </el-card>
             </el-tab-pane>
             <!-- <el-tab-pane label="调度管理" name="forth">
@@ -805,7 +881,7 @@
                 </el-row>
               </el-card>
             </el-tab-pane> -->
-            <el-tab-pane label="管理存储变量">
+            <!-- <el-tab-pane label="管理存储变量">
               <el-card :body-style="{ padding: '0px' }">
                 <el-row>
                   <h3 style="margin-left: 10px">
@@ -843,7 +919,7 @@
                   </el-table>
                 </el-row>
               </el-card>
-            </el-tab-pane>
+            </el-tab-pane> -->
           </el-tabs>
         </el-form-item>
         <el-form-item label="备注" :label-width="formLabelWidth">
@@ -882,6 +958,7 @@ export default {
   name: "CreateJob",
   data() {
     return {
+      isShow: [],
       show: false,
       jobDialogVisible: false,
       mount: {
@@ -994,8 +1071,10 @@ export default {
       bocoPlatformconfigMounts: [],
       bocoPlatformvolumes: [],
       bocoPlatformvolumeMounts: [],
+      isShow: [],
     };
   },
+
   computed: {
     ...mapState("CreateJob", [
       "queueList",
@@ -1021,9 +1100,27 @@ export default {
         return data;
       }
     },
+    sortedImageList() {
+      return this.imageList.sort((a, b) => {
+        return (
+          a.imageName
+            .split("/")
+            [a.imageName.split("/").length - 1][0].charCodeAt() -
+          b.imageName
+            .split("/")
+            [b.imageName.split("/").length - 1][0].charCodeAt()
+        );
+      });
+    },
   },
 
   methods: {
+    updateIsShow(index) {
+      this.$set(this.isShow, index, !this.isShow[index]);
+    },
+    imageName(item) {
+      return item.imageName.split("/")[item.imageName.split("/").length - 1];
+    },
     changeTaskpoliciesEvent(val) {
       if (val == "PodFailed") {
         this.taskInfo.policiesAction = "CompleteJob";
@@ -1214,6 +1311,7 @@ export default {
       this.initImageSelected();
 
       this.mountData = [];
+      this.isShow = [];
       this.clearValidate("taskForm");
       this.clearValidate("storageForm");
     },
@@ -1222,6 +1320,7 @@ export default {
     },
     deleteMountData(index) {
       this.mountData.splice(index, 1);
+      this.isShow.splice(index, 1);
     },
     addMountData() {
       let _this = this;
@@ -1237,6 +1336,7 @@ export default {
           mount.hostPath = this.mount.hostPath;
           mount.mountPath = this.mount.mountPath;
           this.mountData.push(mount);
+          this.isShow.push(false);
           this.mount.hostPath = "";
           this.mount.mountPath = "";
           this.$message({
