@@ -443,6 +443,7 @@ export default {
         title: this.title[index],
         tooltip: {
           trigger: "item",
+          confine: true,
           formatter: "{a} <br/>{b} : {c} ({d}%)",
         },
         legend: {
@@ -452,7 +453,8 @@ export default {
           selected: {
             "总   数": false,
           },
-          selectedMode: false,
+          // 设置图例是否可被选择
+          // selectedMode: false,
           formatter: function (name) {
             var data = option.series[0].data;
             var total = 0;
