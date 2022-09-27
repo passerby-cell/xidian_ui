@@ -35,36 +35,74 @@
       </el-select>
       <el-button
         @click="full()"
-        type="primary"
         size="small"
         v-if="tag"
-        style="margin-left: 10px"
-        >全屏</el-button
-      >
+        style="
+          position: fixed;
+          bottom: 299px;
+          right: 31px;
+          z-index: 9999999;
+          font-size: 16px;
+          padding: 6px;
+        "
+        icon="el-icon-full-screen"
+      ></el-button>
       <el-button
         @click="addThreeD()"
-        type="primary"
         size="small"
-        style="margin-left: 10px"
+        style="
+          position: fixed;
+          bottom: 185px;
+          right: 31px;
+          z-index: 9999999;
+          font-size: 14px;
+          padding: 6px;
+        "
         v-if="!is3D"
         >3D</el-button
       >
       <el-button
         @click="addTwoD()"
-        type="primary"
         size="small"
-        style="margin-left: 10px"
+        style="
+          position: fixed;
+          bottom: 185px;
+          right: 31px;
+          z-index: 9999999;
+          font-size: 14px;
+          padding: 6px;
+        "
         v-if="is3D"
         >2D</el-button
       >
       <el-button
-        @click="initMap(3)"
-        type="primary"
+        @click="fixMap()"
         size="small"
-        style="margin-left: 10px"
+        style="
+          position: fixed;
+          bottom: 222px;
+          right: 31px;
+          z-index: 9999999;
+          font-size: 16px;
+          padding: 6px;
+        "
+        icon="el-icon-view"
         v-if="!isFixed"
-        >重置</el-button
-      >
+      ></el-button>
+      <el-button
+        @click="initMap(3)"
+        size="small"
+        style="
+          position: fixed;
+          bottom: 260px;
+          right: 31px;
+          z-index: 9999999;
+          font-size: 16px;
+          padding: 6px;
+        "
+        v-if="!isFixed"
+        icon="el-icon-refresh-left"
+      ></el-button>
       <div id="map"></div>
       <div
         id="fullScreenMap"
@@ -368,6 +406,7 @@ export default {
       });
       this.isFixed = true;
       this.is3D = false;
+      this.tag = null;
     },
     initFullScreenMap(index) {
       mapboxgl.accessToken =
@@ -440,7 +479,7 @@ export default {
           center: [118.723047, 32.209599],
           zoom: 15,
         });
-        this.fullMap.flyTo({
+        this.fullMap.jumpTo({
           center: [118.723047, 32.209599],
           zoom: 15,
         });
@@ -450,7 +489,7 @@ export default {
           center: e.lngLat,
           zoom: 15,
         });
-        this.fullMap.flyTo({
+        this.fullMap.jumpTo({
           center: e.lngLat,
           zoom: 15,
         });
@@ -459,6 +498,7 @@ export default {
   },
   mounted() {
     this.initMap(3);
+    this.initFullScreenMap([120, 40]);
   },
 
   created() {
