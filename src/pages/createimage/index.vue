@@ -473,7 +473,7 @@ export default {
     return {
       catalog: "",
       showlogs: false,
-      repositoryDir: "lawinbee",
+      repositoryDir: "",
       imageName: "",
       imageVersion: "",
       path: "",
@@ -497,7 +497,9 @@ export default {
       return this.imageProcessList[this.processIndex].step1.split(":")[1];
     },
     repositoryDired() {
-      return this.imageProcessList[this.processIndex].step2.split("/")[0];
+      return this.imageProcessList[this.processIndex].parentCatalog == 1
+        ? "private"
+        : "public";
     },
     logs() {
       return this.imageProcessList[this.processIndex].step3logs;
@@ -514,11 +516,12 @@ export default {
           id: this.showSteps,
           filepath: this.imageProcessList[this.processIndex].path,
           imageTag:
+            "abcsys.cn:5000/" +
             this.repositoryDir +
             "/" +
             this.imageProcessList[this.processIndex].step1,
           imageCatalog: this.catalog,
-          parentCatalog: this.repositoryDir == "public" ? 1 : 0,
+          parentCatalog: this.repositoryDir == "public" ? 0 : 1,
         });
         if (result.code == 200) {
           this.$store.dispatch("ImageProcess/getImageProcessList");
@@ -565,10 +568,11 @@ export default {
           filepath: this.imageProcessList[this.processIndex].path,
           imageNameAndVersion: this.imageProcessList[this.processIndex].step1,
           imageTag:
+            "abcsys.cn:5000/" +
             this.repositoryDir +
             "/" +
             this.imageProcessList[this.processIndex].step1,
-          parentCatalog: this.repositoryDir == "public" ? 1 : 0,
+          parentCatalog: this.repositoryDir == "public" ? 0 : 1,
         });
         if (result.code == "200") {
           loading.close();

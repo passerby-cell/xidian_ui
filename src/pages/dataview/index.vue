@@ -41,6 +41,30 @@
         style="margin-left: 10px"
         >全屏</el-button
       >
+      <el-button
+        @click="addThreeD()"
+        type="primary"
+        size="small"
+        style="margin-left: 10px"
+        v-if="!is3D"
+        >3D</el-button
+      >
+      <el-button
+        @click="addTwoD()"
+        type="primary"
+        size="small"
+        style="margin-left: 10px"
+        v-if="is3D"
+        >2D</el-button
+      >
+      <el-button
+        @click="initMap(3)"
+        type="primary"
+        size="small"
+        style="margin-left: 10px"
+        v-if="!isFixed"
+        >重置</el-button
+      >
       <div id="map"></div>
       <div
         id="fullScreenMap"
@@ -139,6 +163,8 @@ export default {
       map: null,
       fullMap: null,
       tag: null,
+      is3D: false,
+      isFixed: true,
       isFullScreen: false,
       options: [
         { index: 0, name: "示范点1", tag: [116.404844, 39.916263] },
@@ -186,6 +212,23 @@ export default {
   },
   computed: {},
   methods: {
+    addThreeD() {
+      this.map.addSource("mapbox-dem", {
+        type: "raster-dem",
+        url: "mapbox://mapbox.mapbox-terrain-dem-v1",
+        tileSize: 512,
+        maxzoom: 14,
+      });
+      this.map.setTerrain({ source: "mapbox-dem", exaggeration: 1.5 });
+      this.is3D = true;
+      this.isFixed = false;
+    },
+    addTwoD() {
+      this.map.setTerrain();
+      this.map.removeSource("mapbox-dem");
+      this.is3D = false;
+      this.isFixed = false;
+    },
     full() {
       this.isFullScreen = true;
 
@@ -230,10 +273,11 @@ export default {
         zoom: 15,
       });
       this.tag = tag;
+      this.isFixed = false;
     },
     fixMap() {
       this.map.flyTo({
-        zoom: 2,
+        zoom: 3,
       });
       this.tag = null;
     },
@@ -257,6 +301,7 @@ export default {
       map.on("style.load", () => {
         map.setFog({}); // Set the default atmosphere style
       });
+      map.doubleClickZoom.disable();
       // 设置语言
       var language = new MapboxLanguage({ defaultLanguage: "zh-Hans" });
       map.addControl(language);
@@ -288,7 +333,17 @@ export default {
       })
         .setDraggable(false)
         .setLngLat([116.404844, 39.916263])
-        .setPopup(new mapboxgl.Popup().setHTML("<h1>示范点</h1>"))
+        .setPopup(
+          new mapboxgl.Popup().setHTML(
+            `<div style="height:100px;width:200px;">
+              <div style="text-align:center"><h1>示范点1</h1></div>
+              <div>
+                <h5 style="font-size:16px"><span style="font-weight:800;">简介:</span>xxxxx</h5>
+              </div>
+
+              </div>`
+          )
+        )
         .addTo(map);
       const marker2 = new mapboxgl.Marker({
         color: "#5995FC",
@@ -297,9 +352,22 @@ export default {
       })
         .setDraggable(false)
         .setLngLat([118.723047, 32.209599])
-        .setPopup(new mapboxgl.Popup().setHTML("<h1>示范点</h1>"))
+        .setPopup(
+          new mapboxgl.Popup().setHTML(`<div style="height:100%;width:100%;">
+              <div style="text-align:center"><h1>南京信息工程大学</h1></div>
+              <div>
+                <h5 style="font-size:16px"><span style="font-weight:800;">简介:</span>南京信息工程大学，位于江苏省南京市，是一所以大气科学为特色的全国重点大学，全国首批深化创新创业教育改革示范高校、应急管理学院建设首批试点学校。</h5>
+              </div>
+              </div>`)
+        )
         .addTo(map);
       this.map = map;
+      let _this = this;
+      this.map.on("dblclick", (e) => {
+        _this.flyToMarker(e);
+      });
+      this.isFixed = true;
+      this.is3D = false;
     },
     initFullScreenMap(index) {
       mapboxgl.accessToken =
@@ -343,9 +411,54 @@ export default {
         .addTo(map);
       this.fullMap = map;
     },
+    flyToMarker(e) {
+      if (
+        116 <= e.lngLat.lng &&
+        e.lngLat.lng <= 117 &&
+        39 <= e.lngLat.lat &&
+        e.lngLat.lat <= 40
+      ) {
+        this.isFixed = false;
+        this.tag = "示范点1";
+        this.map.flyTo({
+          center: [116.404844, 39.916263],
+          zoom: 15,
+        });
+        this.fullMap.flyTo({
+          center: [116.404844, 39.916263],
+          zoom: 15,
+        });
+      } else if (
+        118 <= e.lngLat.lng &&
+        e.lngLat.lng <= 119 &&
+        32 <= e.lngLat.lat &&
+        e.lngLat.lat <= 33
+      ) {
+        this.isFixed = false;
+        this.tag = "示范点2";
+        this.map.flyTo({
+          center: [118.723047, 32.209599],
+          zoom: 15,
+        });
+        this.fullMap.flyTo({
+          center: [118.723047, 32.209599],
+          zoom: 15,
+        });
+      } else {
+        this.isFixed = false;
+        this.map.flyTo({
+          center: e.lngLat,
+          zoom: 15,
+        });
+        this.fullMap.flyTo({
+          center: e.lngLat,
+          zoom: 15,
+        });
+      }
+    },
   },
   mounted() {
-    this.initMap(2);
+    this.initMap(3);
   },
 
   created() {
@@ -363,7 +476,7 @@ export default {
 <style scoped>
 @import "mapbox-gl/dist/mapbox-gl.css";
 .zIndex {
-  z-index: 9999999;
+  z-index: 999;
 }
 .el-breadcrumb {
   margin-top: 10px;
@@ -404,7 +517,7 @@ export default {
   border-radius: 5px;
   top: 150px;
   height: calc(100vh - 230px);
-  width: 84%;
+  width: 83%;
 }
 /* 隐藏mapbox商标 */
 .mapboxgl-ctrl-logo {
