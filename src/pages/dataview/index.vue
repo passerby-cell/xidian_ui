@@ -39,7 +39,7 @@
         v-if="tag"
         style="
           position: fixed;
-          bottom: 299px;
+          bottom: 260px;
           right: 31px;
           z-index: 9999999;
           font-size: 16px;
@@ -89,7 +89,7 @@
         icon="el-icon-view"
         v-if="!isFixed"
       ></el-button>
-      <el-button
+      <!-- <el-button
         @click="initMap(3)"
         size="small"
         style="
@@ -102,14 +102,14 @@
         "
         v-if="!isFixed"
         icon="el-icon-refresh-left"
-      ></el-button>
+      ></el-button> -->
       <div id="map"></div>
       <div
         id="fullScreenMap"
         v-show="isFullScreen"
         style="height: 100%; width: 100%"
       >
-        <dv-border-box-11 title="示范点" class="zIndex">
+        <dv-border-box-11 :title="selectedTag" class="zIndex">
           <el-row style="height: 50px; padding-top: 43px">
             <el-col :span="9"
               ><dv-decoration-1
@@ -140,7 +140,7 @@
                 :color="['#7589CD', '#7589CD']"
             /></el-col>
           </el-row>
-          <el-row
+          <!-- <el-row
             style="margin-left: 40px; margin-right: 40px; padding-top: 40px"
           >
             <el-col :span="6"
@@ -166,7 +166,7 @@
                 :color="['#7589CD', '#7589CD']"
             /></el-col>
             <el-col :span="6" :offset="12"></el-col>
-          </el-row>
+          </el-row> -->
           <el-row style="margin-left: 30px; margin-right: 40px">
             <el-col :span="6"
               ><dv-decoration-8
@@ -199,18 +199,24 @@ export default {
       map: null,
       fullMap: null,
       tag: null,
+      selectedTag: null,
       is3D: false,
       isFixed: true,
       isFullScreen: false,
       options: [
-        { index: 0, name: "示范点1", tag: [116.404844, 39.916263] },
-        { index: 1, name: "示范点2", tag: [118.723047, 32.209599] },
+        { index: 0, name: "马萨诸塞州", tag: [-71.907335, 42.311482], zoom: 8 },
+        {
+          index: 1,
+          name: "南京信息工程大学",
+          tag: [118.70666291375721, 32.20465578992527],
+          zoom: 15,
+        },
       ],
       config1: {
-        header: ["序号", "名称"],
+        header: ["序号", "经纬度"],
         data: [
-          ["示范点1", "示范点1"],
-          ["示范点2", "示范点2"],
+          ["马萨诸塞州", "[-71.90, 42.31]"],
+          ["南京信息工程大学", "[118.70, 32.20]"],
           ["示范点3", "示范点3"],
           ["示范点4", "示范点4"],
           ["示范点5", "示范点5"],
@@ -304,9 +310,16 @@ export default {
       this.initFullScreenMap(value);
     },
     jumpTo(tag) {
+      let z;
+      this.options.forEach((item) => {
+        if (item.tag == tag) {
+          z = item;
+        }
+      });
+      this.selectedTag = z.name;
       this.map.flyTo({
         center: tag,
-        zoom: 15,
+        zoom: z.zoom,
       });
       this.tag = tag;
       this.isFixed = false;
@@ -314,6 +327,7 @@ export default {
     fixMap() {
       this.map.flyTo({
         zoom: 3,
+        center: [120, 40],
       });
       this.tag = null;
     },
@@ -333,7 +347,10 @@ export default {
         antialias: false,
         attributionControl: false,
       });
-
+      map.on("click", (e) => {
+        const { lng, lat } = e.lngLat;
+        console.log(lng, lat);
+      });
       map.on("style.load", () => {
         map.setFog({}); // Set the default atmosphere style
       });
@@ -368,13 +385,13 @@ export default {
         draggable: true,
       })
         .setDraggable(false)
-        .setLngLat([116.404844, 39.916263])
+        .setLngLat([-71.907335, 42.311482])
         .setPopup(
           new mapboxgl.Popup().setHTML(
-            `<div style="height:100px;width:200px;">
-              <div style="text-align:center"><h1>示范点1</h1></div>
+            `<div style="height:100%;width:100%;">
+              <div style="text-align:center"><h1>马萨诸塞州</h1></div>
               <div>
-                <h5 style="font-size:16px"><span style="font-weight:800;">简介:</span>xxxxx</h5>
+                <h5 style="font-size:16px"><span style="font-weight:800;">简介:</span>马萨诸塞州为美国第七小的州，位于美国东北部的新英格兰地区。 该州的最大城市为波士顿，是查尔斯河的入海口。</h5>
               </div>
 
               </div>`
@@ -387,7 +404,7 @@ export default {
         draggable: true,
       })
         .setDraggable(false)
-        .setLngLat([118.723047, 32.209599])
+        .setLngLat([118.70666291375721, 32.20465578992527])
         .setPopup(
           new mapboxgl.Popup().setHTML(`<div style="height:100%;width:100%;">
               <div style="text-align:center"><h1>南京信息工程大学</h1></div>
@@ -407,6 +424,15 @@ export default {
       this.tag = null;
     },
     initFullScreenMap(index) {
+      let z = {};
+      this.options.forEach((item) => {
+        if (item.tag == index) {
+          z = item;
+        }
+      });
+      if (!z.zoom) {
+        z.zoom = 2;
+      }
       mapboxgl.accessToken =
         "pk.eyJ1IjoicGxheS1pc2FhYyIsImEiOiJjazU0cDkzbWowamd2M2dtemd4bW9mbzRhIn0.cxD4Fw3ZPB_taMkyUSFENA";
 
@@ -416,7 +442,7 @@ export default {
         // style: "mapbox://styles/mapbox/satellite-streets-v11",
         style: "mapbox://styles/mapbox/dark-v10",
         // style: "mapbox://styles/mapbox/streets-v11",
-        zoom: 15,
+        zoom: z.zoom,
         center: index,
         // projection: "globe",
         antialias: false,
@@ -434,7 +460,7 @@ export default {
         draggable: true,
       })
         .setDraggable(false)
-        .setLngLat([116.404844, 39.916263])
+        .setLngLat([-71.907335, 42.311482])
         .setPopup(new mapboxgl.Popup().setHTML("<h1>示范点</h1>"))
         .addTo(map);
       const marker2 = new mapboxgl.Marker({
@@ -443,53 +469,53 @@ export default {
         draggable: true,
       })
         .setDraggable(false)
-        .setLngLat([118.723047, 32.209599])
+        .setLngLat([118.70666291375721, 32.20465578992527])
         .setPopup(new mapboxgl.Popup().setHTML("<h1>示范点</h1>"))
         .addTo(map);
       this.fullMap = map;
     },
     flyToMarker(e) {
       if (
-        116 <= e.lngLat.lng &&
-        e.lngLat.lng <= 117 &&
-        39 <= e.lngLat.lat &&
-        e.lngLat.lat <= 40
+        -73 <= e.lngLat.lng &&
+        e.lngLat.lng <= -70 &&
+        41 <= e.lngLat.lat &&
+        e.lngLat.lat <= 44
       ) {
         this.isFixed = false;
-        this.tag = "示范点1";
+        this.tag = "马萨诸塞州";
+
         this.map.flyTo({
-          center: [116.404844, 39.916263],
-          zoom: 15,
+          center: [-71.907335, 42.311482],
+          zoom: 8,
         });
         this.fullMap.flyTo({
-          center: [116.404844, 39.916263],
-          zoom: 15,
+          center: [-71.907335, 42.311482],
+          zoom: 8,
         });
+        this.selectedTag = "马萨诸塞州";
       } else if (
         118 <= e.lngLat.lng &&
-        e.lngLat.lng <= 119 &&
-        32 <= e.lngLat.lat &&
+        e.lngLat.lng <= 119.2 &&
+        31 <= e.lngLat.lat &&
         e.lngLat.lat <= 33
       ) {
         this.isFixed = false;
-        this.tag = "示范点2";
+        this.tag = "南京信息工程大学";
+
         this.map.flyTo({
-          center: [118.723047, 32.209599],
+          center: [118.70666291375721, 32.20465578992527],
           zoom: 15,
         });
-        this.fullMap.jumpTo({
-          center: [118.723047, 32.209599],
+        this.fullMap.flyTo({
+          center: [118.70666291375721, 32.20465578992527],
           zoom: 15,
         });
+        this.selectedTag = "南京信息工程大学";
       } else {
         this.isFixed = false;
         this.map.flyTo({
           center: e.lngLat,
-          zoom: 15,
-        });
-        this.fullMap.jumpTo({
-          center: e.lngLat,
-          zoom: 15,
+          zoom: 10,
         });
       }
     },
