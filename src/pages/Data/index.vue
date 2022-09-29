@@ -608,6 +608,7 @@ export default {
       this.parentId = id;
       this.parentFileName = fileName;
       this.parenttag = index;
+
       this.updateFileList(id, pageNum, path);
     },
     updateParentFileNameDialogVisible(row) {

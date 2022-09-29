@@ -13,7 +13,7 @@
       class="card-style"
       shadow="hover"
       :body-style="{ padding: '10px' }"
-      style="height: calc(100vh - 170px); overflow: auto"
+      style="height: calc(100vh - 170px)"
     >
       <el-select
         class="size"
@@ -167,18 +167,16 @@
             /></el-col>
             <el-col :span="6" :offset="12"></el-col>
           </el-row>
-          <el-row
-            style="margin-left: 40px; margin-right: 40px; margin-top: 200px"
-          >
+          <el-row style="margin-left: 30px; margin-right: 40px">
             <el-col :span="6"
               ><dv-decoration-8
-                style="width: 300px; height: 50px"
+                style="position: fixed; width: 46%; height: 50px; bottom: 10px"
                 :color="['#7589CD', '#7589CD']"
             /></el-col>
             <el-col :span="6" :offset="12"
               ><dv-decoration-8
                 :reverse="true"
-                style="width: 300px; height: 50px"
+                style="position: fixed; width: 46%; height: 50px; bottom: 10px"
                 :color="['#7589CD', '#7589CD']"
             /></el-col>
           </el-row>
@@ -553,11 +551,11 @@ export default {
   overflow-y: auto;
 }
 #map {
-  position: absolute;
+  position: relative;
   border-radius: 5px;
-  top: 150px;
   height: calc(100vh - 230px);
-  width: 83%;
+  width: calc(100%);
+  top: 10px;
 }
 /* 隐藏mapbox商标 */
 .mapboxgl-ctrl-logo {
