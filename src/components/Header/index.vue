@@ -7,8 +7,8 @@
             src="@/assets/images/titleicon.jpg"
             style="height: 60px; width: 210px; margin-left: 10px; float: left"
           />
-          <!-- <span class="font">米级国产卫星数据存算共享云平台 </span> -->
-          <span class="font">电力负荷高性能容器云平台 </span>
+          <span class="font">米级国产卫星数据存算共享云平台 </span>
+          <!-- <span class="font">电力负荷高性能容器云平台 </span> -->
         </div>
       </el-col>
       <el-col :span="1">

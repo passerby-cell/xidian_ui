@@ -385,7 +385,7 @@ export default {
         draggable: true,
       })
         .setDraggable(false)
-        .setLngLat([-71.907335, 42.311482])
+        .setLngLat([-71.9, 42.31])
         .setPopup(
           new mapboxgl.Popup().setHTML(
             `<div style="height:100%;width:100%;">
