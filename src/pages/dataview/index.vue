@@ -584,7 +584,7 @@ export default {
   top: 10px;
 }
 /* 隐藏mapbox商标 */
-.mapboxgl-ctrl-logo {
-  display: none;
+#map >>> .mapboxgl-ctrl-logo {
+  display: none !important;
 }
 </style>
