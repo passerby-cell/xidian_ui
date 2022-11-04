@@ -171,7 +171,7 @@
                 show-overflow-tooltip
               ></el-table-column>
               <!-- TODO:日志-->
-              <el-table-column label="操作" align="center">
+              <el-table-column label="操作" width="200">
                 <template slot-scope="scope">
                   <el-button
                     size="mini"
@@ -179,6 +179,13 @@
                     icon="el-icon-chat-dot-round"
                     @click="getJobLogs(scope.$index, scope.row)"
                     >日志</el-button
+                  >
+                  <el-button
+                    size="mini"
+                    type="success"
+                    icon="el-icon-view"
+                    @click="ConvertViewLogs(scope.$index, scope.row)"
+                    >可视化</el-button
                   >
                 </template>
               </el-table-column>
@@ -190,23 +197,6 @@
             width="1000px"
             title="日志"
           >
-            <!-- <div
-              style="
-                height: calc(100vh - 250px);
-                background-color: #20211d;
-                width: 100%;
-                overflow: auto;
-                float: left;
-              "
-            > -->
-            <!-- <div
-              style="
-                padding-left: 20px;
-                padding-right: 20px;
-                overflow: auto;
-                height: calc(100vh - 400px);
-              "
-            > -->
             <pre
               v-highlight
               style="
@@ -223,9 +213,27 @@
                   :code="logs"
                 ></code>
                 </pre>
-            <!-- </div> -->
-            <!-- </div> -->
           </el-dialog>
+          <el-dialog
+            title="可视化"
+            class="dialog"
+            :visible.sync="viewDialogVisible"
+            width="55%"
+            :before-close="handleViewClose"
+          >
+            <el-cascader
+              :options="options"
+              v-model="selected"
+              @change="changeSelected"
+            ></el-cascader>
+            <div id="chart" style="height: 400px; width: 100%"></div>
+            <span slot="footer" class="dialog-footer">
+              <el-button type="primary" @click="handleViewClose"
+                >关 闭</el-button
+              >
+            </span>
+          </el-dialog>
+
           <el-col style="text-align: center">
             <Transition
               appear
@@ -264,7 +272,37 @@ export default {
       showHostName: false,
       showPodName: false,
       rizhiDialogVisible: false,
+      viewDialogVisible: false,
       logs: "",
+      viewLogs: `{"train":{"epoch":" 1 ","loss":" 1.0535546 ","epochtime":" 14 ","time":" 1 "}},\n
+{"test":{"name":["mse","mae","ssim","bce"],"val":[" 234 "," 145 "," 873 "," 93"]}},\n
+{"train":{"epoch":" 2 ","loss":" 2.435476879 ","epochtime":" 20.4 ","time":" 23 "}},\n
+{"test":{"name":["mse","mae","ssim","bce"],"val":[" 132 "," 245 "," 999 "," 34 "]}},\n
+{"train":{"epoch":" 3 ","loss":" 1.2423547 ","epochtime":" 34 ","time":" 35 "}},\n
+{"test":{"name":["mse","mae","ssim","bce"],"val":[" 3 "," 3 "," 3 "," 548 "]}},\n
+{"train":{"epoch":" 4 ","loss":" 1.4658567 ","epochtime":" 4 ","time":" 4 "}},\n
+{"test":{"name":["mse","mae","ssim","bce"],"val":[" 4 "," 4 "," 4 "," 789 "]}},\n
+{"train":{"epoch":" 5 ","loss":" 1.576943 ","epochtime":" 5 ","time":" 5 "}},\n
+{"test":{"name":["mse","mae","ssim","bce"],"val":[" 5 "," 5 "," 5 "," 896 "]}},\n
+{"train":{"epoch":" 6 ","loss":" 0.343654476 ","epochtime":" 6 ","time":" 6 "}},\n
+{"test":{"name":["mse","mae","ssim","bce"],"val":[" 6 "," 6 "," 6 "," 458 "]}},\n
+{"train":{"epoch":" 7 ","loss":" 7 ","epochtime":" 7 ","time":" 7 "}},\n
+{"test":{"name":["mse","mae","ssim","bce"],"val":[" 7 "," 7 "," 7 "," 7 "]}},\n
+{"train":{"epoch":" 8 ","loss":" 8 ","epochtime":" 8 ","time":" 8 "}},\n
+{"test":{"name":["mse","mae","ssim","bce"],"val":[" 8 "," 8 "," 8 "," 234 "]}},\n
+{"train":{"epoch":" 9 ","loss":" 9 ","epochtime":" 9 ","time":" 9 "}},\n
+{"test":{"name":["mse","mae","ssim","bce"],"val":[" 9 "," 9 "," 9 "," 1098 "]}},\n
+`,
+      jsonObj: null,
+      train: {
+        epoch: [],
+        loss: [],
+        epochtime: [],
+        time: [],
+      },
+      test: [],
+      options: [],
+      selected: [],
     };
   },
 
@@ -293,6 +331,207 @@ export default {
     },
   },
   methods: {
+    changeSelected() {
+      this.initEcharts();
+    },
+    initEcharts() {
+      let xdata = [];
+      let ydata = [];
+      let name;
+      if (this.selected[0] == "train") {
+        xdata = this.train.epoch;
+        if (this.selected[1] == "loss") {
+          ydata = this.train.loss;
+        } else {
+          ydata = this.train.epochtime;
+        }
+        name = this.selected[1];
+      } else {
+        for (var i = 0; i < this.test[1].length; i++) {
+          xdata.push(i + 1);
+        }
+        name = this.test[0][this.selected[1] - 1];
+        ydata = this.test[this.selected[1]];
+      }
+
+      let option = {
+        title: {
+          text: name,
+          left: "1%",
+          top: "3%",
+        },
+        tooltip: {
+          trigger: "axis",
+        },
+        grid: {
+          left: "5%",
+          right: "15%",
+          bottom: "17%",
+        },
+        xAxis: {
+          data: xdata,
+        },
+        visualMap: {
+          top: 50,
+          right: 10,
+          pieces: [
+            {
+              gt: 0,
+              lte: 50,
+              color: "#93CE07",
+            },
+            {
+              gt: 50,
+              lte: 100,
+              color: "#FBDB0F",
+            },
+            {
+              gt: 100,
+              lte: 150,
+              color: "#FC7D02",
+            },
+            {
+              gt: 150,
+              lte: 200,
+              color: "#FD0100",
+            },
+            {
+              gt: 200,
+              lte: 300,
+              color: "#AA069F",
+            },
+            {
+              gt: 300,
+              lte: 600,
+              color: "#AC3B2A",
+            },
+            {
+              gt: 600,
+              lte: 1000,
+              color: "#000059",
+            },
+            {
+              gt: 1000,
+              color: "#df0101",
+            },
+          ],
+          outOfRange: {
+            color: "#999",
+          },
+        },
+        yAxis: {},
+        toolbox: {
+          right: 10,
+          feature: {
+            dataZoom: {
+              yAxisIndex: "none",
+            },
+            // restore: {},
+            saveAsImage: {},
+          },
+        },
+        dataZoom: [
+          {
+            startValue: xdata.length - 8,
+          },
+          {
+            type: "inside",
+          },
+        ],
+
+        series: {
+          name: name,
+          type: "line",
+          data: ydata,
+          markLine: {
+            silent: true,
+            lineStyle: {
+              color: "#333",
+            },
+          },
+        },
+      };
+      this.$echarts.init(document.getElementById("chart")).setOption(option);
+    },
+    handleViewClose() {
+      this.train = {
+        epoch: [],
+        loss: [],
+        epochtime: [],
+        time: [],
+      };
+      this.test = [];
+
+      this.jsonObj = null;
+      this.viewDialogVisible = false;
+    },
+    async ConvertViewLogs(index, row) {
+      this.viewDialogVisible = true;
+      let result = await reqJobLogs({
+        clusterId: this.joblist[this.index].clusterId,
+        containerName: this.jobInfoList[index].containerName,
+        follow: false,
+        namespace: this.jobInfoList[index].projectName,
+        podName: this.jobInfoList[index].podName,
+        tailLines: 300,
+      });
+      this.viewLogs += result.data;
+      let view = `{"info": [` + this.viewLogs + `],}`;
+      this.jsonObj = eval("(" + view + ")");
+      for (let i = 0; i < this.jsonObj.info.length; i++) {
+        if (this.jsonObj.info[i].train) {
+          this.train.epoch.push(this.jsonObj.info[i].train.epoch);
+          this.train.loss.push(this.jsonObj.info[i].train.loss);
+          this.train.epochtime.push(this.jsonObj.info[i].train.epochtime);
+          this.train.time.push(this.jsonObj.info[i].train.time);
+        } else {
+          if (this.test.length == 0) {
+            this.test.push(this.jsonObj.info[i].test.name);
+          }
+
+          for (let j = 0; j < this.jsonObj.info[i].test.name.length; j++) {
+            if (this.test.length == 1) {
+              for (let k = 0; k < this.jsonObj.info[i].test.name.length; k++) {
+                this.test.push([]);
+              }
+            }
+            this.test[j + 1].push(this.jsonObj.info[i].test.val[j]);
+          }
+        }
+      }
+      this.options = [];
+      if (this.train.epoch.length != 0) {
+        this.options.push({
+          value: "train",
+          label: "train",
+          children: [
+            { value: "loss", label: "loss" },
+            { value: "epochtime", label: "epochtime" },
+          ],
+        });
+      }
+      if (this.test.length) {
+        let children = [];
+        for (let i = 0; i < this.test[0].length; i++) {
+          children.push({ value: i + 1, label: this.test[0][i] });
+        }
+        this.options.push({
+          value: "test",
+          label: "test",
+          children,
+        });
+      }
+      this.selected = [];
+      this.selected.push(
+        this.options[0].value,
+        this.options[0].children[0].value
+      );
+      let _this = this;
+      setTimeout(() => {
+        _this.initEcharts();
+      }, 200);
+    },
+
     async getJobLogs(index, row) {
       this.rizhiDialogVisible = true;
       let result = await reqJobLogs({
@@ -457,5 +696,8 @@ pre code.hljs {
   display: block;
   overflow-x: auto;
   padding: 0px;
+}
+.dialog >>> .el-dialog__body {
+  padding: 10px;
 }
 </style>
