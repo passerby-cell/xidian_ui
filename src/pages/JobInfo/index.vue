@@ -200,7 +200,7 @@
             <pre
               v-highlight
               style="
-                height: 400px;
+                height: 500px;
                 overflow: auto;
                 padding-left: 20px;
                 padding-right: 20px;
@@ -208,7 +208,7 @@
             >
                   <code
                   class="python"
-                  style="font-size: 16px; background-color: #20211d;height:100%"
+                  style="font-size: 16px; background-color: #20211d;height:440px;padding: 0px;margin: 0px;"
                   id="statusLog"
                   :code="logs"
                 ></code>

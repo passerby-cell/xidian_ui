@@ -39,7 +39,7 @@
       <el-table
         :row-style="{ height: 40 + 'px' }"
         :cell-style="{ padding: 0 + 'px' }"
-        style="width: 100%; margin-top: 10px; margin-left: 10px"
+        style="width: 98.5%; margin-top: 10px; margin-left: 10px"
         :data="formatedJobList"
         :border="true"
         :row-class-name="tableRowClassName"

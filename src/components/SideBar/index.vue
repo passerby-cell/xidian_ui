@@ -150,7 +150,7 @@ export default {
 <style scoped>
 .el-menu {
   height: calc(100vh - 60px);
-  overflow: auto;
+  overflow: hidden;
 }
 .size {
   font-size: 18px;
