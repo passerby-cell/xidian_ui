@@ -274,25 +274,7 @@ export default {
       rizhiDialogVisible: false,
       viewDialogVisible: false,
       logs: "",
-      viewLogs: `{"train":{"epoch":" 1 ","loss":" 1.0535546 ","epochtime":" 14 ","time":" 1 "}},\n
-{"test":{"name":["mse","mae","ssim","bce"],"val":[" 234 "," 145 "," 873 "," 93"]}},\n
-{"train":{"epoch":" 2 ","loss":" 2.435476879 ","epochtime":" 20.4 ","time":" 23 "}},\n
-{"test":{"name":["mse","mae","ssim","bce"],"val":[" 132 "," 245 "," 999 "," 34 "]}},\n
-{"train":{"epoch":" 3 ","loss":" 1.2423547 ","epochtime":" 34 ","time":" 35 "}},\n
-{"test":{"name":["mse","mae","ssim","bce"],"val":[" 3 "," 3 "," 3 "," 548 "]}},\n
-{"train":{"epoch":" 4 ","loss":" 1.4658567 ","epochtime":" 4 ","time":" 4 "}},\n
-{"test":{"name":["mse","mae","ssim","bce"],"val":[" 4 "," 4 "," 4 "," 789 "]}},\n
-{"train":{"epoch":" 5 ","loss":" 1.576943 ","epochtime":" 5 ","time":" 5 "}},\n
-{"test":{"name":["mse","mae","ssim","bce"],"val":[" 5 "," 5 "," 5 "," 896 "]}},\n
-{"train":{"epoch":" 6 ","loss":" 0.343654476 ","epochtime":" 6 ","time":" 6 "}},\n
-{"test":{"name":["mse","mae","ssim","bce"],"val":[" 6 "," 6 "," 6 "," 458 "]}},\n
-{"train":{"epoch":" 7 ","loss":" 7 ","epochtime":" 7 ","time":" 7 "}},\n
-{"test":{"name":["mse","mae","ssim","bce"],"val":[" 7 "," 7 "," 7 "," 7 "]}},\n
-{"train":{"epoch":" 8 ","loss":" 8 ","epochtime":" 8 ","time":" 8 "}},\n
-{"test":{"name":["mse","mae","ssim","bce"],"val":[" 8 "," 8 "," 8 "," 234 "]}},\n
-{"train":{"epoch":" 9 ","loss":" 9 ","epochtime":" 9 ","time":" 9 "}},\n
-{"test":{"name":["mse","mae","ssim","bce"],"val":[" 9 "," 9 "," 9 "," 1098 "]}},\n
-`,
+      viewLogs: "",
       jsonObj: null,
       train: {
         epoch: [],
@@ -475,7 +457,10 @@ export default {
         podName: this.jobInfoList[index].podName,
         tailLines: 300,
       });
-      this.viewLogs += result.data;
+      this.viewLogs += result.data.substring(
+        result.data.indexOf(`{"train":{"epoch"`),
+        result.data.length
+      );
       let view = `{"info": [` + this.viewLogs + `],}`;
       this.jsonObj = eval("(" + view + ")");
       for (let i = 0; i < this.jsonObj.info.length; i++) {
