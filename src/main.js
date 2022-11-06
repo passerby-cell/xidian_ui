@@ -32,7 +32,7 @@ Vue.directive("highlight", function (el) {
 Vue.use(VueRouter);
 Vue.use(ElementUI);
 Vue.use(VueAxios, axios); // 使用 axios 插件
-
+ElementUI.Dialog.props.closeOnClickModal.default = false;
 Vue.prototype.$echarts = echarts;
 
 router.beforeEach((to, from, next) => {

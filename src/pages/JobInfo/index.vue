@@ -207,7 +207,7 @@
               "
             >
                   <code
-                  class="python"
+                  class="json"
                   style="font-size: 16px; background-color: #20211d;height:440px;padding: 0px;margin: 0px;"
                   id="statusLog"
                   :code="logs"
@@ -218,7 +218,7 @@
             title="可视化"
             class="dialog"
             :visible.sync="viewDialogVisible"
-            width="55%"
+            width="60%"
             :before-close="handleViewClose"
           >
             <el-cascader
@@ -443,7 +443,7 @@ export default {
         time: [],
       };
       this.test = [];
-
+      this.viewLogs = "";
       this.jsonObj = null;
       this.viewDialogVisible = false;
     },
