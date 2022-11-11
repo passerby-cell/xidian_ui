@@ -457,10 +457,32 @@ export default {
         podName: this.jobInfoList[index].podName,
         tailLines: 300,
       });
-      this.viewLogs += result.data.substring(
-        result.data.indexOf(`{"train":{"epoch"`),
-        result.data.length
-      );
+      let myStrTrain = result.data;
+      let regTrain = /{"train":(.*)/;
+      do {
+        let myStr2 = regTrain.exec(myStrTrain)[1].trim();
+        this.viewLogs += `{"train":` + myStr2;
+        console.log(myStr2);
+        myStrTrain = myStrTrain.slice(
+          myStrTrain.indexOf(myStr2),
+          myStrTrain.length
+        );
+      } while (myStrTrain.indexOf(`{"train":`) != -1);
+      let regTest = /{"test":(.*)/;
+      let myStrTest = result.data;
+      do {
+        let myStr2 = regTest.exec(myStrTest)[1].trim();
+        this.viewLogs += `{"test":` + myStr2;
+        console.log(myStr2);
+        myStrTest = myStrTest.slice(
+          myStrTest.indexOf(myStr2),
+          myStrTest.length
+        );
+      } while (myStrTest.indexOf(`{"test":`) != -1);
+      // this.viewLogs += result.data.substring(
+      //   result.data.indexOf(`{"train":{"epoch"`),
+      //   result.data.length
+      // );
       let view = `{"info": [` + this.viewLogs + `],}`;
       this.jsonObj = eval("(" + view + ")");
       for (let i = 0; i < this.jsonObj.info.length; i++) {

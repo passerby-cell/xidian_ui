@@ -333,8 +333,19 @@
                   label="大小"
                   show-overflow-tooltip
                 ></el-table-column>
-                <el-table-column label="操作" width="250" show-overflow-tooltip>
+                <el-table-column label="操作" width="320" show-overflow-tooltip>
                   <template slot-scope="scope">
+                    <el-button
+                      v-if="scope.row.fileName.indexOf(`csv`) != -1"
+                      style="margin-left: 10px"
+                      type="primary"
+                      icon="el-icon-view"
+                      size="small"
+                      @click="
+                        getCSVViewData(scope.row.fileName, scope.row.rootPath)
+                      "
+                      >可视化</el-button
+                    >
                     <el-button
                       style="margin-left: 10px"
                       type="success"
@@ -384,6 +395,18 @@
         </el-card>
       </el-col>
     </el-row>
+    <el-dialog
+      title="可视化"
+      class="dialog"
+      :visible.sync="viewDialogVisible"
+      width="60%"
+      :before-close="handleViewClose"
+    >
+      <div id="chart" style="height: 400px; width: 100%"></div>
+      <span slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="handleViewClose">关 闭</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -400,6 +423,7 @@ import {
   reqUploadChildFile,
   reqDownloadChildFile,
   reqQueryZipChildFileStatus,
+  reqUserInfoGetCSVView,
 } from "@/api";
 export default {
   name: "Data",
@@ -425,6 +449,8 @@ export default {
       parentFileName: "",
       newParentFileName: "",
       newParentFileId: "",
+      viewData: null,
+      viewDialogVisible: false,
     };
   },
   directives: {
@@ -458,6 +484,127 @@ export default {
     },
   },
   methods: {
+    initEcharts(name) {
+      let xdata = [];
+      for (let i = 1; i <= this.viewData.length; i++) {
+        xdata.push(i);
+      }
+      let option = {
+        title: {
+          text: name,
+          left: "1%",
+          top: "3%",
+        },
+        tooltip: {
+          trigger: "axis",
+        },
+        grid: {
+          left: "5%",
+          right: "15%",
+          bottom: "17%",
+        },
+        xAxis: {
+          data: xdata,
+        },
+        visualMap: {
+          top: 50,
+          right: 10,
+          pieces: [
+            {
+              gt: 0,
+              lte: 50,
+              color: "#93CE07",
+            },
+            {
+              gt: 50,
+              lte: 100,
+              color: "#FBDB0F",
+            },
+            {
+              gt: 100,
+              lte: 150,
+              color: "#FC7D02",
+            },
+            {
+              gt: 150,
+              lte: 200,
+              color: "#FD0100",
+            },
+            {
+              gt: 200,
+              lte: 300,
+              color: "#AA069F",
+            },
+            {
+              gt: 300,
+              lte: 600,
+              color: "#AC3B2A",
+            },
+            {
+              gt: 600,
+              lte: 1000,
+              color: "#000059",
+            },
+            {
+              gt: 1000,
+              color: "#df0101",
+            },
+          ],
+          outOfRange: {
+            color: "#999",
+          },
+        },
+        yAxis: {},
+        toolbox: {
+          right: 10,
+          feature: {
+            dataZoom: {
+              yAxisIndex: "none",
+            },
+            // restore: {},
+            saveAsImage: {},
+          },
+        },
+        dataZoom: [
+          {
+            startValue: xdata.length - 8,
+          },
+          {
+            type: "inside",
+          },
+        ],
+
+        series: {
+          name: name,
+          type: "line",
+          data: this.viewData,
+          markLine: {
+            silent: true,
+            lineStyle: {
+              color: "#333",
+            },
+          },
+        },
+      };
+      this.$echarts.init(document.getElementById("chart")).setOption(option);
+    },
+    handleViewClose() {
+      this.viewData = null;
+      this.viewDialogVisible = false;
+    },
+    async getCSVViewData(fileName, rootPath) {
+      this.viewDialogVisible = true;
+      let result = await reqUserInfoGetCSVView(
+        rootPath + this.dirpath + "/" + fileName
+      );
+      if (result.code == 200) {
+        this.viewData = result.data;
+        this.initEcharts(fileName);
+      } else {
+        this.$message.error("读取失败");
+        this.viewDialogVisible = false;
+      }
+    },
     downloadChildFiles() {
       for (let i = 0; i < this.checkedfile.length; i++) {
         this.downloadChildFile(this.checkedfile[i]);
@@ -801,5 +948,8 @@ export default {
 }
 .size {
   font-size: 16px;
+}
+.dialog >>> .el-dialog__body {
+  padding: 10px;
 }
 </style>

@@ -4,6 +4,14 @@ import iderequest from "./ideAjax";
 import userInforequest from "./userInfoAjax";
 import qs from "qs";
 
+export const reqUserInfoGetCSVView = (path) =>
+  userInforequest({
+    url: "/view/csv/",
+    method: "get",
+    params: {
+      path,
+    },
+  });
 export const reqUserInfoGetImageCatalogCount = (parent) =>
   userInforequest({
     url: "/imagecatalog/getcatalogcount/",
