@@ -496,3 +496,37 @@ export const reqJobLogs = (data) =>
     method: "post",
     data,
   });
+
+export const reqJobTemplates = () =>
+  apirequest({
+    url: "/paas-web/bocapi/volcano/v3.3/vcJobTemplate/list",
+    method: "post",
+    data:{currPageNum:1,pageSize:100,vcJobName:null,vcJobType:null,envId:1}
+  });
+
+  export const reqJobTemplate = (data) =>
+  apirequest({
+    url: "/paas-web/bocapi/volcano/v3.3/vcJob/getById",
+    method: "post",
+    data,
+  });
+
+  export const reqTaskTemplate = (data) =>
+  apirequest({
+    url: "/paas-web/bocapi/volcano/v3.3/tasks/getById",
+    method: "post",
+    data,
+  });
+  export const reqDeleteJobTemplate = (data) =>
+  apirequest({
+    url: "/paas-web/bocapi/volcano/v3.3/vcJobTemplate/delete",
+    method: "post",
+    data,
+  });
+
+  export const reqSaveJobAsTemplate = (data) =>
+  apirequest({
+    url: "/paas-web/bocapi/volcano/v3.3/vcJob/saveAsTemplate",
+    method: "post",
+    data,
+  });

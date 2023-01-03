@@ -12,6 +12,7 @@ import DataView from "@/pages/dataview";
 import ResultView from "@/pages/resutlview";
 import ProcessView from "@/pages/processview";
 import CreateImage from "@/pages/createimage";
+import Template from "@/pages/template";
 export default [
   // ?:用于指定params参数可传可不传,没有问号时,不传params参数时路径会出现丢失的情况
   {
@@ -26,6 +27,15 @@ export default [
     name: "userinfo",
     path: "/userinfo",
     component: User,
+    meta: {
+      show: true,
+      requireAuth: true, // 配置此条，进入页面前判断是否需要登陆
+    },
+  },
+  {
+    name: "template",
+    path: "/template",
+    component: Template,
     meta: {
       show: true,
       requireAuth: true, // 配置此条，进入页面前判断是否需要登陆
@@ -69,7 +79,7 @@ export default [
   },
   {
     name: "standardjob",
-    path: "/standardjob",
+    path: "/standardjob/:templateId?",
     component: StandardJob,
     meta: {
       show: true,

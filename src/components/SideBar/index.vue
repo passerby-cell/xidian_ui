@@ -9,18 +9,13 @@
           </template>
 
           <el-menu-item @click="toJob()" index="/job" key="job">
-            <span slot="title" class="subsize"
-              >&nbsp;&nbsp;&nbsp;&nbsp;作业列表</span
-            >
+            <span slot="title" class="subsize">&nbsp;&nbsp;&nbsp;&nbsp;作业列表</span>
           </el-menu-item>
-          <el-menu-item
-            @click="goStandardJob()"
-            index="/standardjob"
-            key="standardjob"
-          >
-            <span slot="title" class="subsize"
-              >&nbsp;&nbsp;&nbsp;&nbsp;新建作业</span
-            >
+          <el-menu-item @click="goStandardJob()" index="/standardjob" key="standardjob">
+            <span slot="title" class="subsize">&nbsp;&nbsp;&nbsp;&nbsp;新建作业</span>
+          </el-menu-item>
+          <el-menu-item @click="toTemplate()" index="/template" key="template">
+            <span slot="title" class="subsize">&nbsp;&nbsp;&nbsp;&nbsp;作业模板</span>
           </el-menu-item>
         </el-submenu>
         <!-- <div @click="toData">
@@ -40,18 +35,10 @@
             <span class="size">模型管理</span>
           </template>
           <el-menu-item @click="toData" index="/data" key="data">
-            <span slot="title" class="subsize"
-              >&nbsp;&nbsp;&nbsp;&nbsp;模型数据上传</span
-            >
+            <span slot="title" class="subsize">&nbsp;&nbsp;&nbsp;&nbsp;模型数据上传</span>
           </el-menu-item>
-          <el-menu-item
-            @click="toResultData"
-            index="/resultdata"
-            key="resultdata"
-          >
-            <span slot="title" class="subsize"
-              >&nbsp;&nbsp;&nbsp;&nbsp;模型结果下载</span
-            >
+          <el-menu-item @click="toResultData" index="/resultdata" key="resultdata">
+            <span slot="title" class="subsize">&nbsp;&nbsp;&nbsp;&nbsp;模型结果下载</span>
           </el-menu-item>
         </el-submenu>
 
@@ -72,18 +59,10 @@
             <span class="size">镜像仓库</span>
           </template>
           <el-menu-item index="/images" key="images" @click="toImages">
-            <span slot="title" class="subsize"
-              >&nbsp;&nbsp;&nbsp;&nbsp;镜像概览</span
-            >
+            <span slot="title" class="subsize">&nbsp;&nbsp;&nbsp;&nbsp;镜像概览</span>
           </el-menu-item>
-          <el-menu-item
-            index="/createimage"
-            key="createimage"
-            @click="toCreateImages"
-          >
-            <span slot="title" class="subsize"
-              >&nbsp;&nbsp;&nbsp;&nbsp;镜像制作</span
-            >
+          <el-menu-item index="/createimage" key="createimage" @click="toCreateImages">
+            <span slot="title" class="subsize">&nbsp;&nbsp;&nbsp;&nbsp;镜像制作</span>
           </el-menu-item>
         </el-submenu>
         <div @click="toIDE">
@@ -122,6 +101,9 @@ export default {
     return {};
   },
   methods: {
+    toTemplate() {
+      this.$router.push({ name: "template" });
+    },
     toCreateImages() {
       this.$router.push({ name: "createimage" });
     },
@@ -164,9 +146,11 @@ export default {
   height: calc(100vh - 60px);
   overflow: hidden;
 }
+
 .size {
   font-size: 18px;
 }
+
 .subsize {
   font-size: 16px;
 }

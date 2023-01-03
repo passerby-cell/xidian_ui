@@ -1,94 +1,59 @@
 <template>
   <div>
-    <Transition
-      appear
-      enter-active-class="animate__animated animate__fadeInLeft"
-      leave-active-class="animate__animated animate__fadeOutRight"
-    >
+    <Transition appear enter-active-class="animate__animated animate__fadeInLeft"
+      leave-active-class="animate__animated animate__fadeOutRight">
       <el-breadcrumb separator="/" class="size">
         <el-breadcrumb-item>数据集</el-breadcrumb-item>
       </el-breadcrumb>
     </Transition>
-    <el-card
-      class="card-style"
-      shadow="hover"
-      :body-style="{ padding: '10px' }"
-      style="height: calc(100vh - 170px)"
-    >
-      <el-select
-        class="size"
-        v-model="tag"
-        placeholder="请选择示范点"
-        style="width: 200px"
-        @change="selectChange"
-        clearable
-        @clear="fixMap()"
-        size="small"
-      >
-        <el-option
-          v-for="item in options"
-          :key="item.index"
-          :label="item.name"
-          :value="item.tag"
-        >
+    <el-card class="card-style" shadow="hover" :body-style="{ padding: '10px' }" style="height: calc(100vh - 170px)">
+      <el-select class="size" v-model="tag" placeholder="请选择示范点" style="width: 200px" @change="selectChange" clearable
+        @clear="fixMap()" size="small">
+        <el-option v-for="item in options" :key="item.index" :label="item.name" :value="item.tag">
         </el-option>
       </el-select>
-      <el-button
-        @click="full()"
-        size="small"
-        v-if="tag"
-        style="
+
+      <el-button @click="create()" size="small" v-if="tag" style="
+          position: fixed;
+          bottom: 297px;
+          right: 31px;
+          z-index: 9999999;
+          font-size: 16px;
+          padding: 6px;
+        " icon="el-icon-circle-plus-outline"></el-button>
+
+      <el-button @click="full()" size="small" v-if="tag" style="
           position: fixed;
           bottom: 260px;
           right: 31px;
           z-index: 9999999;
           font-size: 16px;
           padding: 6px;
-        "
-        icon="el-icon-full-screen"
-      ></el-button>
-      <el-button
-        @click="addThreeD()"
-        size="small"
-        style="
+        " icon="el-icon-full-screen"></el-button>
+      <el-button @click="addThreeD()" size="small" style="
           position: fixed;
           bottom: 185px;
           right: 31px;
           z-index: 9999999;
           font-size: 14px;
-          padding: 6px;
-        "
-        v-if="!is3D"
-        >3D</el-button
-      >
-      <el-button
-        @click="addTwoD()"
-        size="small"
-        style="
+          padding: 5px;
+        " v-if="!is3D">3D</el-button>
+      <el-button @click="addTwoD()" size="small" style="
           position: fixed;
           bottom: 185px;
           right: 31px;
           z-index: 9999999;
           font-size: 14px;
-          padding: 6px;
-        "
-        v-if="is3D"
-        >2D</el-button
-      >
-      <el-button
-        @click="fixMap()"
-        size="small"
-        style="
+          padding: 5px;
+        " v-if="is3D">2D</el-button>
+      <el-button @click="fixMap()" size="small" style="
           position: fixed;
           bottom: 222px;
           right: 31px;
           z-index: 9999999;
           font-size: 16px;
           padding: 6px;
-        "
-        icon="el-icon-view"
-        v-if="!isFixed"
-      ></el-button>
+        " icon="el-icon-view" v-if="!isFixed"></el-button>
       <!-- <el-button
         @click="initMap(3)"
         size="small"
@@ -104,41 +69,21 @@
         icon="el-icon-refresh-left"
       ></el-button> -->
       <div id="map"></div>
-      <div
-        id="fullScreenMap"
-        v-show="isFullScreen"
-        style="height: 100%; width: 100%"
-      >
+      <div id="fullScreenMap" v-show="isFullScreen" style="height: 100%; width: 100%">
         <dv-border-box-11 :title="selectedTag" class="zIndex">
           <el-row style="height: 50px; padding-top: 43px">
-            <el-col :span="9"
-              ><dv-decoration-1
-                style="width: 100%; height: 50px"
-                :color="['#7589CD', '#7589CD']"
-            /></el-col>
-            <el-col :span="6"
-              ><dv-decoration-5
-                style="width: 100%; height: 50px"
-                :color="['#7589CD', '#7589CD']"
-            /></el-col>
-            <el-col :span="9"
-              ><dv-decoration-1
-                style="width: 100%; height: 50px"
-                :color="['#7589CD', '#7589CD']"
-            /></el-col>
+            <el-col :span="9"><dv-decoration-1 style="width: 100%; height: 50px"
+                :color="['#7589CD', '#7589CD']" /></el-col>
+            <el-col :span="6"><dv-decoration-5 style="width: 100%; height: 50px"
+                :color="['#7589CD', '#7589CD']" /></el-col>
+            <el-col :span="9"><dv-decoration-1 style="width: 100%; height: 50px"
+                :color="['#7589CD', '#7589CD']" /></el-col>
           </el-row>
           <el-row style="margin-left: 40px; margin-right: 40px">
-            <el-col :span="6"
-              ><dv-scroll-board
-                :config="config1"
-                style="width: 100%; height: 180px"
-                :color="['#7589CD', '#7589CD']"
-            /></el-col>
-            <el-col :span="6" :offset="12"
-              ><dv-decoration-6
-                style="width: 80%; height: 50px; padding-right: 200px"
-                :color="['#7589CD', '#7589CD']"
-            /></el-col>
+            <el-col :span="6"><dv-scroll-board :config="config1" style="width: 100%; height: 180px"
+                :color="['#7589CD', '#7589CD']" /></el-col>
+            <el-col :span="6" :offset="12"><dv-decoration-6 style="width: 80%; height: 50px; padding-right: 200px"
+                :color="['#7589CD', '#7589CD']" /></el-col>
           </el-row>
           <!-- <el-row
             style="margin-left: 40px; margin-right: 40px; padding-top: 40px"
@@ -168,17 +113,11 @@
             <el-col :span="6" :offset="12"></el-col>
           </el-row> -->
           <el-row style="margin-left: 30px; margin-right: 40px">
-            <el-col :span="6"
-              ><dv-decoration-8
+            <el-col :span="6"><dv-decoration-8 style="position: fixed; width: 46%; height: 50px; bottom: 10px"
+                :color="['#7589CD', '#7589CD']" /></el-col>
+            <el-col :span="6" :offset="12"><dv-decoration-8 :reverse="true"
                 style="position: fixed; width: 46%; height: 50px; bottom: 10px"
-                :color="['#7589CD', '#7589CD']"
-            /></el-col>
-            <el-col :span="6" :offset="12"
-              ><dv-decoration-8
-                :reverse="true"
-                style="position: fixed; width: 46%; height: 50px; bottom: 10px"
-                :color="['#7589CD', '#7589CD']"
-            /></el-col>
+                :color="['#7589CD', '#7589CD']" /></el-col>
           </el-row>
         </dv-border-box-11>
       </div>
@@ -190,7 +129,7 @@
 import { mapState } from "vuex";
 // import mapboxgl from "mapbox-gl";
 import MapboxLanguage from "@mapbox/mapbox-gl-language";
-import {} from "@/api";
+import { } from "@/api";
 
 export default {
   name: "DataView",
@@ -203,13 +142,15 @@ export default {
       is3D: false,
       isFixed: true,
       isFullScreen: false,
+      templateId: null,
       options: [
-        { index: 0, name: "马萨诸塞州", tag: [-71.907335, 42.311482], zoom: 8 },
+        { index: 0, name: "马萨诸塞州", tag: [-71.907335, 42.311482], zoom: 8, templateId: 28 },
         {
           index: 1,
           name: "南京信息工程大学",
           tag: [118.70666291375721, 32.20465578992527],
           zoom: 15,
+          templateId: 28
         },
       ],
       config1: {
@@ -254,6 +195,14 @@ export default {
   },
   computed: {},
   methods: {
+    create() {
+      this.$store.dispatch("Template/getJobTemplate", { templateId: this.templateId })
+      this.$store.dispatch("Template/getTaskTemplate", { templateId: this.templateId })
+      this.$router.push({
+        name: "standardjob",
+        query: { templateId: this.templateId }
+      })
+    },
     addThreeD() {
       this.map.addSource("mapbox-dem", {
         type: "raster-dem",
@@ -308,6 +257,13 @@ export default {
       this.fixMap();
       this.jumpTo(value);
       this.initFullScreenMap(value);
+      let z;
+      this.options.forEach((item) => {
+        if (item.tag == value) {
+          z = item;
+        }
+      });
+      this.templateId = z.templateId
     },
     jumpTo(tag) {
       let z;
@@ -379,13 +335,35 @@ export default {
       //     trackUserLocation: true,
       //   })
       // );
+
+      map.on('load', () => {
+        map.addSource('radar', {
+          'type': 'image',
+          'url': require("../../assets/images/gf.jpg"),
+          'coordinates': [
+            [-71.9002, 42.3101],
+            [-71.9001, 42.3101],
+            [-71.9001, 42.3100],
+            [-71.9002, 42.3100]
+          ]
+        });
+        map.addLayer({
+          id: 'radar-layer',
+          'type': 'raster',
+          'source': 'radar',
+
+          'paint': {
+            'raster-fade-duration': 0
+          }
+        });
+      });
       const marker1 = new mapboxgl.Marker({
         color: "#5995FC",
         clickTolerance: 10,
         draggable: true,
       })
         .setDraggable(false)
-        .setLngLat([-71.9, 42.31])
+        .setLngLat([-71.90015, 42.31])
         .setPopup(
           new mapboxgl.Popup().setHTML(
             `<div style="height:100%;width:100%;">
@@ -476,10 +454,10 @@ export default {
     },
     flyToMarker(e) {
       if (
-        -73 <= e.lngLat.lng &&
-        e.lngLat.lng <= -70 &&
-        41 <= e.lngLat.lat &&
-        e.lngLat.lat <= 44
+        -75 <= e.lngLat.lng &&
+        e.lngLat.lng <= -68 &&
+        39 <= e.lngLat.lat &&
+        e.lngLat.lat <= 46
       ) {
         this.isFixed = false;
         this.tag = "马萨诸塞州";
@@ -493,11 +471,18 @@ export default {
           zoom: 8,
         });
         this.selectedTag = "马萨诸塞州";
+        let z;
+        this.options.forEach((item) => {
+          if (item.name == "马萨诸塞州") {
+            z = item;
+          }
+        });
+        this.templateId = z.templateId
       } else if (
-        118 <= e.lngLat.lng &&
-        e.lngLat.lng <= 119.2 &&
-        31 <= e.lngLat.lat &&
-        e.lngLat.lat <= 33
+        116 <= e.lngLat.lng &&
+        e.lngLat.lng <= 121 &&
+        29 <= e.lngLat.lat &&
+        e.lngLat.lat <= 35
       ) {
         this.isFixed = false;
         this.tag = "南京信息工程大学";
@@ -511,6 +496,13 @@ export default {
           zoom: 15,
         });
         this.selectedTag = "南京信息工程大学";
+        let z;
+        this.options.forEach((item) => {
+          if (item.name == "南京信息工程大学") {
+            z = item;
+          }
+        });
+        this.templateId = z.templateId
       } else {
         this.isFixed = false;
         this.map.flyTo({
@@ -539,21 +531,26 @@ export default {
 
 <style scoped>
 @import "mapbox-gl/dist/mapbox-gl.css";
+
 .zIndex {
-  z-index: 999;
+  z-index: 9;
 }
+
 .el-breadcrumb {
   margin-top: 10px;
   margin-left: 10px;
 }
+
 .card-style {
   margin: 10px;
   height: 650px;
 }
+
 .el-row {
   margin-top: 10px;
   width: 100%;
 }
+
 .el-select {
   width: 340px;
 }
@@ -561,21 +558,26 @@ export default {
 .el-form {
   align-items: flex-start;
 }
+
 .h3 {
   margin-top: 10px;
   margin-left: 10px;
 }
+
 .size {
   font-size: 16px;
 }
-.el-form-item >>> .el-form-item__error {
+
+.el-form-item>>>.el-form-item__error {
   padding: 0px;
 }
+
 .dialogClass .el-dialog__body {
   padding: 0px;
   margin: 0px;
   overflow-y: auto;
 }
+
 #map {
   position: relative;
   border-radius: 5px;
@@ -583,8 +585,13 @@ export default {
   width: calc(100%);
   top: 10px;
 }
+
 /* 隐藏mapbox商标 */
-#map >>> .mapboxgl-ctrl-logo {
+#map>>>.mapboxgl-ctrl-logo {
+  display: none !important;
+}
+
+#fullScreenMap>>>.mapboxgl-ctrl-logo {
   display: none !important;
 }
 </style>
