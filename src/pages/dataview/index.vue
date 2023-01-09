@@ -135,6 +135,25 @@ export default {
   name: "DataView",
   data() {
     return {
+      mapState: [
+        ['http://192.168.31.252:8082/geoserver/guadaer/wms?bbox={bbox-epsg-3857}&format=image/png&service=WMS&version=1.1.1&request=GetMap&srs=EPSG:3857&transparent=true&WIDTH=256&HEIGHT=256&layers=guadaer:guadaer1',
+          'http://192.168.31.252:8082/geoserver/guadaer/wms?bbox={bbox-epsg-3857}&format=image/png&service=WMS&version=1.1.1&request=GetMap&srs=EPSG:3857&transparent=true&WIDTH=256&HEIGHT=256&layers=guadaer:guadaer2',
+          'http://192.168.31.252:8082/geoserver/guadaer/wms?bbox={bbox-epsg-3857}&format=image/png&service=WMS&version=1.1.1&request=GetMap&srs=EPSG:3857&transparent=true&WIDTH=256&HEIGHT=256&layers=guadaer:guadaer3',
+          'http://192.168.31.252:8082/geoserver/guadaer/wms?bbox={bbox-epsg-3857}&format=image/png&service=WMS&version=1.1.1&request=GetMap&srs=EPSG:3857&transparent=true&WIDTH=256&HEIGHT=256&layers=guadaer:guadaer4',
+          'http://192.168.31.252:8082/geoserver/guadaer/wms?bbox={bbox-epsg-3857}&format=image/png&service=WMS&version=1.1.1&request=GetMap&srs=EPSG:3857&transparent=true&WIDTH=256&HEIGHT=256&layers=guadaer:guadaer5',
+        ],
+        ['http://192.168.31.252:8082/geoserver/mengmai/wms?bbox={bbox-epsg-3857}&format=image/png&service=WMS&version=1.1.1&request=GetMap&srs=EPSG:3857&transparent=true&WIDTH=256&HEIGHT=256&layers=mengmai:mengmai1',
+          'http://192.168.31.252:8082/geoserver/mengmai/wms?bbox={bbox-epsg-3857}&format=image/png&service=WMS&version=1.1.1&request=GetMap&srs=EPSG:3857&transparent=true&WIDTH=256&HEIGHT=256&layers=mengmai:mengmai2',
+          'http://192.168.31.252:8082/geoserver/mengmai/wms?bbox={bbox-epsg-3857}&format=image/png&service=WMS&version=1.1.1&request=GetMap&srs=EPSG:3857&transparent=true&WIDTH=256&HEIGHT=256&layers=mengmai:mengmai3',
+          'http://192.168.31.252:8082/geoserver/mengmai/wms?bbox={bbox-epsg-3857}&format=image/png&service=WMS&version=1.1.1&request=GetMap&srs=EPSG:3857&transparent=true&WIDTH=256&HEIGHT=256&layers=mengmai:mengmai4',
+          'http://192.168.31.252:8082/geoserver/mengmai/wms?bbox={bbox-epsg-3857}&format=image/png&service=WMS&version=1.1.1&request=GetMap&srs=EPSG:3857&transparent=true&WIDTH=256&HEIGHT=256&layers=mengmai:mengmai5',
+          'http://192.168.31.252:8082/geoserver/mengmai/wms?bbox={bbox-epsg-3857}&format=image/png&service=WMS&version=1.1.1&request=GetMap&srs=EPSG:3857&transparent=true&WIDTH=256&HEIGHT=256&layers=mengmai:mengmai6',
+          'http://192.168.31.252:8082/geoserver/mengmai/wms?bbox={bbox-epsg-3857}&format=image/png&service=WMS&version=1.1.1&request=GetMap&srs=EPSG:3857&transparent=true&WIDTH=256&HEIGHT=256&layers=mengmai:mengmai7',
+          'http://192.168.31.252:8082/geoserver/mengmai/wms?bbox={bbox-epsg-3857}&format=image/png&service=WMS&version=1.1.1&request=GetMap&srs=EPSG:3857&transparent=true&WIDTH=256&HEIGHT=256&layers=mengmai:mengmai8',
+          'http://192.168.31.252:8082/geoserver/mengmai/wms?bbox={bbox-epsg-3857}&format=image/png&service=WMS&version=1.1.1&request=GetMap&srs=EPSG:3857&transparent=true&WIDTH=256&HEIGHT=256&layers=mengmai:mengmai9',
+          'http://192.168.31.252:8082/geoserver/mengmai/wms?bbox={bbox-epsg-3857}&format=image/png&service=WMS&version=1.1.1&request=GetMap&srs=EPSG:3857&transparent=true&WIDTH=256&HEIGHT=256&layers=mengmai:mengmai10',
+        ],
+      ],
       map: null,
       fullMap: null,
       tag: null,
@@ -144,20 +163,33 @@ export default {
       isFullScreen: false,
       templateId: null,
       options: [
-        { index: 0, name: "马萨诸塞州", tag: [-71.907335, 42.311482], zoom: 8, templateId: 28 },
+        {
+          index: 0, name: "孟买", tag: [72.830127, 18.975847], zoom: 15, templateId: 28, message: `<div style="height:100%;width:100%;">
+              <div style="text-align:center"><h1>孟买</h1></div>
+              <div>
+                <h5 style="font-size:16px"><span style="font-weight:800;">简介:</span>孟买, 是印度西部滨海城市，印度第一大港口，棉纺织业中心，马哈拉施特拉邦首府。孟买是印度重要的贸易中心和港口城市。</h5>
+              </div>
+              </div>`},
+
         {
           index: 1,
-          name: "南京信息工程大学",
-          tag: [118.70666291375721, 32.20465578992527],
+          name: "瓜德尔港",
+          tag: [62.323615, 25.103452],
           zoom: 15,
-          templateId: 28
+          templateId: 28,
+          message: `<div style="height:100%;width:100%;">
+              <div style="text-align:center"><h1>瓜德尔港</h1></div>
+              <div>
+                <h5 style="font-size:16px"><span style="font-weight:800;">简介:</span>瓜德尔港是巴基斯坦的重要港口。瓜德尔港位于巴基斯坦俾路支省西南部瓜德尔城南部，为深水良港。中国政府应穆沙拉夫总统的请求为该港口建设提供资金和技术援助。该港口于2002年3月开工兴建，2015年2月瓜德尔港基本竣工，预计4月中旬全面投入运营。中国部分石油的运输路程将缩短85%。</h5>
+              </div>
+              </div>`
         },
       ],
       config1: {
         header: ["序号", "经纬度"],
         data: [
-          ["马萨诸塞州", "[-71.90, 42.31]"],
-          ["南京信息工程大学", "[118.70, 32.20]"],
+          ["孟买", "[72.830127, 18.975847]"],
+          ["瓜德尔港", "[62.323615, 25.103452]"],
           ["示范点3", "示范点3"],
           ["示范点4", "示范点4"],
           ["示范点5", "示范点5"],
@@ -305,7 +337,7 @@ export default {
       });
       map.on("click", (e) => {
         const { lng, lat } = e.lngLat;
-        console.log(lng, lat);
+        // console.log(lng, lat);
       });
       map.on("style.load", () => {
         map.setFog({}); // Set the default atmosphere style
@@ -324,17 +356,6 @@ export default {
       });
       map.addControl(scale);
       scale.setUnit("metric");
-      // 全图
-      // map.addControl(new mapboxgl.FullscreenControl());
-      // 定位
-      // map.addControl(
-      //   new mapboxgl.GeolocateControl({
-      //     positionOptions: {
-      //       enableHighAccuracy: true,
-      //     },
-      //     trackUserLocation: true,
-      //   })
-      // );
 
       map.on('load', () => {
         map.addSource('radar', {
@@ -357,43 +378,49 @@ export default {
           }
         });
       });
-      const marker1 = new mapboxgl.Marker({
-        color: "#5995FC",
-        clickTolerance: 10,
-        draggable: true,
-      })
-        .setDraggable(false)
-        .setLngLat([-71.90015, 42.31])
-        .setPopup(
-          new mapboxgl.Popup().setHTML(
-            `<div style="height:100%;width:100%;">
-              <div style="text-align:center"><h1>马萨诸塞州</h1></div>
-              <div>
-                <h5 style="font-size:16px"><span style="font-weight:800;">简介:</span>马萨诸塞州为美国第七小的州，位于美国东北部的新英格兰地区。 该州的最大城市为波士顿，是查尔斯河的入海口。</h5>
-              </div>
-
-              </div>`
+      for (let i = 0; i < this.options.length; i++) {
+        let marker = new mapboxgl.Marker({
+          color: "#5995FC",
+          clickTolerance: 10,
+          draggable: true,
+        })
+          .setDraggable(false)
+          .setLngLat(this.options[i].tag)
+          .setPopup(
+            new mapboxgl.Popup().setHTML(
+              this.options[i].message
+            )
           )
-        )
-        .addTo(map);
-      const marker2 = new mapboxgl.Marker({
-        color: "#5995FC",
-        clickTolerance: 10,
-        draggable: true,
-      })
-        .setDraggable(false)
-        .setLngLat([118.70666291375721, 32.20465578992527])
-        .setPopup(
-          new mapboxgl.Popup().setHTML(`<div style="height:100%;width:100%;">
-              <div style="text-align:center"><h1>南京信息工程大学</h1></div>
-              <div>
-                <h5 style="font-size:16px"><span style="font-weight:800;">简介:</span>南京信息工程大学，位于江苏省南京市，是一所以大气科学为特色的全国重点大学，全国首批深化创新创业教育改革示范高校、应急管理学院建设首批试点学校。</h5>
-              </div>
-              </div>`)
-        )
-        .addTo(map);
-      this.map = map;
+          .addTo(map);
+
+      }
       let _this = this;
+      for (let i = 0; i < this.mapState.length; i++) {
+        for (let j = 0; j < this.mapState[i].length; j++) {
+          console.log(_this.mapState[i][j]);
+          map.on('load', () => {
+            map.addSource(String(i + 'a' + j), {
+              'type': 'raster',
+              'tiles': [
+                _this.mapState[i][j]
+              ],
+              'tileSize': 256
+            }); map.addLayer({
+              'id': String(i + 'a' + j),
+              'type': 'raster',
+              'source': String(i + 'a' + j), // reference the data source
+              'paint': {
+                'raster-opacity': 1
+              }
+            })
+
+          })
+        }
+      }
+
+
+      this.map = map;
+
       this.map.on("dblclick", (e) => {
         _this.flyToMarker(e);
       });
@@ -432,78 +459,48 @@ export default {
       map.on("style.load", () => {
         map.setFog({}); // Set the default atmosphere style
       });
-      const marker1 = new mapboxgl.Marker({
-        color: "#5995FC",
-        clickTolerance: 10,
-        draggable: true,
-      })
-        .setDraggable(false)
-        .setLngLat([-71.907335, 42.311482])
-        .setPopup(new mapboxgl.Popup().setHTML("<h1>示范点</h1>"))
-        .addTo(map);
-      const marker2 = new mapboxgl.Marker({
-        color: "#5995FC",
-        clickTolerance: 10,
-        draggable: true,
-      })
-        .setDraggable(false)
-        .setLngLat([118.70666291375721, 32.20465578992527])
-        .setPopup(new mapboxgl.Popup().setHTML("<h1>示范点</h1>"))
-        .addTo(map);
+      for (let i = 0; i < this.options.length; i++) {
+        new mapboxgl.Marker({
+          color: "#5995FC",
+          clickTolerance: 10,
+          draggable: true,
+        })
+          .setDraggable(false)
+          .setLngLat(this.options[i].tag)
+          .setPopup(
+            new mapboxgl.Popup().setHTML(
+              this.options[i].message
+            )
+          )
+          .addTo(map);
+      }
       this.fullMap = map;
     },
     flyToMarker(e) {
-      if (
-        -75 <= e.lngLat.lng &&
-        e.lngLat.lng <= -68 &&
-        39 <= e.lngLat.lat &&
-        e.lngLat.lat <= 46
-      ) {
-        this.isFixed = false;
-        this.tag = "马萨诸塞州";
+      let flag = true
+      for (let i = 0; i < this.options.length; i++) {
+        if (this.options[i].tag[0] - 2 <= e.lngLat.lng &&
+          e.lngLat.lng <= this.options[i].tag[0] + 2 &&
+          this.options[i].tag[1] - 2 <= e.lngLat.lat &&
+          e.lngLat.lat <= this.options[i].tag[1] + 2) {
+          this.isFixed = false;
+          this.tag = this.options[i].name;
 
-        this.map.flyTo({
-          center: [-71.907335, 42.311482],
-          zoom: 8,
-        });
-        this.fullMap.flyTo({
-          center: [-71.907335, 42.311482],
-          zoom: 8,
-        });
-        this.selectedTag = "马萨诸塞州";
-        let z;
-        this.options.forEach((item) => {
-          if (item.name == "马萨诸塞州") {
-            z = item;
-          }
-        });
-        this.templateId = z.templateId
-      } else if (
-        116 <= e.lngLat.lng &&
-        e.lngLat.lng <= 121 &&
-        29 <= e.lngLat.lat &&
-        e.lngLat.lat <= 35
-      ) {
-        this.isFixed = false;
-        this.tag = "南京信息工程大学";
+          this.map.flyTo({
+            center: this.options[i].tag,
+            zoom: this.options[i].zoom,
+          });
+          this.fullMap.flyTo({
+            center: this.options[i].tag,
+            zoom: this.options[i].zoom,
+          });
+          this.selectedTag = this.options[i].name;
+          this.templateId = this.options[i].templateId
+          flag = false
+        }
 
-        this.map.flyTo({
-          center: [118.70666291375721, 32.20465578992527],
-          zoom: 15,
-        });
-        this.fullMap.flyTo({
-          center: [118.70666291375721, 32.20465578992527],
-          zoom: 15,
-        });
-        this.selectedTag = "南京信息工程大学";
-        let z;
-        this.options.forEach((item) => {
-          if (item.name == "南京信息工程大学") {
-            z = item;
-          }
-        });
-        this.templateId = z.templateId
-      } else {
+      }
+      if (flag) {
         this.isFixed = false;
         this.map.flyTo({
           center: e.lngLat,
