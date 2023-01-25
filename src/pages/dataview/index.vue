@@ -136,22 +136,22 @@ export default {
   data() {
     return {
       mapState: [
-        ['http://192.168.31.252:8082/geoserver/guadaer/wms?bbox={bbox-epsg-3857}&format=image/png&service=WMS&version=1.1.1&request=GetMap&srs=EPSG:3857&transparent=true&WIDTH=256&HEIGHT=256&layers=guadaer:guadaer1',
-          'http://192.168.31.252:8082/geoserver/guadaer/wms?bbox={bbox-epsg-3857}&format=image/png&service=WMS&version=1.1.1&request=GetMap&srs=EPSG:3857&transparent=true&WIDTH=256&HEIGHT=256&layers=guadaer:guadaer2',
-          'http://192.168.31.252:8082/geoserver/guadaer/wms?bbox={bbox-epsg-3857}&format=image/png&service=WMS&version=1.1.1&request=GetMap&srs=EPSG:3857&transparent=true&WIDTH=256&HEIGHT=256&layers=guadaer:guadaer3',
-          'http://192.168.31.252:8082/geoserver/guadaer/wms?bbox={bbox-epsg-3857}&format=image/png&service=WMS&version=1.1.1&request=GetMap&srs=EPSG:3857&transparent=true&WIDTH=256&HEIGHT=256&layers=guadaer:guadaer4',
-          'http://192.168.31.252:8082/geoserver/guadaer/wms?bbox={bbox-epsg-3857}&format=image/png&service=WMS&version=1.1.1&request=GetMap&srs=EPSG:3857&transparent=true&WIDTH=256&HEIGHT=256&layers=guadaer:guadaer5',
+        ['http://202.195.239.146:92/geoserver/guadaer/wms?bbox={bbox-epsg-3857}&format=image/png&service=WMS&version=1.1.1&request=GetMap&srs=EPSG:3857&transparent=true&WIDTH=256&HEIGHT=256&layers=guadaer:guadaer1',
+          'http://202.195.239.146:92/geoserver/guadaer/wms?bbox={bbox-epsg-3857}&format=image/png&service=WMS&version=1.1.1&request=GetMap&srs=EPSG:3857&transparent=true&WIDTH=256&HEIGHT=256&layers=guadaer:guadaer2',
+          'http://202.195.239.146:92/geoserver/guadaer/wms?bbox={bbox-epsg-3857}&format=image/png&service=WMS&version=1.1.1&request=GetMap&srs=EPSG:3857&transparent=true&WIDTH=256&HEIGHT=256&layers=guadaer:guadaer3',
+          'http://202.195.239.146:92/geoserver/guadaer/wms?bbox={bbox-epsg-3857}&format=image/png&service=WMS&version=1.1.1&request=GetMap&srs=EPSG:3857&transparent=true&WIDTH=256&HEIGHT=256&layers=guadaer:guadaer4',
+          'http://202.195.239.146:92/geoserver/guadaer/wms?bbox={bbox-epsg-3857}&format=image/png&service=WMS&version=1.1.1&request=GetMap&srs=EPSG:3857&transparent=true&WIDTH=256&HEIGHT=256&layers=guadaer:guadaer5',
         ],
-        ['http://192.168.31.252:8082/geoserver/mengmai/wms?bbox={bbox-epsg-3857}&format=image/png&service=WMS&version=1.1.1&request=GetMap&srs=EPSG:3857&transparent=true&WIDTH=256&HEIGHT=256&layers=mengmai:mengmai1',
-          'http://192.168.31.252:8082/geoserver/mengmai/wms?bbox={bbox-epsg-3857}&format=image/png&service=WMS&version=1.1.1&request=GetMap&srs=EPSG:3857&transparent=true&WIDTH=256&HEIGHT=256&layers=mengmai:mengmai2',
-          'http://192.168.31.252:8082/geoserver/mengmai/wms?bbox={bbox-epsg-3857}&format=image/png&service=WMS&version=1.1.1&request=GetMap&srs=EPSG:3857&transparent=true&WIDTH=256&HEIGHT=256&layers=mengmai:mengmai3',
-          'http://192.168.31.252:8082/geoserver/mengmai/wms?bbox={bbox-epsg-3857}&format=image/png&service=WMS&version=1.1.1&request=GetMap&srs=EPSG:3857&transparent=true&WIDTH=256&HEIGHT=256&layers=mengmai:mengmai4',
-          'http://192.168.31.252:8082/geoserver/mengmai/wms?bbox={bbox-epsg-3857}&format=image/png&service=WMS&version=1.1.1&request=GetMap&srs=EPSG:3857&transparent=true&WIDTH=256&HEIGHT=256&layers=mengmai:mengmai5',
-          'http://192.168.31.252:8082/geoserver/mengmai/wms?bbox={bbox-epsg-3857}&format=image/png&service=WMS&version=1.1.1&request=GetMap&srs=EPSG:3857&transparent=true&WIDTH=256&HEIGHT=256&layers=mengmai:mengmai6',
-          'http://192.168.31.252:8082/geoserver/mengmai/wms?bbox={bbox-epsg-3857}&format=image/png&service=WMS&version=1.1.1&request=GetMap&srs=EPSG:3857&transparent=true&WIDTH=256&HEIGHT=256&layers=mengmai:mengmai7',
-          'http://192.168.31.252:8082/geoserver/mengmai/wms?bbox={bbox-epsg-3857}&format=image/png&service=WMS&version=1.1.1&request=GetMap&srs=EPSG:3857&transparent=true&WIDTH=256&HEIGHT=256&layers=mengmai:mengmai8',
-          'http://192.168.31.252:8082/geoserver/mengmai/wms?bbox={bbox-epsg-3857}&format=image/png&service=WMS&version=1.1.1&request=GetMap&srs=EPSG:3857&transparent=true&WIDTH=256&HEIGHT=256&layers=mengmai:mengmai9',
-          'http://192.168.31.252:8082/geoserver/mengmai/wms?bbox={bbox-epsg-3857}&format=image/png&service=WMS&version=1.1.1&request=GetMap&srs=EPSG:3857&transparent=true&WIDTH=256&HEIGHT=256&layers=mengmai:mengmai10',
+        ['http://202.195.239.146:92/geoserver/mengmai/wms?bbox={bbox-epsg-3857}&format=image/png&service=WMS&version=1.1.1&request=GetMap&srs=EPSG:3857&transparent=true&WIDTH=256&HEIGHT=256&layers=mengmai:mengmai1',
+          'http://202.195.239.146:92/geoserver/mengmai/wms?bbox={bbox-epsg-3857}&format=image/png&service=WMS&version=1.1.1&request=GetMap&srs=EPSG:3857&transparent=true&WIDTH=256&HEIGHT=256&layers=mengmai:mengmai2',
+          'http://202.195.239.146:92/geoserver/mengmai/wms?bbox={bbox-epsg-3857}&format=image/png&service=WMS&version=1.1.1&request=GetMap&srs=EPSG:3857&transparent=true&WIDTH=256&HEIGHT=256&layers=mengmai:mengmai3',
+          'http://202.195.239.146:92/geoserver/mengmai/wms?bbox={bbox-epsg-3857}&format=image/png&service=WMS&version=1.1.1&request=GetMap&srs=EPSG:3857&transparent=true&WIDTH=256&HEIGHT=256&layers=mengmai:mengmai4',
+          'http://202.195.239.146:92/geoserver/mengmai/wms?bbox={bbox-epsg-3857}&format=image/png&service=WMS&version=1.1.1&request=GetMap&srs=EPSG:3857&transparent=true&WIDTH=256&HEIGHT=256&layers=mengmai:mengmai5',
+          'http://202.195.239.146:92/geoserver/mengmai/wms?bbox={bbox-epsg-3857}&format=image/png&service=WMS&version=1.1.1&request=GetMap&srs=EPSG:3857&transparent=true&WIDTH=256&HEIGHT=256&layers=mengmai:mengmai6',
+          'http://202.195.239.146:92/geoserver/mengmai/wms?bbox={bbox-epsg-3857}&format=image/png&service=WMS&version=1.1.1&request=GetMap&srs=EPSG:3857&transparent=true&WIDTH=256&HEIGHT=256&layers=mengmai:mengmai7',
+          'http://202.195.239.146:92/geoserver/mengmai/wms?bbox={bbox-epsg-3857}&format=image/png&service=WMS&version=1.1.1&request=GetMap&srs=EPSG:3857&transparent=true&WIDTH=256&HEIGHT=256&layers=mengmai:mengmai8',
+          'http://202.195.239.146:92/geoserver/mengmai/wms?bbox={bbox-epsg-3857}&format=image/png&service=WMS&version=1.1.1&request=GetMap&srs=EPSG:3857&transparent=true&WIDTH=256&HEIGHT=256&layers=mengmai:mengmai9',
+          'http://202.195.239.146:92/geoserver/mengmai/wms?bbox={bbox-epsg-3857}&format=image/png&service=WMS&version=1.1.1&request=GetMap&srs=EPSG:3857&transparent=true&WIDTH=256&HEIGHT=256&layers=mengmai:mengmai10',
         ],
       ],
       map: null,
@@ -320,8 +320,10 @@ export default {
       this.tag = null;
     },
     initMap(zoom) {
+      // mapboxgl.accessToken =
+      //   "pk.eyJ1IjoicGxheS1pc2FhYyIsImEiOiJjazU0cDkzbWowamd2M2dtemd4bW9mbzRhIn0.cxD4Fw3ZPB_taMkyUSFENA";
       mapboxgl.accessToken =
-        "pk.eyJ1IjoicGxheS1pc2FhYyIsImEiOiJjazU0cDkzbWowamd2M2dtemd4bW9mbzRhIn0.cxD4Fw3ZPB_taMkyUSFENA";
+        "pk.eyJ1IjoibGF3aW5iZWUiLCJhIjoiY2w4OWpoNW5kMDBrdzNwbzNtcTgxaDl1YiJ9.xjTaNpwhQeBpbIFrQaXsKw";
 
       const map = new mapboxgl.Map({
         container: "map", // container ID
@@ -439,7 +441,7 @@ export default {
         z.zoom = 2;
       }
       mapboxgl.accessToken =
-        "pk.eyJ1IjoicGxheS1pc2FhYyIsImEiOiJjazU0cDkzbWowamd2M2dtemd4bW9mbzRhIn0.cxD4Fw3ZPB_taMkyUSFENA";
+        "pk.eyJ1IjoibGF3aW5iZWUiLCJhIjoiY2w4OWpoNW5kMDBrdzNwbzNtcTgxaDl1YiJ9.xjTaNpwhQeBpbIFrQaXsKw";
 
       const map = new mapboxgl.Map({
         container: "fullScreenMap", // container ID
