@@ -7,29 +7,34 @@
       </el-breadcrumb>
     </Transition>
     <el-card class="card-style" shadow="hover" :body-style="{ padding: '10px' }" style="height: calc(100vh - 170px)">
-      <el-select class="size" v-model="tag" placeholder="请选择示范点" style="width: 200px" @change="selectChange" clearable
-        @clear="fixMap()" size="small">
-        <el-option v-for="item in options" :key="item.index" :label="item.name" :value="item.tag">
-        </el-option>
-      </el-select>
-
+      <el-row>
+        <el-select class="size" v-model="tag" placeholder="请选择示范点" style="width: 200px" @change="selectChange" clearable
+          @clear="fixMap()" size="small">
+          <el-option v-for="item in options" :key="item.index" :label="item.name" :value="item.tag">
+          </el-option>
+        </el-select>
+        <el-button @click="changeSize()" size="small" type="primary" style="margin-left:10px"
+          v-if="!showDoubleMap">结果对比</el-button>
+        <el-button @click="changeSize()" size="small" type="primary" style="margin-left:10px"
+          v-if="showDoubleMap">还原</el-button>
+      </el-row>
       <el-button @click="create()" size="small" v-if="tag" style="
-          position: fixed;
-          bottom: 297px;
-          right: 31px;
-          z-index: 9999999;
-          font-size: 16px;
-          padding: 6px;
-        " icon="el-icon-circle-plus-outline"></el-button>
-
-      <el-button @click="full()" size="small" v-if="tag" style="
           position: fixed;
           bottom: 260px;
           right: 31px;
           z-index: 9999999;
           font-size: 16px;
           padding: 6px;
-        " icon="el-icon-full-screen"></el-button>
+        " icon="el-icon-circle-plus-outline"></el-button>
+
+      <!-- <el-button @click="full()" size="small" v-if="tag" style="
+          position: fixed;
+          bottom: 260px;
+          right: 31px;
+          z-index: 9999999;
+          font-size: 16px;
+          padding: 6px;
+        " icon="el-icon-full-screen"></el-button> -->
       <el-button @click="addThreeD()" size="small" style="
           position: fixed;
           bottom: 185px;
@@ -68,7 +73,10 @@
         v-if="!isFixed"
         icon="el-icon-refresh-left"
       ></el-button> -->
-      <div id="map"></div>
+
+
+      <div id="map" style="float:right"></div>
+      <div id="resultMap" style="float:right"></div>
       <div id="fullScreenMap" v-show="isFullScreen" style="height: 100%; width: 100%">
         <dv-border-box-11 :title="selectedTag" class="zIndex">
           <el-row style="height: 50px; padding-top: 43px">
@@ -156,12 +164,14 @@ export default {
       ],
       map: null,
       fullMap: null,
+      resultMap: null,
       tag: null,
       selectedTag: null,
       is3D: false,
       isFixed: true,
       isFullScreen: false,
       templateId: null,
+      showDoubleMap: false,
       options: [
         {
           index: 0, name: "孟买", tag: [72.830127, 18.975847], zoom: 15, templateId: 28, message: `<div style="height:100%;width:100%;">
@@ -227,6 +237,21 @@ export default {
   },
   computed: {},
   methods: {
+    changeSize() {
+      if (!this.showDoubleMap) {
+        this.showDoubleMap = true;
+        document.getElementById("map").style.width = (document.body.clientWidth - 200 - 46) / 2 + 'px'
+        document.getElementById("resultMap").style.width = (document.body.clientWidth - 200 - 46) / 2 + 'px'
+        document.getElementById("resultMap").style.top = 10 + 'px'
+        this.initMap(3)
+      } else {
+        document.getElementById("map").style.width = (document.body.clientWidth - 200 - 30) + 'px'
+        document.getElementById("resultMap").style.top = 200 + 'px'
+        this.showDoubleMap = false;
+        this.initMap(3)
+      }
+
+    },
     create() {
       this.$store.dispatch("Template/getJobTemplate", { templateId: this.templateId })
       this.$store.dispatch("Template/getTaskTemplate", { templateId: this.templateId })
@@ -304,6 +329,7 @@ export default {
           z = item;
         }
       });
+      console.log(z);
       this.selectedTag = z.name;
       this.map.flyTo({
         center: tag,
@@ -337,22 +363,42 @@ export default {
         antialias: false,
         attributionControl: false,
       });
+      const resultMap = new mapboxgl.Map({
+        container: "resultMap", // container ID
+        // Choose from Mapbox's core styles, or make your own style with Mapbox Studio
+        // style: "mapbox://styles/mapbox/satellite-streets-v11",
+        style: "mapbox://styles/mapbox/dark-v10",
+        // style: "mapbox://styles/mapbox/streets-v11",
+        zoom: zoom,
+        center: [120, 40],
+        // projection: "globe",
+        antialias: false,
+        attributionControl: false,
+      });
       map.on("click", (e) => {
         const { lng, lat } = e.lngLat;
-        // console.log(lng, lat);
+        console.log(lng, lat);
       });
       map.on("style.load", () => {
         map.setFog({}); // Set the default atmosphere style
       });
+
       map.doubleClickZoom.disable();
+      resultMap.doubleClickZoom.disable();
       // 设置语言
       var language = new MapboxLanguage({ defaultLanguage: "zh-Hans" });
+      var language2 = new MapboxLanguage({ defaultLanguage: "zh-Hans" });
       map.addControl(language);
+      resultMap.addControl(language2);
       // 地图导航
       var nav = new mapboxgl.NavigationControl();
       map.addControl(nav, "bottom-right");
       // 比例尺
       var scale = new mapboxgl.ScaleControl({
+        maxWidth: 100,
+        unit: "imperial",
+      });
+      var scale1 = new mapboxgl.ScaleControl({
         maxWidth: 100,
         unit: "imperial",
       });
@@ -396,6 +442,22 @@ export default {
           .addTo(map);
 
       }
+      for (let i = 0; i < this.options.length; i++) {
+        let marker = new mapboxgl.Marker({
+          color: "#5995FC",
+          clickTolerance: 10,
+          draggable: true,
+        })
+          .setDraggable(false)
+          .setLngLat(this.options[i].tag)
+          .setPopup(
+            new mapboxgl.Popup().setHTML(
+              this.options[i].message
+            )
+          )
+          .addTo(resultMap);
+
+      }
       let _this = this;
       for (let i = 0; i < this.mapState.length; i++) {
         for (let j = 0; j < this.mapState[i].length; j++) {
@@ -419,10 +481,51 @@ export default {
           })
         }
       }
+      // 拖拽
+      // resultMap.on("drag", function () {
+      //   let resultMap_x = resultMap.getCenter().lng;
+      //   let resultMap_y = resultMap.getCenter().lat;
+      //   map.setCenter([resultMap_x, resultMap_y]);
+      // });
+      map.on("drag", function () {
+        let map_x = map.getCenter().lng;
+        let map_y = map.getCenter().lat;
+        resultMap.setCenter([map_x, map_y]);
+      });
+
+      //   放大缩小
+      // resultMap.on("zoom", function () {
+      //   let resultMap_zoom = resultMap.getZoom();
+      //   map.setZoom(resultMap_zoom);
+      // });
+      map.on("zoom", function () {
+        let map_zoom = map.getZoom();
+        resultMap.setZoom(map_zoom);
+      });
+
+      // // 倾斜
+      // resultMap.on("pitch", function () {
+      //   let resultMap_pitch = resultMap.getPitch();
+      //   map.setPitch(resultMap_pitch);
+      // });
+      map.on("pitch", function () {
+        let map_pitch = map.getPitch();
+        resultMap.setPitch(map_pitch);
+      });
+
+      // // 旋转
+      map.on("rotate", function () {
+        let map_bear = map.getBearing();
+        resultMap.setBearing(map_bear);
+      });
+      // resultMap.on("rotate", function () {
+      //   let resultMap_bear = resultMap.getBearing();
+      //   map.setBearing(resultMap_bear);
+      // });
 
 
       this.map = map;
-
+      this.resultMap = resultMap;
       this.map.on("dblclick", (e) => {
         _this.flyToMarker(e);
       });
@@ -492,10 +595,10 @@ export default {
             center: this.options[i].tag,
             zoom: this.options[i].zoom,
           });
-          this.fullMap.flyTo({
-            center: this.options[i].tag,
-            zoom: this.options[i].zoom,
-          });
+          // this.fullMap.flyTo({
+          //   center: this.options[i].tag,
+          //   zoom: this.options[i].zoom,
+          // });
           this.selectedTag = this.options[i].name;
           this.templateId = this.options[i].templateId
           flag = false
@@ -513,7 +616,8 @@ export default {
   },
   mounted() {
     this.initMap(3);
-    this.initFullScreenMap([120, 40]);
+    // this.initFullScreenMap([120, 40]);
+    document.getElementById("resultMap").style.top = 200 + 'px'
   },
 
   created() {
@@ -580,13 +684,26 @@ export default {
 #map {
   position: relative;
   border-radius: 5px;
-  height: calc(100vh - 230px);
+  height: calc(100vh - 240px);
   width: calc(100%);
   top: 10px;
 }
 
 /* 隐藏mapbox商标 */
 #map>>>.mapboxgl-ctrl-logo {
+  display: none !important;
+}
+
+#resultMap {
+  position: relative;
+  border-radius: 5px;
+  height: calc(100vh - 240px);
+  width: calc((100% - 200px - 46px) / 2);
+  top: 10px;
+}
+
+/* 隐藏mapbox商标 */
+#resultMap>>>.mapboxgl-ctrl-logo {
   display: none !important;
 }
 
