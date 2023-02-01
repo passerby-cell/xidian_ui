@@ -172,6 +172,8 @@ export default {
       isFullScreen: false,
       templateId: null,
       showDoubleMap: false,
+      currentImage: 0,
+      frameCount: 5,
       options: [
         {
           index: 0, name: "孟买", tag: [72.830127, 18.975847], zoom: 15, templateId: 28, message: `<div style="height:100%;width:100%;">
@@ -238,17 +240,25 @@ export default {
   computed: {},
   methods: {
     changeSize() {
+      let timer
+
       if (!this.showDoubleMap) {
         this.showDoubleMap = true;
         document.getElementById("map").style.width = (document.body.clientWidth - 200 - 46) / 2 + 'px'
         document.getElementById("resultMap").style.width = (document.body.clientWidth - 200 - 46) / 2 + 'px'
         document.getElementById("resultMap").style.top = 10 + 'px'
         this.initMap(3)
+        let _this = this;
+        timer = setInterval(() => {
+          _this.currentImage = (_this.currentImage + 1) % _this.frameCount;
+          _this.resultMap.getSource('radar').updateImage({ url: _this.getPath() });
+        }, 500);
       } else {
         document.getElementById("map").style.width = (document.body.clientWidth - 200 - 30) + 'px'
         document.getElementById("resultMap").style.top = 200 + 'px'
         this.showDoubleMap = false;
         this.initMap(3)
+        clearInterval(timer)
       }
 
     },
@@ -345,7 +355,19 @@ export default {
       });
       this.tag = null;
     },
+    getPath() {
+      return `https://docs.mapbox.com/mapbox-gl-js/assets/radar` + this.currentImage + `.gif`;
+    },
     initMap(zoom) {
+
+      this.map = null;
+      let mapDiv = document.getElementById('map')
+      if (mapDiv.childNodes.length != 0) {
+        for (let i = 0; i < mapDiv.childNodes.length; i++) {
+          mapDiv.removeChild(mapDiv.childNodes[i])
+        }
+      }
+
       // mapboxgl.accessToken =
       //   "pk.eyJ1IjoicGxheS1pc2FhYyIsImEiOiJjazU0cDkzbWowamd2M2dtemd4bW9mbzRhIn0.cxD4Fw3ZPB_taMkyUSFENA";
       mapboxgl.accessToken =
@@ -398,34 +420,52 @@ export default {
         maxWidth: 100,
         unit: "imperial",
       });
-      var scale1 = new mapboxgl.ScaleControl({
-        maxWidth: 100,
-        unit: "imperial",
-      });
       map.addControl(scale);
       scale.setUnit("metric");
-
-      map.on('load', () => {
-        map.addSource('radar', {
+      let _this = this;
+      resultMap.on('load', () => {
+        resultMap.addSource('radar', {
           'type': 'image',
-          'url': require("../../assets/images/gf.jpg"),
+          'url': _this.getPath(),
           'coordinates': [
-            [-71.9002, 42.3101],
-            [-71.9001, 42.3101],
-            [-71.9001, 42.3100],
-            [-71.9002, 42.3100]
+            [62.314543049432984, 25.115354530413],
+            [62.314543049432984, 25.095380319320554],
+            [62.3365095788937, 25.09550465022575],
+            [62.336418051687644, 25.115271656610616]
           ]
         });
-        map.addLayer({
+        resultMap.addLayer({
           id: 'radar-layer',
           'type': 'raster',
           'source': 'radar',
-
           'paint': {
             'raster-fade-duration': 0
           }
         });
       });
+
+
+      resultMap.on('load', () => {
+        resultMap.addSource('road', {
+          'type': 'image',
+          'url': require("../../assets/images/guadaer.png"),
+          'coordinates': [
+            [72.81897900758375, 18.97891135781917],
+            [72.81811573553242, 18.95836545547479],
+            [72.83931386033453, 18.958184023426412],
+            [72.83931386033453, 18.978820652999744]
+          ]
+        });
+        resultMap.addLayer({
+          id: 'road-layer',
+          'type': 'raster',
+          'source': 'road',
+          'paint': {
+            'raster-fade-duration': 0
+          }
+        });
+      });
+
       for (let i = 0; i < this.options.length; i++) {
         let marker = new mapboxgl.Marker({
           color: "#5995FC",
@@ -458,7 +498,7 @@ export default {
           .addTo(resultMap);
 
       }
-      let _this = this;
+
       for (let i = 0; i < this.mapState.length; i++) {
         for (let j = 0; j < this.mapState[i].length; j++) {
           console.log(_this.mapState[i][j]);
@@ -500,6 +540,9 @@ export default {
       // });
       map.on("zoom", function () {
         let map_zoom = map.getZoom();
+        let map_x = map.getCenter().lng;
+        let map_y = map.getCenter().lat;
+        resultMap.setCenter([map_x, map_y]);
         resultMap.setZoom(map_zoom);
       });
 
@@ -510,6 +553,9 @@ export default {
       // });
       map.on("pitch", function () {
         let map_pitch = map.getPitch();
+        let map_x = map.getCenter().lng;
+        let map_y = map.getCenter().lat;
+        resultMap.setCenter([map_x, map_y]);
         resultMap.setPitch(map_pitch);
       });
 
