@@ -12,18 +12,14 @@ const request = axios.create({
   // 基础路径:发请求时路径中会出现/api
   baseURL: "/api",
   // 请求超时的时间
-  timeout: 50000,
+  timeout: 500000,
 });
 // 请求拦截器
 request.interceptors.request.use((config) => {
   // config:配置对象
   // 进度条开始
   nprogress.start();
-  config.headers["token"] = localStorage.getItem("token");
-  config.headers["refreshToken"] = localStorage.getItem("refreshToken");
-  // TODO: modelId
-  config.headers["modelId"] = 1;
-  config.headers["systemId"] = 1;
+
   return config;
 });
 // 响应拦截器
@@ -32,14 +28,7 @@ request.interceptors.response.use(
     // 成功的回调函数
     // 进度条结束
     nprogress.done();
-    if (res.data.token) {
-      localStorage.setItem("token", res.data.token);
-    }
-    if (res.data.code == 201) {
-      localStorage.clear();
-      vue.$router.push({ name: "login" });
-      //location.href = "http://localhost:10086/#/login";
-    }
+
     return res.data;
   },
   (error) => {

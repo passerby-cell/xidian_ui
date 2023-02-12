@@ -26,12 +26,12 @@
 import Header from "./components/Header/index.vue";
 import SideBar from "./components/SideBar/index.vue";
 import Footer from "./components/Footer/index.vue";
-import Login from "@/pages/Login";
+
 
 export default {
   name: "App",
-  components: { Header, SideBar, Footer, Login },
-  mounted() {},
+  components: { Header, SideBar, Footer },
+  mounted() { },
 };
 </script>
 
@@ -40,6 +40,7 @@ export default {
   font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB",
     "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
 }
+
 .el-header,
 .el-footer {
   background-color: #b3c0d1;
@@ -47,9 +48,11 @@ export default {
   line-height: 60px;
   padding: 0px;
 }
+
 .el-header {
   min-width: 1290px;
 }
+
 .el-footer {
   min-width: 1090px;
 }
@@ -59,6 +62,7 @@ export default {
   min-width: 200px;
   height: calc(100vh - 60px);
 }
+
 .el-main {
   min-width: 1090px;
   padding: 0px;
