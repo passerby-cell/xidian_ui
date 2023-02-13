@@ -5,24 +5,24 @@
         <el-submenu index="1">
           <template slot="title">
             <i class="el-icon-cpu"></i>
-            <span class="size">数据分析</span>
+            <span class="bigsize">数据分析</span>
           </template>
 
           <el-menu-item @click="toZaBo()" index="/zabo" key="zabo">
-            <span slot="title" class="subsize">&nbsp;&nbsp;&nbsp;&nbsp;杂波模型</span>
+            <span slot="title" class="middlesize">&nbsp;&nbsp;&nbsp;&nbsp;杂波模型</span>
           </el-menu-item>
           <el-menu-item @click="toMuBiao()" index="/mubiao" key="mubiao">
-            <span slot="title" class="subsize">&nbsp;&nbsp;&nbsp;&nbsp;目标检测</span>
+            <span slot="title" class="middlesize">&nbsp;&nbsp;&nbsp;&nbsp;目标检测</span>
           </el-menu-item>
         </el-submenu>
 
         <el-submenu index="2">
           <template slot="title">
             <i class="el-icon-setting"></i>
-            <span class="size">系统配置</span>
+            <span class="bigsize">系统配置</span>
           </template>
           <el-menu-item @click="toConfig()" index="/config" key="config">
-            <span slot="title" class="subsize">&nbsp;&nbsp;&nbsp;&nbsp;文件配置</span>
+            <span slot="title" class="middlesize">&nbsp;&nbsp;&nbsp;&nbsp;文件配置</span>
           </el-menu-item>
         </el-submenu>
       </el-menu>
@@ -53,6 +53,8 @@ export default {
 </script>
 
 <style scoped>
+@import url("../../../fontsize.css");
+
 .el-menu {
   height: calc(100vh - 60px);
   overflow: hidden;

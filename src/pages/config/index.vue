@@ -2,16 +2,16 @@
   <div>
     <Transition appear enter-active-class="animate__animated animate__fadeInLeft"
       leave-active-class="animate__animated animate__fadeOutRight">
-      <el-breadcrumb separator="/">
-        <el-breadcrumb-item>系统配置</el-breadcrumb-item>
-        <el-breadcrumb-item>文件配置</el-breadcrumb-item>
+      <el-breadcrumb separator="/" class="bigsize">
+        <el-breadcrumb-item class="bigsize">系统配置</el-breadcrumb-item>
+        <el-breadcrumb-item class="bigsize">文件配置</el-breadcrumb-item>
       </el-breadcrumb>
     </Transition>
     <el-card class="card-style" shadow="hover" :body-style="{ padding: '10px' }"
-      style="height: calc(100vh - 170px); overflow: auto">
+      style="height: calc(100vh - 180px); overflow: auto">
       <Transition appear enter-active-class="animate__animated animate__fadeInLeft"
         leave-active-class="animate__animated animate__fadeOutRight">
-        <el-tag type="primary" effect="dark" size="medium " style="font-size: 16px;">算法输出目录</el-tag>
+        <el-tag type="primary" effect="dark" size="medium " class="middlesize">算法输出目录</el-tag>
       </Transition>
       <Transition appear enter-active-class="animate__animated animate__fadeInLeft"
         leave-active-class="animate__animated animate__fadeOutRight">
@@ -25,7 +25,8 @@
       </Transition>
       <Transition appear enter-active-class="animate__animated animate__fadeInLeft"
         leave-active-class="animate__animated animate__fadeOutRight">
-        <el-tag type="primary" effect="dark" size="medium " style="margin-top: 10px;font-size: 16px;">脉冲压缩算法列表</el-tag>
+        <el-tag type="primary" effect="dark" size="medium " style="margin-top: 10px;"
+          class="middlesize">脉冲压缩算法列表</el-tag>
       </Transition>
       <Transition appear enter-active-class="animate__animated animate__fadeInLeft"
         leave-active-class="animate__animated animate__fadeOutRight">
@@ -64,6 +65,8 @@ export default {
 </script>
 
 <style scoped>
+@import url("../../../fontsize.css");
+
 .el-dialog__body {
   padding: 0px;
 }
@@ -76,7 +79,7 @@ export default {
 
 .el-table {
   font-style: initial;
-  font-size: 16px;
+  font-size: 24px;
 }
 
 .card-style {

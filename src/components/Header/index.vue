@@ -33,9 +33,11 @@ export default {
 };
 </script>
 <style>
+@import url("../../../fontsize.css");
+
 .font {
   /* float: right; */
-  font-size: 25px;
+  font-size: 50px;
   font-style: oblique;
   color: #409eff;
   text-align: center;

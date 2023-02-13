@@ -1,6 +1,6 @@
 <template>
-  <div style="text-align: center; font-size: 16px">
-    Copyright&copy;2022 南京信息工程大学
+  <div style="text-align: center; " class="middlesize">
+    Copyright&copy;2023 南京信息工程大学
   </div>
 </template>
 
@@ -14,4 +14,6 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+@import url("../../../fontsize.css");
+</style>

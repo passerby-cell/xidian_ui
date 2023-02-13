@@ -1,0 +1,14 @@
+.bigsize {
+  font-size: 28px;
+}
+.middlesize {
+  font-size: 24px !important;
+}
+
+.smallsize {
+  font-size: 20px;
+}
+
+.martop {
+  margin-top: 80px !important;
+}
