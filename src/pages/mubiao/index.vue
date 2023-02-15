@@ -126,7 +126,7 @@ export default {
         }
         console.log(_this.loading.mubiao.num);
       }, 600);
-      let result = await reqtargetDetection(this.clustermode || 1, this.cyclenum, this.snr, this.clun);
+      let result = await reqtargetDetection(this.clumode || 1, this.cyclenum, this.snr, this.clun);
       if (result.code == 200) {
         this.loading.mubiao.isloading = false;
         clearInterval(inteval)

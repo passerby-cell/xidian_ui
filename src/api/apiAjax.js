@@ -12,7 +12,7 @@ const request = axios.create({
   // 基础路径:发请求时路径中会出现/api
   baseURL: "/api",
   // 请求超时的时间
-  timeout: 500000,
+  timeout: 9900000,
 });
 // 请求拦截器
 request.interceptors.request.use((config) => {
