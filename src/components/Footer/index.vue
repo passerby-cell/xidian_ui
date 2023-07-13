@@ -1,7 +1,7 @@
 <template>
-  <div style="text-align: center; " class="middlesize">
-    Copyright&copy;2023 南京信息工程大学
-  </div>
+  <div style="text-align: center; height: 80px;">
+    <img src="@/assets/images/footer.png" style="height: 50px;" />
+</div>
 </template>
 
 <script>
@@ -14,6 +14,4 @@ export default {
 };
 </script>
 
-<style scoped>
-@import url("../../../fontsize.css");
-</style>
+<style scoped>@import url("../../../fontsize.css");</style>

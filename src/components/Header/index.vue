@@ -1,14 +1,7 @@
 <template>
   <el-row>
-    <el-menu mode="horizontal" background-color="#ADB6CA" text-color="black">
-      <el-col :span="20">
-        <div style="text-align: center; height: 60px">
-          <img src="@/assets/images/titleicon.jpg" style="height: 60px; width: 210px; margin-left: 10px; float: left" />
-          <span class="font">雷达回波分析系统</span>
-        </div>
-      </el-col>
-    </el-menu>
-  </el-row>
+
+</el-row>
 </template>
 <script>
 

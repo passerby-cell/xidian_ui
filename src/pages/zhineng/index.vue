@@ -1,0 +1,461 @@
+<template>
+  <div>
+    <Transition
+      appear
+      enter-active-class="animate__animated animate__fadeInLeft"
+      leave-active-class="animate__animated animate__fadeOutRight"
+    >
+      <el-breadcrumb separator="/">
+        <el-breadcrumb-item class="bigsize">智能检测</el-breadcrumb-item>
+      </el-breadcrumb>
+    </Transition>
+    <el-card
+      class="card-style"
+      shadow="hover"
+      :body-style="{ padding: '10px' }"
+      style="height: calc(100vh - 200px); overflow: hidden"
+    >
+      <div>
+        <Transition
+          appear
+          enter-active-class="animate__animated animate__fadeInLeft"
+          leave-active-class="animate__animated animate__fadeOutRight"
+          ><div>
+            <el-row>
+              <h3 class="middlesize">
+                <span style="color: #409eff">|</span>&nbsp;智能检测
+              </h3>
+            </el-row>
+            <el-row style="margin-top: 20px; margin-left: 0px">
+              <el-button-group>
+                <el-button
+                  type="primary"
+                  icon="el-icon-arrow-left"
+                  @click="show = false"
+                  >数据处理</el-button
+                >
+                <el-button type="primary" @click="show = true"
+                  >智能检测<i class="el-icon-arrow-right el-icon--right"></i
+                ></el-button> </el-button-group
+            ></el-row>
+          </div>
+        </Transition>
+        <Transition
+          appear
+          enter-active-class="animate__animated animate__fadeInUp"
+          leave-active-class="animate__animated animate__fadeOutDown"
+        >
+          <div v-if="!show" style="position: absolute; top: 200px; width: 90%">
+            <el-row style="margin-top: 20px">
+              <el-col :span="3">
+                <h3 class="middlesize" style="margin-top: 5px">MTI处理</h3>
+              </el-col>
+              <el-col :span="4"
+                ><el-switch
+                  style="margin-top: 10px"
+                  v-model="mti"
+                  active-text="是"
+                  inactive-text="否"
+                  active-color="#13ce66"
+                  inactive-color="#ff4949"
+                >
+                </el-switch
+              ></el-col>
+              <el-col :span="3" :offset="1">
+                <h3 class="middlesize" style="margin-top: 5px">杂波场景</h3>
+              </el-col>
+              <el-col :span="4">
+                <el-select
+                  v-model="cc"
+                  placeholder="请选择"
+                  style="width: 100%"
+                >
+                  <el-option
+                    v-for="item in CCoptions"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value"
+                  >
+                  </el-option>
+                </el-select>
+              </el-col>
+            </el-row>
+            <el-row style="margin-top: 10px">
+              <el-col :span="3">
+                <h3 class="middlesize" style="margin-top: 5px">SNR/dB</h3>
+              </el-col>
+              <el-col :span="4"
+                ><el-input-number
+                  v-model="snr"
+                  :min="-3"
+                  :step="4"
+                  :max="37"
+                  style="width: 100%"
+                ></el-input-number
+              ></el-col>
+              <el-col :span="3" :offset="1">
+                <h3 class="middlesize" style="margin-top: 5px">目标速度</h3>
+              </el-col>
+              <el-col :span="4">
+                <el-select
+                  v-model="vv"
+                  placeholder="请选择"
+                  style="width: 100%"
+                >
+                  <el-option
+                    v-for="item in VVoptions"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value"
+                  >
+                  </el-option>
+                </el-select>
+              </el-col>
+              <el-col :span="2" :offset="1"
+                ><el-button
+                  type="primary"
+                  @click="shujuyuchuli()"
+                  icon="el-icon-view"
+                  >数据预处理</el-button
+                ></el-col
+              >
+            </el-row>
+            <el-row class="martop" style="margin-left: 30px" v-if="showfig1to3">
+              <el-col :span="6">
+                <dv-border-box-12
+                  :reverse="true"
+                  :color="['#6987d6', '#5089da']"
+                  style="height: 440px; width: 420px"
+                >
+                  <p style="text-align: center" class="middlesize">
+                    杂波场景图
+                  </p>
+                  <div style="text-align: center">
+                    <img
+                      v-bind:src="fig1"
+                      style="height: 400px; width: 400px"
+                    />
+                  </div>
+                </dv-border-box-12>
+              </el-col>
+              <el-col :span="6" :offset="2">
+                <dv-border-box-12
+                  :reverse="true"
+                  :color="['#6987d6', '#5089da']"
+                  style="height: 440px; width: 420px"
+                >
+                  <p style="text-align: center" class="middlesize">
+                    MTD后训练数据
+                  </p>
+                  <div style="text-align: center">
+                    <img
+                      v-bind:src="fig2"
+                      style="height: 400px; width: 400px"
+                    />
+                  </div>
+                </dv-border-box-12>
+              </el-col>
+              <el-col :span="6" :offset="2">
+                <dv-border-box-12
+                  :reverse="true"
+                  :color="['#6987d6', '#5089da']"
+                  style="height: 440px; width: 420px"
+                >
+                  <p style="text-align: center" class="middlesize">
+                    MTD后测试数据
+                  </p>
+                  <div style="text-align: center">
+                    <img
+                      v-bind:src="fig3"
+                      style="height: 400px; width: 400px"
+                    />
+                  </div>
+                </dv-border-box-12>
+              </el-col>
+            </el-row>
+          </div>
+        </Transition>
+        <Transition
+          appear
+          enter-active-class="animate__animated animate__fadeInUp"
+          leave-active-class="animate__animated animate__fadeOutDown"
+        >
+          <div v-if="show" style="position: absolute; top: 200px; width: 90%">
+            <el-row style="margin-top: 20px">
+              <el-col :span="3">
+                <h3 class="middlesize" style="margin-top: 5px">杂波场景</h3>
+              </el-col>
+              <el-col :span="4">
+                <el-select
+                  v-model="cc"
+                  placeholder="请选择"
+                  style="width: 100%"
+                >
+                  <el-option
+                    v-for="item in CCoptions"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value"
+                  >
+                  </el-option>
+                </el-select>
+              </el-col>
+              <el-col :span="3" :offset="1">
+                <h3 class="middlesize" style="margin-top: 5px">目标速度</h3>
+              </el-col>
+              <el-col :span="4">
+                <el-select
+                  v-model="vv"
+                  placeholder="请选择"
+                  style="width: 100%"
+                >
+                  <el-option
+                    v-for="item in VVoptions"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value"
+                  >
+                  </el-option>
+                </el-select>
+              </el-col>
+            </el-row>
+            <el-row style="margin-top: 10px">
+              <el-col :span="3">
+                <h3 class="middlesize" style="margin-top: 5px">SNR/dB</h3>
+              </el-col>
+              <el-col :span="4"
+                ><el-input-number
+                  v-model="snr"
+                  :min="-3"
+                  :step="4"
+                  :max="37"
+                  style="width: 100%"
+                ></el-input-number
+              ></el-col>
+              <el-col :span="3" :offset="1">
+                <h3 class="middlesize" style="margin-top: 5px">虚警率</h3>
+              </el-col>
+              <el-col :span="4">
+                <el-select
+                  v-model="pp"
+                  placeholder="请选择"
+                  style="width: 100%"
+                >
+                  <el-option
+                    v-for="item in PPoptions"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value"
+                  >
+                  </el-option>
+                </el-select>
+              </el-col>
+              <el-col :span="2" :offset="1"
+                ><el-button
+                  type="primary"
+                  @click="ZhiNengJianCe()"
+                  icon="el-icon-view"
+                  >智能检测</el-button
+                ></el-col
+              >
+            </el-row>
+          </div></Transition
+        >
+      </div>
+    </el-card>
+  </div>
+</template>
+
+<script>
+import { reqDraw } from "@/api/index";
+export default {
+  name: "zhineng",
+  data() {
+    return {
+      BaseUri: "http://127.0.0.1:8080/preview/",
+      fig1: null,
+      fig2: null,
+      fig3: null,
+      fig4: null,
+      fig5: null,
+      fig6: null,
+      fig7: null,
+      fig8: null,
+      show: false,
+      mti: false,
+      snr: -3,
+      CCoptions: [
+        { label: "farmland", value: "1" },
+        { label: "mountain", value: "2" },
+        { label: "weather", value: "3" },
+        { label: "farmland+mountain", value: "4" },
+        { label: "farmland+weather", value: "5" },
+        { label: "mountain+weather", value: "6" },
+        { label: "farmland+mountain+weather", value: "7" },
+      ],
+      cc: null,
+      vv: null,
+      VVoptions: [
+        { label: "1.0549m/s", value: "1" },
+        { label: "3.1646m/s", value: "2" },
+        { label: "MTI+3.1646m/s", value: "3" },
+        { label: "MTI+5.2743m/s", value: "4" },
+      ],
+      pp: null,
+      PPoptions: [
+        { label: "0.001", value: "1" },
+        { label: "0.0001", value: "2" },
+        { label: "0.00001", value: "3" },
+        { label: "0.000001", value: "4" },
+      ],
+      showfig1to3: false,
+      showfig4to8: false,
+    };
+  },
+  computed: {
+    mm() {
+      return this.mti ? "2" : "1";
+    },
+    SNR() {
+      if (this.vv == 1 || this.vv == 2) {
+        return 33;
+      } else if (this.vv == 3) {
+        return 21;
+      } else if (this.vv == 4) {
+        return 13;
+      }
+    },
+  },
+  methods: {
+    ZhiNengJianCe() {
+      if (this.cc == null || this.vv == null || this.pp == null) {
+        this.$message({
+          message: "请先选择杂波场景、目标速度、虚警率",
+          type: "warning",
+        });
+        return;
+      } else {
+        this.showfig4to8 = true;
+        reqDraw(this.cc, this.vv, this.pp);
+        this.fig4 =
+          this.BaseUri + "Pd_cc" + this.cc + "_vv" + this.vv + "pfa3456.jpg";
+        this.fig5 =
+          this.BaseUri +
+          "Pd_cc" +
+          this.cc +
+          "_vv" +
+          this.vv +
+          "_pp" +
+          this.pp +
+          ".jpg";
+        this.fig6 =
+          this.BaseUri +
+          "Pf_cc" +
+          this.cc +
+          "_vv" +
+          this.vv +
+          "_pp" +
+          this.pp +
+          ".jpg";
+        this.fig7 =
+          this.BaseUri + "Pd_cc" + this.cc + "_pp" + this.pp + "_v1234.jpg";
+        this.fig8 =
+          this.BaseUri + "Pf_cc" + this.cc + "_pp" + this.pp + "_v1234.jpg";
+        this.$message({
+          message: "智能检测成功",
+          type: "success",
+        });
+      }
+    },
+    shujuyuchuli() {
+      if (this.cc == null || this.vv == null) {
+        this.$message({
+          message: "请先选择杂波场景、目标速度",
+          type: "warning",
+        });
+        return;
+      } else {
+        this.showfig1to3 = true;
+        this.fig1 = this.BaseUri + "orig_cc" + this.cc + ".jpg";
+        this.fig2 =
+          this.BaseUri + "trmtd_cc" + this.cc + "_mm" + this.mm + ".jpg";
+        this.fig3 =
+          this.BaseUri +
+          "temtd_cc" +
+          this.cc +
+          "_vv" +
+          this.vv +
+          "_snr" +
+          this.SNR +
+          ".jpg";
+        this.$message({
+          message: "数据预处理成功",
+          type: "success",
+        });
+      }
+    },
+  },
+  mounted() {},
+};
+</script>
+
+<style scoped>
+@import url("../../../fontsize.css");
+
+.el-dialog__body {
+  padding: 0px;
+}
+
+.el-breadcrumb {
+  margin-top: 10px;
+  margin-left: 10px;
+  font-size: 16px;
+}
+
+.el-table {
+  font-style: initial;
+  font-size: 16px;
+}
+
+.card-style {
+  margin: 10px;
+  background-color: transparent;
+  border: 0px;
+  min-width: 1600px !important;
+  overflow: hidden;
+}
+
+.el-breadcrumb__inner {
+  color: #ffffff !important;
+}
+
+.el-breadcrumb__separator {
+  margin: 0 9px;
+  font-weight: 700;
+  color: #ffffff !important;
+}
+
+.el-breadcrumb__item:last-child .el-breadcrumb__inner,
+.el-breadcrumb__item:last-child .el-breadcrumb__inner a,
+.el-breadcrumb__item:last-child .el-breadcrumb__inner a:hover,
+.el-breadcrumb__item:last-child .el-breadcrumb__inner:hover {
+  font-weight: 400;
+  color: #ffffff !important;
+  cursor: text;
+}
+
+::v-deep .el-loading-mask {
+  position: absolute;
+  z-index: 2000;
+  background-color: rgba(255, 255, 255, 0) !important;
+  margin: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  transition: opacity 0.3s;
+  height: 400px !important;
+  width: 500px !important;
+  overflow: hidden;
+}
+</style>

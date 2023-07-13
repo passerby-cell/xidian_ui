@@ -9,7 +9,9 @@ import ElementUI from "element-ui";
 import "element-ui/lib/theme-chalk/index.css";
 
 import router from "@/router";
+import dataV from "@jiaminghi/data-view";
 
+Vue.use(dataV);
 Vue.use(VueRouter);
 Vue.use(ElementUI);
 Vue.use(VueAxios, axios); // 使用 axios 插件

@@ -1,6 +1,13 @@
 //对api进行统一的管理
 import apirequest from "./apiAjax";
 
+export const reqDraw = (cc, vv, pp) =>
+  apirequest({
+    url: "/matlab/draw",
+    method: "get",
+    params: { cc, vv, pp },
+  });
+
 export const reqSuanFaList = () =>
   apirequest({
     url: "/algroithminfo",

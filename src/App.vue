@@ -1,36 +1,44 @@
 <template>
-  <div>
-    <el-container style="height: 100%" v-if="$route.meta.show">
-      <el-header v-if="$route.meta.show">
-        <Header></Header>
-      </el-header>
-      <el-container>
-        <el-aside width="200px" v-if="$route.meta.show">
+  <div style="height: 100%;width: 100%;overflow: hidden">
+    <!-- <dv-full-screen-container> -->
+    <!-- <el-row style="height: 5px;">
+                                                                              <el-col :span="8"><dv-decoration-2 style="width:100%;height:5px;" :color="['#1541c2', '#5089da']" /></el-col>
+                                                                              <el-col :span="8"><dv-decoration-2 style="width:100%;height:5px;" :color="['#1541c2', '#5089da']" /></el-col>
+                                                                              <el-col :span="8"><dv-decoration-2 style="width:100%;height:5px;" :color="['#1541c2', '#5089da']" /></el-col>
+                                                                            </el-row> -->
+    <dv-border-box-11 title="雷达回波分析系统" :titleWidth="380" class="hearder" :color="['#1541c2', '#5089da']">
+      <el-row style="top: 50px; height: 30px;">
+        <el-col :span="8"><dv-decoration-6 style="width:100%;height:30px;" :color="['#1541c2', '#5089da']" /></el-col>
+        <el-col :span="8"><dv-decoration-5 :reverse="true" style="width:100%;height:30px;" :dur="Number(3)"
+            :color="['#6987d6', '#5089da']" /></el-col>
+        <el-col :span="8"><dv-decoration-6 style="width:100%;height:30px;" :color="['#1541c2', '#5089da']" /></el-col>
+      </el-row>
+      <el-row>
+
+        <el-aside width="200px">
           <SideBar></SideBar>
         </el-aside>
-        <el-container>
-          <el-main>
-            <router-view></router-view>
-          </el-main>
-          <el-footer v-if="$route.meta.show">
-            <Footer></Footer>
-          </el-footer>
-        </el-container>
-      </el-container>
-    </el-container>
-    <Login v-if="!$route.meta.show"></Login>
+
+        <el-main>
+          <router-view></router-view>
+        </el-main>
+
+      </el-row>
+      <el-footer>
+        <Footer></Footer>
+      </el-footer>
+    </dv-border-box-11>
+    <!-- </dv-full-screen-container> -->
   </div>
 </template>
 
 <script>
-import Header from "./components/Header/index.vue";
+
 import SideBar from "./components/SideBar/index.vue";
 import Footer from "./components/Footer/index.vue";
-
-
 export default {
   name: "App",
-  components: { Header, SideBar, Footer },
+  components: { SideBar, Footer },
   mounted() { },
 };
 </script>
@@ -41,31 +49,36 @@ export default {
     "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
 }
 
-.el-header,
-.el-footer {
-  background-color: #b3c0d1;
-  color: #333;
-  line-height: 60px;
-  padding: 0px;
+.hearder>>>.dv-border-box-11-title {
+  font-size: 35px !important;
+  fill: #1541c2 !important;
 }
 
-.el-header {
-  min-width: 1290px;
+.hearder {
+  overflow: hidden
 }
 
 .el-footer {
   min-width: 1090px;
+  height: 60px !important;
 }
 
 .el-aside {
-  background-color: #d3dce6;
   min-width: 200px;
-  height: calc(100vh - 60px);
+  float: left;
+  margin-top: 50px;
+  margin-left: 15px;
+  /* background-color: #8bacff; */
 }
 
 .el-main {
-  min-width: 1090px;
+  width: calc(100vw - 250px);
   padding: 0px;
-  height: calc(100vh - 120px);
+  height: calc(100vh - 150px);
+  margin-top: 50px;
+  min-width: 1600px !important;
+  overflow: hidden;
+  background-color: #aecaffac;
+  border-radius: 1.5%;
 }
 </style>
