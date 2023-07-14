@@ -13,7 +13,7 @@
       class="card-style"
       shadow="hover"
       :body-style="{ padding: '10px' }"
-      style="height: calc(100vh - 200px); overflow: hidden"
+      style="height: calc(100vh - 200px); overflow: auto"
     >
       <div>
         <Transition
@@ -34,7 +34,12 @@
                   @click="show = false"
                   >数据处理</el-button
                 >
-                <el-button type="primary" @click="show = true"
+                <el-button
+                  type="primary"
+                  @click="
+                    show = true;
+                    cc = null;
+                  "
                   >智能检测<i class="el-icon-arrow-right el-icon--right"></i
                 ></el-button> </el-button-group
             ></el-row>
@@ -125,7 +130,7 @@
                 <dv-border-box-12
                   :reverse="true"
                   :color="['#6987d6', '#5089da']"
-                  style="height: 440px; width: 420px"
+                  style="height: 410px; width: 520px"
                 >
                   <p style="text-align: center" class="middlesize">
                     杂波场景图
@@ -133,7 +138,7 @@
                   <div style="text-align: center">
                     <img
                       v-bind:src="fig1"
-                      style="height: 400px; width: 400px"
+                      style="height: 370px; width: 500px"
                     />
                   </div>
                 </dv-border-box-12>
@@ -142,7 +147,7 @@
                 <dv-border-box-12
                   :reverse="true"
                   :color="['#6987d6', '#5089da']"
-                  style="height: 440px; width: 420px"
+                  style="height: 410px; width: 520px"
                 >
                   <p style="text-align: center" class="middlesize">
                     MTD后训练数据
@@ -150,7 +155,7 @@
                   <div style="text-align: center">
                     <img
                       v-bind:src="fig2"
-                      style="height: 400px; width: 400px"
+                      style="height: 370px; width: 500px"
                     />
                   </div>
                 </dv-border-box-12>
@@ -159,7 +164,7 @@
                 <dv-border-box-12
                   :reverse="true"
                   :color="['#6987d6', '#5089da']"
-                  style="height: 440px; width: 420px"
+                  style="height: 410px; width: 520px"
                 >
                   <p style="text-align: center" class="middlesize">
                     MTD后测试数据
@@ -167,7 +172,7 @@
                   <div style="text-align: center">
                     <img
                       v-bind:src="fig3"
-                      style="height: 400px; width: 400px"
+                      style="height: 370px; width: 500px"
                     />
                   </div>
                 </dv-border-box-12>
@@ -180,7 +185,7 @@
           enter-active-class="animate__animated animate__fadeInUp"
           leave-active-class="animate__animated animate__fadeOutDown"
         >
-          <div v-if="show" style="position: absolute; top: 200px; width: 90%">
+          <div v-if="show">
             <el-row style="margin-top: 20px">
               <el-col :span="3">
                 <h3 class="middlesize" style="margin-top: 5px">杂波场景</h3>
@@ -192,7 +197,7 @@
                   style="width: 100%"
                 >
                   <el-option
-                    v-for="item in CCoptions"
+                    v-for="item in CCJianCeoptions"
                     :key="item.value"
                     :label="item.label"
                     :value="item.value"
@@ -259,8 +264,126 @@
                 ></el-col
               >
             </el-row>
-          </div></Transition
-        >
+            <el-row class="martop" style="margin-left: 30px" v-if="showfig4to8">
+              <el-col :span="6">
+                <dv-border-box-12
+                  :reverse="true"
+                  :color="['#6987d6', '#5089da']"
+                  style="height: 410px; width: 520px"
+                  ><div style="padding-top: 3px; height: 30px">
+                    <p style="text-align: center" class="smallsize">
+                      相同杂波场景相同速度下网络和CFAR方法检测性能
+                    </p>
+                  </div>
+
+                  <div
+                    style="text-align: center"
+                    v-loading="isloading"
+                    :element-loading-text="num"
+                  >
+                    <img
+                      v-bind:src="fig4"
+                      style="height: 370px; width: 500px"
+                    />
+                  </div>
+                </dv-border-box-12>
+              </el-col>
+              <el-col :span="6" :offset="2">
+                <dv-border-box-12
+                  :reverse="true"
+                  :color="['#6987d6', '#5089da']"
+                  style="height: 410px; width: 520px"
+                >
+                  <div style="padding-top: 3px; height: 30px">
+                    <p style="text-align: center" class="smallsize">
+                      相同杂波场景相同速度下不同方法的检测性能
+                    </p>
+                  </div>
+                  <div
+                    style="text-align: center"
+                    v-loading="isloading"
+                    :element-loading-text="num"
+                  >
+                    <img
+                      v-bind:src="fig5"
+                      style="height: 370px; width: 500px"
+                    />
+                  </div>
+                </dv-border-box-12>
+              </el-col>
+              <el-col :span="6" :offset="2">
+                <dv-border-box-12
+                  :reverse="true"
+                  :color="['#6987d6', '#5089da']"
+                  style="height: 410px; width: 520px"
+                >
+                  <div style="padding-top: 3px; height: 30px">
+                    <p style="text-align: center" class="smallsize">
+                      相同杂波场景相同速度下不同方法的实际虚警率
+                    </p>
+                  </div>
+                  <div
+                    style="text-align: center"
+                    v-loading="isloading"
+                    :element-loading-text="num"
+                  >
+                    <img
+                      v-bind:src="fig6"
+                      style="height: 370px; width: 500px"
+                    />
+                  </div>
+                </dv-border-box-12>
+              </el-col>
+            </el-row>
+            <el-row class="martop" style="margin-left: 30px" v-if="showfig4to8">
+              <el-col :span="6">
+                <dv-border-box-12
+                  :reverse="true"
+                  :color="['#6987d6', '#5089da']"
+                  style="height: 410px; width: 520px"
+                >
+                  <div style="padding-top: 3px; height: 30px">
+                    <p style="text-align: center" class="smallsize">
+                      相同杂波场景不同速度下GM-CVAE和CFAR检测性能
+                    </p>
+                  </div>
+                  <div
+                    style="text-align: center"
+                    v-loading="isloading"
+                    :element-loading-text="num"
+                  >
+                    <img
+                      v-bind:src="fig7"
+                      style="height: 370px; width: 500px"
+                    />
+                  </div>
+                </dv-border-box-12>
+              </el-col>
+              <el-col :span="6" :offset="2">
+                <dv-border-box-12
+                  :reverse="true"
+                  :color="['#6987d6', '#5089da']"
+                  style="height: 410px; width: 520px"
+                >
+                  <div style="padding-top: 3px; height: 30px">
+                    <p style="text-align: center" class="smallsize">
+                      相同杂波场景不同速度下GM-CVAE和CFAR实际虚警率
+                    </p>
+                  </div>
+                  <div
+                    style="text-align: center"
+                    v-loading="isloading"
+                    :element-loading-text="num"
+                  >
+                    <img
+                      v-bind:src="fig8"
+                      style="height: 370px; width: 500px"
+                    />
+                  </div>
+                </dv-border-box-12>
+              </el-col>
+            </el-row></div
+        ></Transition>
       </div>
     </el-card>
   </div>
@@ -272,6 +395,8 @@ export default {
   name: "zhineng",
   data() {
     return {
+      isloading: false,
+      num: 0,
       BaseUri: "http://127.0.0.1:8080/preview/",
       fig1: null,
       fig2: null,
@@ -291,6 +416,11 @@ export default {
         { label: "farmland+mountain", value: "4" },
         { label: "farmland+weather", value: "5" },
         { label: "mountain+weather", value: "6" },
+        { label: "farmland+mountain+weather", value: "7" },
+      ],
+      CCJianCeoptions: [
+        { label: "mountain", value: "2" },
+        { label: "farmland+mountain", value: "4" },
         { label: "farmland+mountain+weather", value: "7" },
       ],
       cc: null,
@@ -327,7 +457,7 @@ export default {
     },
   },
   methods: {
-    ZhiNengJianCe() {
+    async ZhiNengJianCe() {
       if (this.cc == null || this.vv == null || this.pp == null) {
         this.$message({
           message: "请先选择杂波场景、目标速度、虚警率",
@@ -335,36 +465,63 @@ export default {
         });
         return;
       } else {
+        this.fig4 = this.BaseUri + "null.png";
+        this.fig5 = this.BaseUri + "null.png";
+        this.fig6 = this.BaseUri + "null.png";
+        this.fig7 = this.BaseUri + "null.png";
+        this.fig8 = this.BaseUri + "null.png";
+        this.num = 0;
+        this.isloading = true;
         this.showfig4to8 = true;
-        reqDraw(this.cc, this.vv, this.pp);
-        this.fig4 =
-          this.BaseUri + "Pd_cc" + this.cc + "_vv" + this.vv + "pfa3456.jpg";
-        this.fig5 =
-          this.BaseUri +
-          "Pd_cc" +
-          this.cc +
-          "_vv" +
-          this.vv +
-          "_pp" +
-          this.pp +
-          ".jpg";
-        this.fig6 =
-          this.BaseUri +
-          "Pf_cc" +
-          this.cc +
-          "_vv" +
-          this.vv +
-          "_pp" +
-          this.pp +
-          ".jpg";
-        this.fig7 =
-          this.BaseUri + "Pd_cc" + this.cc + "_pp" + this.pp + "_v1234.jpg";
-        this.fig8 =
-          this.BaseUri + "Pf_cc" + this.cc + "_pp" + this.pp + "_v1234.jpg";
-        this.$message({
-          message: "智能检测成功",
-          type: "success",
-        });
+        let percentage = 1;
+        let _this = this;
+        let inteval = setInterval(() => {
+          percentage += 2;
+          if (percentage >= 100) {
+            _this.num = "99%";
+          } else {
+            _this.num = percentage + "%";
+          }
+          // console.log(_this.num);
+        }, 60);
+        let result = await reqDraw(this.cc, this.vv, this.pp);
+        if (result.code == 200) {
+          clearInterval(inteval);
+          this.isloading = false;
+          this.fig4 =
+            this.BaseUri + "Pd_cc" + this.cc + "_vv" + this.vv + "pfa3456.jpg";
+          this.fig5 =
+            this.BaseUri +
+            "Pd_cc" +
+            this.cc +
+            "_vv" +
+            this.vv +
+            "_pp" +
+            this.pp +
+            ".jpg";
+          this.fig6 =
+            this.BaseUri +
+            "Pf_cc" +
+            this.cc +
+            "_vv" +
+            this.vv +
+            "_pp" +
+            this.pp +
+            ".jpg";
+          this.fig7 =
+            this.BaseUri + "Pd_cc" + this.cc + "_pp" + this.pp + "_v1234.jpg";
+          this.fig8 =
+            this.BaseUri + "Pf_cc" + this.cc + "_pp" + this.pp + "_v1234.jpg";
+          this.$message({
+            message: "智能检测成功",
+            type: "success",
+          });
+        } else {
+          this.isloading = false;
+          this.num = 0;
+          clearInterval(inteval);
+          this.$message.error("运行失败！");
+        }
       }
     },
     shujuyuchuli() {
