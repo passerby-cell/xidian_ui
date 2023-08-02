@@ -31,12 +31,29 @@
         >目标检测</dv-decoration-7
       >
     </div>
-    <div style="cursor: pointer" @click="toZhiNeng()" ref="zhineng">
+
+    <div>
       <dv-decoration-11
-        style="width: 200px; height: 60px; color: #1541c2; cursor: pointer"
+        style="width: 200px; height: 60px; color: #1541c2"
         class="middlesize"
         :color="['#6987d6', '#5089da']"
         >智能检测</dv-decoration-11
+      >
+    </div>
+    <div @click="toZhiNeng()" ref="zhineng">
+      <dv-decoration-7
+        style="width: 200px; height: 60px; cursor: pointer; color: #1541c2"
+        :color="color[0]"
+        class="smallsize"
+        >方法一</dv-decoration-7
+      >
+    </div>
+    <div @click="toDiXiaoMan()" ref="dixiaoman">
+      <dv-decoration-7
+        style="width: 200px; height: 60px; cursor: pointer; color: #1541c2"
+        :color="color[1]"
+        class="smallsize"
+        >方法二</dv-decoration-7
       >
     </div>
     <div>
@@ -80,6 +97,8 @@ export default {
         "background-color:#9BB0C9;border-radius: 25px 0% 0% 25px;";
       this.$refs.zhineng.style =
         "background-color:#9BB0C9;border-radius: 25px 0% 0% 25px;";
+      this.$refs.dixiaoman.style =
+        "background-color:#9BB0C9;border-radius: 25px 0% 0% 25px;";
       this.$router.push({ name: "mubiao" });
     },
     toZaBo() {
@@ -88,6 +107,8 @@ export default {
       this.$refs.mubiao.style = "background-color:#9BB0C9;border-radius:25px;";
       this.$refs.config.style = "background-color:#9BB0C9;border-radius:25px;";
       this.$refs.zhineng.style =
+        "background-color:#9BB0C9;border-radius: 25px 0% 0% 25px;";
+      this.$refs.dixiaoman.style =
         "background-color:#9BB0C9;border-radius: 25px 0% 0% 25px;";
       this.$router.push({ name: "zabo" });
     },
@@ -100,6 +121,8 @@ export default {
         "background-color:#9BB0C9;border-radius: 25px 0% 0% 25px;";
       this.$refs.zhineng.style =
         "background-color:#9BB0C9;border-radius: 25px 0% 0% 25px;";
+      this.$refs.dixiaoman.style =
+        "background-color:#9BB0C9;border-radius: 25px 0% 0% 25px;";
       this.$router.push({ name: "config" });
     },
     toZhiNeng() {
@@ -111,7 +134,22 @@ export default {
         "background-color:#9BB0C9;border-radius: 25px 0% 0% 25px;";
       this.$refs.zhineng.style =
         "background-color:#aecaffac;border-radius: 25px 0% 0% 25px;";
+      this.$refs.dixiaoman.style =
+        "background-color:#9BB0C9;border-radius: 25px 0% 0% 25px;";
       this.$router.push({ name: "zhineng" });
+    },
+    toDiXiaoMan() {
+      this.$refs.zabo.style =
+        "background-color:#9BB0C9;border-radius: 25px 0% 0% 25px;";
+      this.$refs.mubiao.style =
+        "background-color:#9BB0C9;border-radius: 25px 0% 0% 25px;";
+      this.$refs.config.style =
+        "background-color:#9BB0C9;border-radius: 25px 0% 0% 25px;";
+      this.$refs.dixiaoman.style =
+        "background-color:#aecaffac;border-radius: 25px 0% 0% 25px;";
+      this.$refs.zhineng.style =
+        "background-color:#9BB0C9;border-radius: 25px 0% 0% 25px;";
+      this.$router.push({ name: "dixiaoman" });
     },
   },
   mounted() {

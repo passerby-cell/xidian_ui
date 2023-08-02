@@ -24,7 +24,7 @@
             <el-row>
               <h3 class="middlesize">
                 <span style="color: #409eff">|</span
-                >&nbsp;复杂杂波精细化建模与目标检测
+                >&nbsp;杂波背景下低小慢目标智能检测
               </h3>
             </el-row>
             <el-row style="margin-top: 20px; margin-left: 0px">
@@ -394,7 +394,7 @@
 <script>
 import { reqDraw } from "@/api/index";
 export default {
-  name: "zhineng",
+  name: "DiXiaoMan",
   data() {
     return {
       isloading: false,
