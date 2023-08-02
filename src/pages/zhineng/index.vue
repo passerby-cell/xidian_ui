@@ -472,8 +472,8 @@ export default {
         return [
           { label: "1.0549m/s", value: "1" },
           { label: "3.1646m/s", value: "2" },
-          { label: "3.1646m/s", value: "3" },
-          { label: "5.2743m/s", value: "4" },
+          { label: "MTI+3.1646m/s", value: "3" },
+          { label: "MTI+5.2743m/s", value: "4" },
         ];
       }
     },
@@ -498,9 +498,9 @@ export default {
     changeZaBoChangJing() {
       this.showfig1 = true;
       this.fig1 = this.BaseUri + "orig_cc" + this.cc + ".jpg";
-      this.showfig2 = true;
-      this.fig2 =
-        this.BaseUri + "trmtd_cc" + this.cc + "_mm" + this.mm + ".jpg";
+      // this.showfig2 = true;
+      // this.fig2 =
+      //   this.BaseUri + "trmtd_cc" + this.cc + "_mm" + this.mm + ".jpg";
     },
     changeMuBiaoSuDu(value) {
       if (value == 3 || value == 4) {
