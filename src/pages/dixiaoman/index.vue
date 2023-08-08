@@ -53,127 +53,94 @@
         >
           <div v-if="!show" style="position: absolute; top: 200px; width: 90%">
             <el-row style="margin-top: 20px">
-              <el-col :span="3">
-                <h3 class="middlesize" style="margin-top: 5px">杂波场景</h3>
-              </el-col>
-              <el-col :span="4">
-                <el-select
-                  v-model="cc"
-                  placeholder="请选择"
-                  style="width: 100%"
-                  @change="changeZaBoChangJing"
-                >
-                  <el-option
-                    v-for="item in CCoptions"
-                    :key="item.value"
-                    :label="item.label"
-                    :value="item.value"
-                  >
-                  </el-option>
-                </el-select>
-              </el-col>
-              <el-col :span="3" :offset="1">
-                <h3 class="middlesize" style="margin-top: 5px">MTI处理</h3>
-              </el-col>
-              <el-col :span="4"
-                ><el-switch
-                  style="margin-top: 10px"
-                  v-model="mti"
-                  active-text="是"
-                  inactive-text="否"
-                  active-color="#13ce66"
-                  inactive-color="#ff4949"
-                  @change="changeMTI"
-                >
-                </el-switch
-              ></el-col>
-            </el-row>
-            <el-row style="margin-top: 10px">
-              <el-col :span="3">
-                <h3 class="middlesize" style="margin-top: 5px">SNR/dB</h3>
-              </el-col>
-              <el-col :span="4">
-                <h3 class="middlesize" style="margin-top: 5px">
-                  {{ SNR }}dB
-                </h3></el-col
-              >
-              <el-col :span="3" :offset="1">
-                <h3 class="middlesize" style="margin-top: 5px">目标速度</h3>
-              </el-col>
-              <el-col :span="4">
-                <el-select
-                  v-model="vv"
-                  placeholder="请选择"
-                  style="width: 100%"
-                  @change="changeMuBiaoSuDu"
-                >
-                  <el-option
-                    v-for="item in VVoptions"
-                    :key="item.value"
-                    :label="item.label"
-                    :value="item.value"
-                  >
-                  </el-option>
-                </el-select>
-              </el-col>
-              <!-- <el-col :span="2" :offset="1"
+              <el-col :span="3"
                 ><el-button
                   type="primary"
-                  @click="shujuyuchuli()"
                   icon="el-icon-view"
-                  >数据预处理</el-button
+                  @click="fuZaZaBoChangJingZhanShi()"
+                  >复杂杂波场景展示</el-button
+                >
+              </el-col>
+              <el-col :span="3" :offset="2"
+                ><el-button
+                  type="primary"
+                  icon="el-icon-view"
+                  @click="shuJvYuChuLi()"
+                  >输入数据预处理</el-button
                 ></el-col
-              > -->
+              >
             </el-row>
-            <el-row class="martop" style="margin-left: 30px">
+
+            <el-row class="martop" style="margin-left: 10px; width: 90%">
               <el-col :span="6" v-if="showfig1">
                 <dv-border-box-12
                   :reverse="true"
                   :color="['#6987d6', '#5089da']"
-                  style="height: 410px; width: 520px"
+                  style="height: 305px; width: 380px"
                 >
-                  <p style="text-align: center" class="middlesize">
-                    杂波场景图
+                  <p style="text-align: center" class="smallsize">
+                    复杂杂波场景图三维图
                   </p>
-                  <div style="text-align: center">
-                    <img
-                      v-bind:src="fig1"
-                      style="height: 370px; width: 500px"
-                    />
+                  <div
+                    class="divclass"
+                    v-loading="loading.fig1.isloading"
+                    :element-loading-text="loading.fig1.num"
+                  >
+                    <img v-bind:src="fig1" class="imgBox" />
                   </div>
                 </dv-border-box-12>
               </el-col>
-              <el-col :span="6" :offset="2" v-if="showfig2">
+              <el-col :span="6" v-if="showfig2">
                 <dv-border-box-12
                   :reverse="true"
                   :color="['#6987d6', '#5089da']"
-                  style="height: 410px; width: 520px"
+                  style="height: 305px; width: 380px"
                 >
-                  <p style="text-align: center" class="middlesize">
-                    MTD后训练数据
+                  <p style="text-align: center" class="smallsize">
+                    复杂杂波场景中所有距离单元杂波多普勒谱
                   </p>
-                  <div style="text-align: center">
-                    <img
-                      v-bind:src="fig2"
-                      style="height: 370px; width: 500px"
-                    />
+                  <div
+                    class="divclass"
+                    v-loading="loading.fig2.isloading"
+                    :element-loading-text="loading.fig2.num"
+                  >
+                    <img v-bind:src="fig2" class="imgBox" />
                   </div>
                 </dv-border-box-12>
               </el-col>
-              <el-col :span="6" :offset="2" v-if="showfig3">
+              <el-col :span="6" v-if="showfig3">
                 <dv-border-box-12
                   :reverse="true"
                   :color="['#6987d6', '#5089da']"
-                  style="height: 410px; width: 520px"
+                  style="height: 305px; width: 380px"
                 >
-                  <p style="text-align: center" class="middlesize">
-                    MTD后测试数据
+                  <p style="text-align: center" class="smallsize">
+                    两帧相减后的距离多普勒信息
                   </p>
-                  <div style="text-align: center">
-                    <img
-                      v-bind:src="fig3"
-                      style="height: 370px; width: 500px"
-                    />
+                  <div
+                    class="divclass"
+                    v-loading="loading.fig3.isloading"
+                    :element-loading-text="loading.fig3.num"
+                  >
+                    <img v-bind:src="fig3" class="imgBox" />
+                  </div>
+                </dv-border-box-12>
+              </el-col>
+              <el-col :span="6" v-if="showfig4">
+                <dv-border-box-12
+                  :reverse="true"
+                  :color="['#6987d6', '#5089da']"
+                  style="height: 305px; width: 380px"
+                >
+                  <p style="text-align: center" class="smallsize">
+                    两帧相减后所有距离单元的多普勒谱
+                  </p>
+                  <div
+                    class="divclass"
+                    v-loading="loading.fig4.isloading"
+                    :element-loading-text="loading.fig4.num"
+                  >
+                    <img v-bind:src="fig4" class="imgBox" />
                   </div>
                 </dv-border-box-12>
               </el-col>
@@ -186,153 +153,212 @@
           leave-active-class="animate__animated animate__fadeOutDown"
         >
           <div v-if="show">
-            <el-row style="margin-top: 20px">
-              <el-col :span="3">
-                <h3 class="middlesize" style="margin-top: 5px">杂波场景</h3>
+            <el-row>
+              <el-col :span="8">
+                <h3 style="margin-top: 5px" class="middlesize">
+                  <span style="color: #409eff">|</span
+                  >&nbsp;目标检测概率曲线图总览
+                </h3>
               </el-col>
-              <el-col :span="4">
-                <el-select
-                  v-model="cc"
-                  placeholder="请选择"
+              <el-col :span="2">
+                <h3 class="middlesize" style="margin-top: 5px">虚警概率</h3>
+              </el-col>
+              <el-col :span="3"
+                ><el-input-number
+                  v-model="pfa"
+                  :min="3"
+                  :max="6"
                   style="width: 100%"
+                  label="虚警概率"
+                ></el-input-number
+              ></el-col>
+              <el-col :span="4" :offset="1">
+                <el-button
+                  type="primary"
+                  icon="el-icon-connection"
+                  @click="jiaZaiPfa()"
+                  >加载</el-button
                 >
-                  <el-option
-                    v-for="item in CCJianCeoptions"
-                    :key="item.value"
-                    :label="item.label"
-                    :value="item.value"
-                  >
-                  </el-option>
-                </el-select>
-              </el-col>
-              <el-col :span="3" :offset="1">
-                <h3 class="middlesize" style="margin-top: 5px">目标速度</h3>
-              </el-col>
-              <el-col :span="4">
-                <el-select
-                  v-model="vv"
-                  placeholder="请选择"
-                  style="width: 100%"
-                >
-                  <el-option
-                    v-for="item in VVoptions"
-                    :key="item.value"
-                    :label="item.label"
-                    :value="item.value"
-                  >
-                  </el-option>
-                </el-select>
               </el-col>
             </el-row>
             <el-row style="margin-top: 10px">
-              <!-- <el-col :span="3">
-                <h3 class="middlesize" style="margin-top: 5px">SNR/dB</h3>
-              </el-col>
-              <el-col :span="4"
-                ><el-input-number
-                  v-model="snr"
-                  :min="-3"
-                  :step="4"
-                  :max="37"
-                  style="width: 100%"
-                ></el-input-number
-              ></el-col> -->
-              <el-col :span="3">
-                <h3 class="middlesize" style="margin-top: 5px">
-                  传统方法虚警率
+              <el-col :span="8">
+                <h3 style="margin-top: 5px" class="middlesize">
+                  <span style="color: #409eff">|</span
+                  >&nbsp;不同速度目标检测概率曲线图细览
                 </h3>
               </el-col>
-              <el-col :span="4">
-                <el-select
-                  v-model="pp"
-                  placeholder="请选择"
-                  style="width: 100%"
-                >
-                  <el-option
-                    v-for="item in PPoptions"
-                    :key="item.value"
-                    :label="item.label"
-                    :value="item.value"
-                  >
-                  </el-option>
-                </el-select>
+              <el-col :span="2">
+                <h3 class="middlesize" style="margin-top: 5px">虚警概率</h3>
               </el-col>
-              <el-col :span="2" :offset="1"
+              <el-col :span="3"
+                ><el-input-number
+                  v-model="gailvone"
+                  :min="3"
+                  :max="6"
+                  style="width: 100%"
+                  label="虚警概率"
+                ></el-input-number
+              ></el-col>
+              <el-col :span="2" :offset="1">
+                <h3 class="middlesize" style="margin-top: 5px">速度</h3>
+              </el-col>
+              <el-col :span="3"
+                ><el-input-number
+                  v-model="suduone"
+                  :min="1"
+                  :max="8"
+                  style="width: 100%"
+                  label="速度"
+                ></el-input-number
+              ></el-col>
+              <el-col :span="3" :offset="1"
                 ><el-button
                   type="primary"
-                  @click="ZhiNengJianCe()"
-                  icon="el-icon-view"
-                  >目标检测</el-button
+                  icon="el-icon-connection"
+                  @click="jiaZaiGaiLvQuXianTuXiLan()"
+                  >加载</el-button
                 ></el-col
               >
             </el-row>
-            <el-row class="martop" style="margin-left: 30px" v-if="showfig4to8">
-              <el-col :span="6">
+            <el-row style="margin-top: 10px">
+              <el-col :span="8">
+                <h3 class="middlesize" style="margin-top: 5px">
+                  <span style="color: #409eff">|</span
+                  >&nbsp;距离扩展时不同速度目标检测概率曲线图细览
+                </h3>
+              </el-col>
+              <el-col :span="2">
+                <h3 class="middlesize" style="margin-top: 5px">虚警概率</h3>
+              </el-col>
+              <el-col :span="3"
+                ><el-input-number
+                  v-model="gailvtwo"
+                  :min="3"
+                  :max="6"
+                  style="width: 100%"
+                  label="虚警概率"
+                ></el-input-number
+              ></el-col>
+              <el-col :span="2" :offset="1">
+                <h3 class="middlesize" style="margin-top: 5px">速度</h3>
+              </el-col>
+              <el-col :span="3"
+                ><el-input-number
+                  v-model="sudutwo"
+                  :min="1"
+                  :max="8"
+                  style="width: 100%"
+                  label="速度"
+                ></el-input-number
+              ></el-col>
+              <el-col :span="3" :offset="1"
+                ><el-button
+                  type="primary"
+                  icon="el-icon-connection"
+                  @click="jiaZaiMuBiaoJianCe()"
+                  >加载</el-button
+                ></el-col
+              >
+            </el-row>
+            <el-row style="margin-top: 10px">
+              <el-col :span="8">
+                <h3 class="middlesize" style="margin-top: 5px">
+                  <span style="color: #409eff">|</span
+                  >&nbsp;3m/s目标检测概率曲线图
+                </h3>
+              </el-col>
+              <el-col :span="2">
+                <h3 class="middlesize" style="margin-top: 5px">虚警概率</h3>
+              </el-col>
+              <el-col :span="3"
+                ><el-input-number
+                  v-model="gailvthree"
+                  :min="3"
+                  :max="6"
+                  style="width: 100%"
+                  label="虚警概率"
+                ></el-input-number
+              ></el-col>
+              <el-col :span="3" :offset="1"
+                ><el-button
+                  type="primary"
+                  icon="el-icon-connection"
+                  @click="jiaZaiMuBiaoJianCeQuXianTu()"
+                  >加载</el-button
+                ></el-col
+              >
+            </el-row>
+            <el-row class="martop" style="margin-left: 10px; width: 90%">
+              <el-col :span="6" v-if="showfig5">
                 <dv-border-box-12
                   :reverse="true"
                   :color="['#6987d6', '#5089da']"
-                  style="height: 410px; width: 520px"
-                  ><div style="padding-top: 3px; height: 30px">
-                    <p style="text-align: center" class="smallsize">
-                      相同杂波场景相同速度下网络和CFAR方法检测性能
-                    </p>
-                  </div>
-
+                  style="height: 305px; width: 380px"
+                >
+                  <p style="text-align: center" class="smallsize">
+                    的检测概率曲线图
+                  </p>
                   <div
-                    style="text-align: center"
-                    v-loading="isloading"
-                    :element-loading-text="num"
+                    class="divclass"
+                    v-loading="loading.fig5.isloading"
+                    :element-loading-text="loading.fig5.num"
                   >
-                    <img
-                      v-bind:src="fig4"
-                      style="height: 370px; width: 500px"
-                    />
+                    <img v-bind:src="fig5" class="imgBox" />
                   </div>
                 </dv-border-box-12>
               </el-col>
-              <el-col :span="6" :offset="2">
+              <el-col :span="6" v-if="showfig6">
                 <dv-border-box-12
                   :reverse="true"
                   :color="['#6987d6', '#5089da']"
-                  style="height: 410px; width: 520px"
+                  style="height: 305px; width: 380px"
                 >
-                  <div style="padding-top: 3px; height: 30px">
-                    <p style="text-align: center" class="smallsize">
-                      相同杂波场景相同速度下不同方法的检测性能
-                    </p>
-                  </div>
+                  <p style="text-align: center" class="smallsize">
+                    目标检测概率曲线对比图
+                  </p>
                   <div
-                    style="text-align: center"
-                    v-loading="isloading"
-                    :element-loading-text="num"
+                    class="divclass"
+                    v-loading="loading.fig6.isloading"
+                    :element-loading-text="loading.fig6.num"
                   >
-                    <img
-                      v-bind:src="fig5"
-                      style="height: 370px; width: 500px"
-                    />
+                    <img v-bind:src="fig6" class="imgBox" />
                   </div>
                 </dv-border-box-12>
               </el-col>
-              <el-col :span="6" :offset="2">
+              <el-col :span="6" v-if="showfig7">
                 <dv-border-box-12
                   :reverse="true"
                   :color="['#6987d6', '#5089da']"
-                  style="height: 410px; width: 520px"
+                  style="height: 305px; width: 380px"
                 >
-                  <div style="padding-top: 3px; height: 30px">
-                    <p style="text-align: center" class="smallsize">
-                      相同杂波场景相同速度下不同方法的实际虚警率
-                    </p>
-                  </div>
+                  <p style="text-align: center" class="smallsize">
+                    目标检测概率曲线对比图
+                  </p>
                   <div
-                    style="text-align: center"
-                    v-loading="isloading"
-                    :element-loading-text="num"
+                    class="divclass"
+                    v-loading="loading.fig7.isloading"
+                    :element-loading-text="loading.fig7.num"
                   >
-                    <img
-                      v-bind:src="fig6"
-                      style="height: 370px; width: 500px"
-                    />
+                    <img v-bind:src="fig7" class="imgBox" />
+                  </div>
+                </dv-border-box-12>
+              </el-col>
+              <el-col :span="6" v-if="showfig8">
+                <dv-border-box-12
+                  :reverse="true"
+                  :color="['#6987d6', '#5089da']"
+                  style="height: 305px; width: 380px"
+                >
+                  <p style="text-align: center" class="smallsize">
+                    目标检测概率曲线对比图
+                  </p>
+                  <div
+                    class="divclass"
+                    v-loading="loading.fig8.isloading"
+                    :element-loading-text="loading.fig8.num"
+                  >
+                    <img v-bind:src="fig8" class="imgBox" />
                   </div>
                 </dv-border-box-12>
               </el-col>
@@ -342,7 +368,7 @@
                 <dv-border-box-12
                   :reverse="true"
                   :color="['#6987d6', '#5089da']"
-                  style="height: 410px; width: 520px"
+                  style="height: 305px; width: 380px"
                 >
                   <div style="padding-top: 3px; height: 30px">
                     <p style="text-align: center" class="smallsize">
@@ -354,10 +380,7 @@
                     v-loading="isloading"
                     :element-loading-text="num"
                   >
-                    <img
-                      v-bind:src="fig7"
-                      style="height: 370px; width: 500px"
-                    />
+                    <img v-bind:src="fig7" class="imgBox" />
                   </div>
                 </dv-border-box-12>
               </el-col>
@@ -365,7 +388,7 @@
                 <dv-border-box-12
                   :reverse="true"
                   :color="['#6987d6', '#5089da']"
-                  style="height: 410px; width: 520px"
+                  style="height: 305px; width: 380px"
                 >
                   <div style="padding-top: 3px; height: 30px">
                     <p style="text-align: center" class="smallsize">
@@ -377,10 +400,7 @@
                     v-loading="isloading"
                     :element-loading-text="num"
                   >
-                    <img
-                      v-bind:src="fig8"
-                      style="height: 370px; width: 500px"
-                    />
+                    <img v-bind:src="fig8" class="imgBox" />
                   </div>
                 </dv-border-box-12>
               </el-col>
@@ -392,14 +412,31 @@
 </template>
 
 <script>
-import { reqDraw } from "@/api/index";
+import {
+  reqThirdone,
+  reqThirdtwo,
+  reqThirdthree,
+  reqThirdfour,
+  reqThirdfive,
+  reqThirdsix,
+} from "@/api/index";
 export default {
   name: "DiXiaoMan",
   data() {
     return {
       isloading: false,
-      num: 0,
+      pfa: 3,
       BaseUri: "http://127.0.0.1:8080/preview/",
+      loading: {
+        fig1: { isloading: false, num: 0 },
+        fig2: { isloading: false, num: 0 },
+        fig3: { isloading: false, num: 0 },
+        fig4: { isloading: false, num: 0 },
+        fig5: { isloading: false, num: 0 },
+        fig6: { isloading: false, num: 0 },
+        fig7: { isloading: false, num: 0 },
+        fig8: { isloading: false, num: 0 },
+      },
       fig1: null,
       fig2: null,
       fig3: null,
@@ -409,199 +446,175 @@ export default {
       fig7: null,
       fig8: null,
       show: false,
-      mti: false,
-      snr: [13, 21, 33],
-
-      CCoptions: [
-        { label: "城市杂波I", value: "1" },
-        { label: "城市杂波II", value: "2" },
-        { label: "城市杂波III", value: "3" },
-        { label: "复杂城市杂波I+II", value: "4" },
-        { label: "复杂城市杂波I+III", value: "5" },
-        { label: "复杂城市杂波II+III", value: "6" },
-        { label: "复杂城市杂波I+II+III", value: "7" },
-      ],
-      CCJianCeoptions: [
-        { label: "城市杂波II", value: "2" },
-        { label: "复杂城市杂波I+II", value: "4" },
-        { label: "复杂城市杂波I+II+III", value: "7" },
-      ],
-      cc: null,
-      vv: null,
-
-      pp: null,
-      PPoptions: [
-        { label: "0.001", value: "1" },
-        { label: "0.0001", value: "2" },
-        { label: "0.00001", value: "3" },
-        { label: "0.000001", value: "4" },
-      ],
+      gailvone: 3,
+      gailvtwo: 3,
+      gailvthree: 3,
+      suduone: 1,
+      sudutwo: 1,
       showfig1: false,
       showfig2: false,
       showfig3: false,
-      showfig4to8: false,
+      showfig4: false,
+      showfig5: false,
+      showfig6: false,
+      showfig7: false,
+      showfig8: false,
     };
   },
-  computed: {
-    mm() {
-      return this.mti ? "2" : "1";
-    },
-    SNR() {
-      if (this.vv == 1 || this.vv == 2) {
-        return 33;
-      } else if (this.vv == 3) {
-        return 21;
-      } else if (this.vv == 4) {
-        return 13;
-      } else {
-        return 0;
-      }
-    },
-    VVoptions() {
-      if (this.mti == false && this.show == false) {
-        return [
-          { label: "1.0549m/s", value: "1" },
-          { label: "3.1646m/s", value: "2" },
-        ];
-      } else if (this.mti == true && this.show == false) {
-        return [
-          { label: "3.1646m/s", value: "3" },
-          { label: "5.2743m/s", value: "4" },
-        ];
-      } else {
-        return [
-          { label: "1.0549m/s", value: "1" },
-          { label: "3.1646m/s", value: "2" },
-          { label: "3.1646m/s", value: "3" },
-          { label: "5.2743m/s", value: "4" },
-        ];
-      }
-    },
-  },
+  computed: {},
   methods: {
-    changeMTI() {
-      if (this.cc == null) {
-        this.$message({
-          message: "请先选择杂波场景",
-          type: "warning",
-        });
-        return;
-      } else {
-        this.showfig2 = true;
-        this.fig2 =
-          this.BaseUri + "trmtd_cc" + this.cc + "_mm" + this.mm + ".jpg";
-      }
-      if (this.showfig3 == true) {
-        this.shujuyuchuli();
-      }
-    },
-    changeZaBoChangJing() {
+    async fuZaZaBoChangJingZhanShi() {
       this.showfig1 = true;
-      this.fig1 = this.BaseUri + "orig_cc" + this.cc + ".jpg";
       this.showfig2 = true;
-      this.fig2 =
-        this.BaseUri + "trmtd_cc" + this.cc + "_mm" + this.mm + ".jpg";
-    },
-    changeMuBiaoSuDu(value) {
-      if (value == 3 || value == 4) {
-        this.mti = true;
-      } else {
-        this.mti = false;
-      }
-      this.shujuyuchuli();
-    },
-    async ZhiNengJianCe() {
-      if (this.cc == null || this.vv == null || this.pp == null) {
-        this.$message({
-          message: "请先选择杂波场景、目标速度、虚警率",
-          type: "warning",
-        });
-        return;
-      } else {
-        this.fig4 = this.BaseUri + "null.png";
-        this.fig5 = this.BaseUri + "null.png";
-        this.fig6 = this.BaseUri + "null.png";
-        this.fig7 = this.BaseUri + "null.png";
-        this.fig8 = this.BaseUri + "null.png";
-        this.num = 0;
-        this.isloading = true;
-        this.showfig4to8 = true;
-        let percentage = 1;
-        let _this = this;
-        let inteval = setInterval(() => {
-          percentage += 2;
-          if (percentage >= 100) {
-            _this.num = "99%";
-          } else {
-            _this.num = percentage + "%";
-          }
-          // console.log(_this.num);
-        }, 60);
-        let result = await reqDraw(this.cc, this.vv, this.pp);
-        if (result.code == 200) {
-          clearInterval(inteval);
-          this.isloading = false;
-          this.fig4 =
-            this.BaseUri + "Pd_cc" + this.cc + "_vv" + this.vv + "pfa3456.jpg";
-          this.fig5 =
-            this.BaseUri +
-            "Pd_cc" +
-            this.cc +
-            "_vv" +
-            this.vv +
-            "_pp" +
-            this.pp +
-            ".jpg";
-          this.fig6 =
-            this.BaseUri +
-            "Pf_cc" +
-            this.cc +
-            "_vv" +
-            this.vv +
-            "_pp" +
-            this.pp +
-            ".jpg";
-          this.fig7 =
-            this.BaseUri + "Pd_cc" + this.cc + "_pp" + this.pp + "_v1234.jpg";
-          this.fig8 =
-            this.BaseUri + "Pf_cc" + this.cc + "_pp" + this.pp + "_v1234.jpg";
-          this.$message({
-            message: "智能检测成功",
-            type: "success",
-          });
+      this.fig1 = this.BaseUri + "null.png";
+      this.fig2 = this.BaseUri + "null.png";
+      this.loading.fig1.num = 0;
+      this.loading.fig1.isloading = true;
+      this.loading.fig2.num = 0;
+      this.loading.fig2.isloading = true;
+      let percentage = 1;
+      let _this = this;
+      let inteval = setInterval(() => {
+        percentage += 2;
+        if (percentage >= 100) {
+          _this.loading.fig1.num = "99%";
+          _this.loading.fig2.num = "99%";
         } else {
-          this.isloading = false;
-          this.num = 0;
-          clearInterval(inteval);
-          this.$message.error("运行失败！");
+          _this.loading.fig1.num = percentage + "%";
+          _this.loading.fig2.num = percentage + "%";
         }
+      }, 100);
+      let res = await reqThirdone();
+      clearInterval(inteval);
+      if (res.flag) {
+        this.fig1 = this.BaseUri + "1.jpg";
+        this.fig2 = this.BaseUri + "2.jpg";
+
+        this.loading.fig1.isloading = false;
+        this.loading.fig2.isloading = false;
       }
     },
-    shujuyuchuli() {
-      if (this.cc == null || this.vv == null) {
-        this.$message({
-          message: "请先选择杂波场景、目标速度",
-          type: "warning",
-        });
-        return;
-      } else {
-        this.showfig3 = true;
-        this.showfig2 = true;
-        this.fig2 =
-          this.BaseUri + "trmtd_cc" + this.cc + "_mm" + this.mm + ".jpg";
-        this.fig3 =
-          this.BaseUri +
-          "temtd_cc" +
-          this.cc +
-          "_vv" +
-          this.vv +
-          "_snr" +
-          this.SNR +
-          ".jpg";
-        this.$message({
-          message: "数据预处理成功",
-          type: "success",
-        });
+    async shuJvYuChuLi() {
+      this.showfig3 = true;
+      this.showfig4 = true;
+      this.fig3 = this.BaseUri + "null.png";
+      this.fig4 = this.BaseUri + "null.png";
+      this.loading.fig3.num = 0;
+      this.loading.fig3.isloading = true;
+      this.loading.fig4.num = 0;
+      this.loading.fig4.isloading = true;
+      let percentage = 1;
+      let _this = this;
+      let inteval = setInterval(() => {
+        percentage += 2;
+        if (percentage >= 100) {
+          _this.loading.fig3.num = "99%";
+          _this.loading.fig4.num = "99%";
+        } else {
+          _this.loading.fig3.num = percentage + "%";
+          _this.loading.fig4.num = percentage + "%";
+        }
+      }, 100);
+      let res = await reqThirdtwo();
+      clearInterval(inteval);
+      if (res.flag) {
+        this.fig3 = this.BaseUri + "3.jpg";
+        this.fig4 = this.BaseUri + "4.jpg";
+        this.loading.fig3.isloading = false;
+        this.loading.fig4.isloading = false;
+      }
+    },
+    async jiaZaiPfa() {
+      this.showfig5 = true;
+      this.fig5 = this.BaseUri + "null.png";
+      this.loading.fig5.num = 0;
+      this.loading.fig5.isloading = true;
+
+      let percentage = 1;
+      let _this = this;
+      let inteval = setInterval(() => {
+        percentage += 2;
+        if (percentage >= 100) {
+          _this.loading.fig5.num = "99%";
+        } else {
+          _this.loading.fig5.num = percentage + "%";
+        }
+      }, 100);
+      let res = await reqThirdthree(this.pfa);
+      clearInterval(inteval);
+      if (res.flag) {
+        this.fig5 = this.BaseUri + "5.jpg";
+        this.showfig5 = true;
+        this.loading.fig5.isloading = false;
+      }
+    },
+    async jiaZaiGaiLvQuXianTuXiLan() {
+      this.showfig6 = true;
+
+      this.fig6 = this.BaseUri + "null.png";
+      this.loading.fig6.num = 0;
+      this.loading.fig6.isloading = true;
+
+      let percentage = 1;
+      let _this = this;
+      let inteval = setInterval(() => {
+        percentage += 2;
+        if (percentage >= 100) {
+          _this.loading.fig6.num = "99%";
+        } else {
+          _this.loading.fig6.num = percentage + "%";
+        }
+      }, 100);
+      let res = await reqThirdfour(this.gailvone, this.suduone);
+      clearInterval(inteval);
+      if (res.flag) {
+        this.fig6 = this.BaseUri + "6.jpg";
+        this.showfig6 = true;
+        this.loading.fig6.isloading = false;
+      }
+    },
+    async jiaZaiMuBiaoJianCe() {
+      this.showfig7 = true;
+      this.fig7 = this.BaseUri + "null.png";
+      this.loading.fig7.num = 0;
+      this.loading.fig7.isloading = true;
+      let percentage = 1;
+      let _this = this;
+      let inteval = setInterval(() => {
+        percentage += 2;
+        if (percentage >= 100) {
+          _this.loading.fig7.num = "99%";
+        } else {
+          _this.loading.fig7.num = percentage + "%";
+        }
+      }, 100);
+      let res = await reqThirdfive(this.gailvtwo, this.sudutwo);
+      clearInterval(inteval);
+      if (res.flag) {
+        this.fig7 = this.BaseUri + "7.jpg";
+        this.loading.fig7.isloading = false;
+      }
+    },
+    async jiaZaiMuBiaoJianCeQuXianTu() {
+      this.showfig8 = true;
+      this.fig8 = this.BaseUri + "null.png";
+      this.loading.fig8.num = 0;
+      this.loading.fig8.isloading = true;
+      let percentage = 1;
+      let _this = this;
+      let inteval = setInterval(() => {
+        percentage += 2;
+        if (percentage >= 100) {
+          _this.loading.fig8.num = "99%";
+        } else {
+          _this.loading.fig8.num = percentage + "%";
+        }
+      }, 100);
+      let res = await reqThirdsix(this.gailvthree);
+      clearInterval(inteval);
+      if (res.flag) {
+        this.fig8 = this.BaseUri + "8.jpg";
+        this.loading.fig8.isloading = false;
       }
     },
   },
@@ -611,11 +624,34 @@ export default {
 
 <style scoped>
 @import url("../../../fontsize.css");
-
+.divclass {
+  text-align: center;
+}
+.divclass >>> .el-loading-mask {
+  position: absolute;
+  z-index: 2000;
+  background-color: rgba(255, 255, 255, 0) !important;
+  margin: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  transition: opacity 0.3s;
+  height: 270px !important;
+  width: 360px !important;
+  overflow: hidden;
+}
 .el-dialog__body {
   padding: 0px;
 }
-
+.imgBox {
+  height: 270px;
+  width: 360px;
+}
+/* .divclass:hover img {
+  transform: scale(1.2);
+  transition: all 1s;
+} */
 .el-breadcrumb {
   margin-top: 10px;
   margin-left: 10px;

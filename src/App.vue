@@ -1,20 +1,37 @@
 <template>
-  <div style="height: 100%;width: 100%;overflow: hidden">
+  <div style="height: 100%; width: 100%; overflow: hidden">
     <!-- <dv-full-screen-container> -->
     <!-- <el-row style="height: 5px;">
                                                                               <el-col :span="8"><dv-decoration-2 style="width:100%;height:5px;" :color="['#1541c2', '#5089da']" /></el-col>
                                                                               <el-col :span="8"><dv-decoration-2 style="width:100%;height:5px;" :color="['#1541c2', '#5089da']" /></el-col>
                                                                               <el-col :span="8"><dv-decoration-2 style="width:100%;height:5px;" :color="['#1541c2', '#5089da']" /></el-col>
                                                                             </el-row> -->
-    <dv-border-box-11 title="雷达回波分析系统" :titleWidth="380" class="hearder" :color="['#1541c2', '#5089da']">
-      <el-row style="top: 50px; height: 30px;">
-        <el-col :span="8"><dv-decoration-6 style="width:100%;height:30px;" :color="['#1541c2', '#5089da']" /></el-col>
-        <el-col :span="8"><dv-decoration-5 :reverse="true" style="width:100%;height:30px;" :dur="Number(3)"
-            :color="['#6987d6', '#5089da']" /></el-col>
-        <el-col :span="8"><dv-decoration-6 style="width:100%;height:30px;" :color="['#1541c2', '#5089da']" /></el-col>
+    <dv-border-box-11
+      title="雷达回波分析系统"
+      :titleWidth="380"
+      class="hearder"
+      :color="['#1541c2', '#5089da']"
+    >
+      <el-row style="top: 50px; height: 30px">
+        <el-col :span="8"
+          ><dv-decoration-6
+            style="width: 100%; height: 30px"
+            :color="['#1541c2', '#5089da']"
+        /></el-col>
+        <el-col :span="8"
+          ><dv-decoration-5
+            :reverse="true"
+            style="width: 100%; height: 30px"
+            :dur="Number(3)"
+            :color="['#6987d6', '#5089da']"
+        /></el-col>
+        <el-col :span="8"
+          ><dv-decoration-6
+            style="width: 100%; height: 30px"
+            :color="['#1541c2', '#5089da']"
+        /></el-col>
       </el-row>
       <el-row>
-
         <el-aside width="200px">
           <SideBar></SideBar>
         </el-aside>
@@ -22,7 +39,6 @@
         <el-main>
           <router-view></router-view>
         </el-main>
-
       </el-row>
       <el-footer>
         <Footer></Footer>
@@ -33,13 +49,12 @@
 </template>
 
 <script>
-
 import SideBar from "./components/SideBar/index.vue";
 import Footer from "./components/Footer/index.vue";
 export default {
   name: "App",
   components: { SideBar, Footer },
-  mounted() { },
+  mounted() {},
 };
 </script>
 
@@ -49,17 +64,18 @@ export default {
     "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
 }
 
-.hearder>>>.dv-border-box-11-title {
+.hearder >>> .dv-border-box-11-title {
   font-size: 35px !important;
   fill: #1541c2 !important;
 }
 
 .hearder {
-  overflow: hidden
+  overflow: hidden;
+  min-width: 800px !important;
 }
 
 .el-footer {
-  min-width: 1090px;
+  min-width: 800px;
   height: 60px !important;
 }
 
@@ -76,7 +92,7 @@ export default {
   padding: 0px;
   height: calc(100vh - 150px);
   margin-top: 50px;
-  min-width: 1600px !important;
+  min-width: 800px !important;
   overflow: hidden;
   background-color: #aecaffac;
   border-radius: 1.5%;

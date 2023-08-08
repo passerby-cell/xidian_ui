@@ -498,9 +498,9 @@ export default {
     changeZaBoChangJing() {
       this.showfig1 = true;
       this.fig1 = this.BaseUri + "orig_cc" + this.cc + ".jpg";
-      // this.showfig2 = true;
-      // this.fig2 =
-      //   this.BaseUri + "trmtd_cc" + this.cc + "_mm" + this.mm + ".jpg";
+      this.showfig2 = true;
+      this.fig2 =
+        this.BaseUri + "trmtd_cc" + this.cc + "_mm" + this.mm + ".jpg";
     },
     changeMuBiaoSuDu(value) {
       if (value == 3 || value == 4) {
@@ -631,7 +631,7 @@ export default {
   margin: 10px;
   background-color: transparent;
   border: 0px;
-  min-width: 1600px !important;
+  width: 100%;
   overflow: hidden;
 }
 

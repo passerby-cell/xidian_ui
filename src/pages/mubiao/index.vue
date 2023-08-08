@@ -128,7 +128,7 @@ export default {
         } else {
           _this.loading.mubiao.num = percentage + "%";
         }
-        console.log(_this.loading.mubiao.num);
+        // console.log(_this.loading.mubiao.num);
       }, 600);
       let result = await reqtargetDetection(this.clumode || 1, this.cyclenum, this.snr, this.clun);
       if (result.code == 200) {

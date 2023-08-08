@@ -1,46 +1,99 @@
 <template>
   <div>
-    <Transition appear enter-active-class="animate__animated animate__fadeInLeft"
-      leave-active-class="animate__animated animate__fadeOutRight">
+    <Transition
+      appear
+      enter-active-class="animate__animated animate__fadeInLeft"
+      leave-active-class="animate__animated animate__fadeOutRight"
+    >
       <el-breadcrumb separator="/" class="bigsize">
         <el-breadcrumb-item class="bigsize">系统配置</el-breadcrumb-item>
         <el-breadcrumb-item class="bigsize">文件配置</el-breadcrumb-item>
       </el-breadcrumb>
     </Transition>
-    <el-card class="card-style" shadow="hover" :body-style="{ padding: '10px' }"
-      style="height: calc(100vh - 200px); overflow: auto;">
-      <Transition appear enter-active-class="animate__animated animate__fadeInLeft"
-        leave-active-class="animate__animated animate__fadeOutRight">
-        <el-tag type="primary" effect="dark" size="medium " class="middlesize">算法输出目录</el-tag>
+    <el-card
+      class="card-style"
+      shadow="hover"
+      :body-style="{ padding: '10px' }"
+      style="height: calc(100vh - 200px); overflow: auto"
+    >
+      <Transition
+        appear
+        enter-active-class="animate__animated animate__fadeInLeft"
+        leave-active-class="animate__animated animate__fadeOutRight"
+      >
+        <el-tag type="primary" effect="dark" size="medium " class="middlesize"
+          >算法输出目录</el-tag
+        >
       </Transition>
-      <Transition appear enter-active-class="animate__animated animate__fadeInLeft"
-        leave-active-class="animate__animated animate__fadeOutRight">
-        <el-table :row-style="{ height: 40 + 'px' }" :cell-style="{ padding: 0 + 'px' }" style=" margin-top: 10px;"
-          row-class-name="rowColor" header-row-class-name="rowColor" :data="SuanFaConfigList" :border="true"
-          max-height="700">
-
-          <el-table-column prop="algName" label="算法名称" show-overflow-tooltip></el-table-column>
-          <el-table-column prop="savePath" label="输出目录" show-overflow-tooltip></el-table-column>
-
+      <Transition
+        appear
+        enter-active-class="animate__animated animate__fadeInLeft"
+        leave-active-class="animate__animated animate__fadeOutRight"
+      >
+        <el-table
+          :row-style="{ height: 40 + 'px' }"
+          :cell-style="{ padding: 0 + 'px' }"
+          style="margin-top: 10px; width: calc(100vw - 290px)"
+          row-class-name="rowColor"
+          header-row-class-name="rowColor"
+          :data="SuanFaConfigList"
+          :border="true"
+          max-height="700"
+        >
+          <el-table-column
+            prop="algName"
+            label="算法名称"
+            show-overflow-tooltip
+          ></el-table-column>
+          <el-table-column
+            prop="savePath"
+            label="输出目录"
+            show-overflow-tooltip
+          ></el-table-column>
         </el-table>
       </Transition>
-      <Transition appear enter-active-class="animate__animated animate__fadeInLeft"
-        leave-active-class="animate__animated animate__fadeOutRight">
-        <el-tag type="primary" effect="dark" size="medium " style="margin-top: 10px;" class="middlesize">脉冲压缩算法列表</el-tag>
+      <Transition
+        appear
+        enter-active-class="animate__animated animate__fadeInLeft"
+        leave-active-class="animate__animated animate__fadeOutRight"
+      >
+        <el-tag
+          type="primary"
+          effect="dark"
+          size="medium "
+          style="margin-top: 10px"
+          class="middlesize"
+          >脉冲压缩算法列表</el-tag
+        >
       </Transition>
-      <Transition appear enter-active-class="animate__animated animate__fadeInLeft"
-        leave-active-class="animate__animated animate__fadeOutRight">
-        <el-table :row-style="{ height: 40 + 'px' }" :cell-style="{ padding: 0 + 'px' }" style=" margin-top: 10px;"
-          :row-class-name="rowColor" :data="SuanFaList" :border="true" max-height="700">
-
-          <el-table-column prop="subAlgName" label="算法名称" show-overflow-tooltip></el-table-column>
-          <el-table-column prop="paramName" label="算法参数名称" show-overflow-tooltip></el-table-column>
-
+      <Transition
+        appear
+        enter-active-class="animate__animated animate__fadeInLeft"
+        leave-active-class="animate__animated animate__fadeOutRight"
+      >
+        <el-table
+          :row-style="{ height: 40 + 'px' }"
+          :cell-style="{ padding: 0 + 'px' }"
+          style="margin-top: 10px; width: calc(100vw - 290px)"
+          :row-class-name="rowColor"
+          :data="SuanFaList"
+          :border="true"
+          max-height="700"
+        >
+          <el-table-column
+            prop="subAlgName"
+            label="算法名称"
+            show-overflow-tooltip
+          ></el-table-column>
+          <el-table-column
+            prop="paramName"
+            label="算法参数名称"
+            show-overflow-tooltip
+          ></el-table-column>
         </el-table>
       </Transition>
     </el-card>
-
-</div>
+  </div>
 </template>
 
 <script>
@@ -48,24 +101,21 @@ import { mapState } from "vuex";
 export default {
   name: "config",
   data() {
-    return {
-
-    };
+    return {};
   },
   computed: {
     ...mapState("Suanfa", ["SuanFaConfigList", "SuanFaList"]),
-
   },
 
   methods: {
     rowColor({ row, rowIndex }) {
-      return "rowColor"
-    }
+      return "rowColor";
+    },
   },
 
   mounted() {
-    this.$store.dispatch("Suanfa/getSuanFaConfigList")
-    this.$store.dispatch("Suanfa/getSuanFaList")
+    this.$store.dispatch("Suanfa/getSuanFaConfigList");
+    this.$store.dispatch("Suanfa/getSuanFaList");
   },
 };
 </script>
@@ -173,8 +223,8 @@ export default {
 }
 
 .el-table--border .el-table__cell,
-.el-table__body-wrapper .el-table--border.is-scrolling-left~.el-table__fixed {
-  border-right: 0px solid #EBEEF5;
+.el-table__body-wrapper .el-table--border.is-scrolling-left ~ .el-table__fixed {
+  border-right: 0px solid #ebeef5;
 }
 
 el-table .cell {
@@ -203,7 +253,7 @@ el-table .cell {
 }
 
 [class*=" el-icon-"],
-[class^=el-icon-] {
+[class^="el-icon-"] {
   font-family: element-icons !important;
   speak: none;
   font-style: normal;
@@ -230,10 +280,9 @@ el-table .cell {
   line-height: 40px;
   outline: 0;
   padding: 0 15px;
-  transition: border-color .2s cubic-bezier(.645, .045, .355, 1);
+  transition: border-color 0.2s cubic-bezier(0.645, 0.045, 0.355, 1);
   width: 100%;
 }
-
 
 .el-select-dropdown {
   border: none;
@@ -242,14 +291,14 @@ el-table .cell {
 
 .el-input__inner {
   color: #eee;
-  border-color: #0F3360;
+  border-color: #0f3360;
   background-color: rgba(1, 28, 82, 0.8);
 }
 
 .el-select .el-input.is-focus .el-input__inner {
-  border-color: #0B61AA;
+  border-color: #0b61aa;
   background-color: rgba(1, 28, 82, 0.8);
-  color: #0F3360;
+  color: #0f3360;
 }
 
 .el-select-dropdown__item {
@@ -258,19 +307,19 @@ el-table .cell {
 
 .el-select-dropdown__item.hover,
 .el-select-dropdown__item:hover {
-  color: #00D3E9;
-  background-color: #0F3360;
+  color: #00d3e9;
+  background-color: #0f3360;
 }
 
 .el-button--primary:focus,
 .el-button--primary:hover {
   background: #40537a;
   border-color: #40537a;
-  color: #FFF;
+  color: #fff;
 }
 
 .el-button--primary {
-  color: #FFF;
+  color: #fff;
   background-color: #6987d6;
   border-color: #6987d6;
 }
