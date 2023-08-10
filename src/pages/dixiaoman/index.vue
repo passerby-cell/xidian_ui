@@ -164,13 +164,14 @@
                 <h3 class="middlesize" style="margin-top: 5px">虚警概率</h3>
               </el-col>
               <el-col :span="3"
-                ><el-input-number
-                  v-model="pfa"
-                  :min="3"
-                  :max="6"
-                  style="width: 100%"
-                  label="虚警概率"
-                ></el-input-number
+                ><el-select v-model="pfa" placeholder="请选择">
+                  <el-option
+                    v-for="item in options"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value"
+                  >
+                  </el-option> </el-select
               ></el-col>
               <el-col :span="4" :offset="1">
                 <el-button
@@ -191,26 +192,31 @@
               <el-col :span="2">
                 <h3 class="middlesize" style="margin-top: 5px">虚警概率</h3>
               </el-col>
-              <el-col :span="3"
-                ><el-input-number
-                  v-model="gailvone"
-                  :min="3"
-                  :max="6"
-                  style="width: 100%"
-                  label="虚警概率"
-                ></el-input-number
-              ></el-col>
-              <el-col :span="2" :offset="1">
-                <h3 class="middlesize" style="margin-top: 5px">速度</h3>
+              <el-col :span="3">
+                <el-select v-model="gailvone" placeholder="请选择">
+                  <el-option
+                    v-for="item in options"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value"
+                  >
+                  </el-option>
+                </el-select>
+              </el-col>
+              <el-col :span="3" :offset="1">
+                <h3 class="middlesize" style="margin-top: 5px">
+                  目标速度（m/s）
+                </h3>
               </el-col>
               <el-col :span="3"
-                ><el-input-number
-                  v-model="suduone"
-                  :min="1"
-                  :max="8"
-                  style="width: 100%"
-                  label="速度"
-                ></el-input-number
+                ><el-select v-model="suduone" placeholder="请选择">
+                  <el-option
+                    v-for="item in suduOptions"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value"
+                  >
+                  </el-option> </el-select
               ></el-col>
               <el-col :span="3" :offset="1"
                 ><el-button
@@ -232,25 +238,29 @@
                 <h3 class="middlesize" style="margin-top: 5px">虚警概率</h3>
               </el-col>
               <el-col :span="3"
-                ><el-input-number
-                  v-model="gailvtwo"
-                  :min="3"
-                  :max="6"
-                  style="width: 100%"
-                  label="虚警概率"
-                ></el-input-number
+                ><el-select v-model="gailvtwo" placeholder="请选择">
+                  <el-option
+                    v-for="item in options"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value"
+                  >
+                  </el-option> </el-select
               ></el-col>
-              <el-col :span="2" :offset="1">
-                <h3 class="middlesize" style="margin-top: 5px">速度</h3>
+              <el-col :span="3" :offset="1">
+                <h3 class="middlesize" style="margin-top: 5px">
+                  目标速度（m/s）
+                </h3>
               </el-col>
               <el-col :span="3"
-                ><el-input-number
-                  v-model="sudutwo"
-                  :min="1"
-                  :max="8"
-                  style="width: 100%"
-                  label="速度"
-                ></el-input-number
+                ><el-select v-model="sudutwo" placeholder="请选择">
+                  <el-option
+                    v-for="item in suduOptions"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value"
+                  >
+                  </el-option> </el-select
               ></el-col>
               <el-col :span="3" :offset="1"
                 ><el-button
@@ -272,13 +282,14 @@
                 <h3 class="middlesize" style="margin-top: 5px">虚警概率</h3>
               </el-col>
               <el-col :span="3"
-                ><el-input-number
-                  v-model="gailvthree"
-                  :min="3"
-                  :max="6"
-                  style="width: 100%"
-                  label="虚警概率"
-                ></el-input-number
+                ><el-select v-model="gailvthree" placeholder="请选择">
+                  <el-option
+                    v-for="item in options"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value"
+                  >
+                  </el-option> </el-select
               ></el-col>
               <el-col :span="3" :offset="1"
                 ><el-button
@@ -297,7 +308,7 @@
                   style="height: 305px; width: 380px"
                 >
                   <p style="text-align: center" class="smallsize">
-                    的检测概率曲线图
+                    检测概率曲线对比图
                   </p>
                   <div
                     class="divclass"
@@ -425,7 +436,7 @@ export default {
   data() {
     return {
       isloading: false,
-      pfa: 3,
+      pfa: 1,
       BaseUri: "http://127.0.0.1:8080/preview/",
       loading: {
         fig1: { isloading: false, num: 0 },
@@ -446,9 +457,9 @@ export default {
       fig7: null,
       fig8: null,
       show: false,
-      gailvone: 3,
-      gailvtwo: 3,
-      gailvthree: 3,
+      gailvone: 1,
+      gailvtwo: 1,
+      gailvthree: 1,
       suduone: 1,
       sudutwo: 1,
       showfig1: false,
@@ -459,6 +470,22 @@ export default {
       showfig6: false,
       showfig7: false,
       showfig8: false,
+      options: [
+        { value: 1, label: "1e-3" },
+        { value: 2, label: "1e-4" },
+        { value: 3, label: "1e-5" },
+        { value: 4, label: "1e-6" },
+      ],
+      suduOptions: [
+        { value: 1, label: "[-9.495，-7.385）" },
+        { value: 2, label: "[-7.385，-5.275）" },
+        { value: 3, label: "[-5.275，-3.165）" },
+        { value: 4, label: "[-3.165，-1.055）" },
+        { value: 5, label: "[1.055，3.165）" },
+        { value: 6, label: "[3.165，5.275）" },
+        { value: 7, label: "[5.275，7.385）" },
+        { value: 8, label: "[7.385，9.495）" },
+      ],
     };
   },
   computed: {},
